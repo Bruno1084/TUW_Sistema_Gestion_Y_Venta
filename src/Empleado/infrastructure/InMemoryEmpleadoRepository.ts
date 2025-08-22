@@ -1,6 +1,6 @@
 import { Empleado } from "../domain/Empleado";
 import { EmpleadoId } from "../domain/EmpleadoId";
-import { type EmpleadoRepository } from "../domain/EmpleadoRepository";
+import type { EmpleadoRepository } from "../domain/EmpleadoRepository";
 
 export class InMemoryEmpleadoRepository implements EmpleadoRepository{
     private empleados: Empleado[] = [];

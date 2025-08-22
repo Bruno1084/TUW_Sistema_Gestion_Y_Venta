@@ -5,7 +5,7 @@ import { EmpleadoDireccion } from "../domain/EmpleadoDireccion";
 import { EmpleadoTelefono } from "../domain/EmpleadoTelefono";
 import { EmpleadoFechaCreacion } from "../domain/EmpleadoFechaCreacion";
 import { EmpleadoFechaModificacion } from "../domain/EmpleadoFechaModificacion";
-import { type EmpleadoRepository } from "../domain/EmpleadoRepository";
+import type { EmpleadoRepository } from "../domain/EmpleadoRepository";
 
 export class EmpleadoCreate {
     constructor(private repository: EmpleadoRepository) {}

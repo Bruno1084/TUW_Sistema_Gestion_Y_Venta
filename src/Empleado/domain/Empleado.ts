@@ -28,6 +28,4 @@ export class Empleado {
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
     }
-
-
 }

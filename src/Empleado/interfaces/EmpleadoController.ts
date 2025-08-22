@@ -1,6 +1,5 @@
-// empleado/interfaces/rest/EmpleadoController.ts
-import { type Request, type Response } from "express";
-import { type EmpleadoRepository } from "../domain/EmpleadoRepository";
+import type { Request, Response } from "express";
+import type { EmpleadoRepository } from "../domain/EmpleadoRepository";
 import { EmpleadoCreate } from "../application/EmpleadoCreate";
 import { EmpleadoGetAll } from "../application/EmpleadoGetAll";
 
@@ -15,15 +14,15 @@ export class EmpleadoController {
 
     async createEmpleado(req: Request, res: Response): Promise<void> {
         try {
-            const { id, nombre, direccion, telefono, fechaCreacion, fechaModificacion } = req.body;
+            const { id, nombre, direccion, telefono } = req.body;
 
             await this.empleadoCreate.run(
                 id,
                 nombre,
                 direccion,
                 telefono,
-                new Date(fechaCreacion),
-                new Date(fechaModificacion)
+                new Date(),
+                new Date()
             );
 
             res.status(201).json({ message: "Empleado creado correctamente" });

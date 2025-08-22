@@ -8,6 +8,7 @@ create table empleados(
     telefono varchar(15) not null,
 	fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    esActivo bool not null default true,
     primary key(id)
 );
 
@@ -30,6 +31,7 @@ create table clientes(
 	telefono varchar(15) not null,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	esActivo bool not null default true,
     primary key(id)
 );
 
@@ -38,9 +40,9 @@ create table proveedores(
     nombre varchar(80) not null,
     direccion varchar(255) not null,
     telefono varchar(15) not null,
-    estatus bool not null,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	esActivo bool not null default true,
     primary key(id)
 );
 
@@ -82,10 +84,12 @@ create table productos(
 create table ventas(
 	id int not null auto_increment,
     id_cliente int not null,
+    id_empleado int not null,
     precio_total decimal(10, 2) not null,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     primary key(id),
-    foreign key(id_cliente) references clientes(id)
+    foreign key(id_cliente) references clientes(id),
+    foreign key(id_empleado) references empleados(id)
 );
 
 create table ventas_detalles(
@@ -103,10 +107,12 @@ create table ventas_detalles(
 create table compras(
 	id int not null auto_increment,
     id_proveedor int not null,
+    id_empleado int not null,
     precio_total decimal(10, 2) not null,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     primary key(id),
-    foreign key(id_proveedor) references proveedores(id)
+    foreign key(id_proveedor) references proveedores(id),
+    foreign key(id_empleado) references empleados(id)
 );
 
 create table compras_detalles(
