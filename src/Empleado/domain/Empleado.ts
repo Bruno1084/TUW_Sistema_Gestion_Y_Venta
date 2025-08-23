@@ -1,9 +1,10 @@
+import type { EmpleadoId } from "./EmpleadoId";
+import type { EmpleadoNombre } from "./EmpleadoNombre";
 import type { EmpleadoDireccion } from "./EmpleadoDireccion";
+import type { EmpleadoTelefono } from "./EmpleadoTelefono";
 import type { EmpleadoFechaCreacion } from "./EmpleadoFechaCreacion";
 import type { EmpleadoFechaModificacion } from "./EmpleadoFechaModificacion";
-import { EmpleadoId } from "./EmpleadoId";
-import { EmpleadoNombre } from "./EmpleadoNombre";
-import type { EmpleadoTelefono } from "./EmpleadoTelefono";
+import type { EmpleadoEsActivo } from "./EmpleadoEsActivo";
 
 export class Empleado {
     id: EmpleadoId;
@@ -12,6 +13,7 @@ export class Empleado {
     telefono: EmpleadoTelefono;
     fechaCreacion: EmpleadoFechaCreacion;
     fechaModificacion: EmpleadoFechaModificacion;
+    esActivo: EmpleadoEsActivo;
 
     constructor(
         id: EmpleadoId,
@@ -19,7 +21,8 @@ export class Empleado {
         direccion: EmpleadoDireccion,
         telefono: EmpleadoTelefono,
         fechaCreacion: EmpleadoFechaCreacion,
-        fechaModificacion: EmpleadoFechaModificacion
+        fechaModificacion: EmpleadoFechaModificacion,
+        esActivo: EmpleadoEsActivo
     ) {
         this.id = id;
         this.nombre = nombre;
@@ -27,5 +30,6 @@ export class Empleado {
         this.telefono = telefono;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
+        this.esActivo = esActivo;
     }
 }

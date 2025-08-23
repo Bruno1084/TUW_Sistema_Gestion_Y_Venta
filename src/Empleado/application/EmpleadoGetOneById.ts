@@ -1,4 +1,4 @@
-import { type EmpleadoRepository } from "../domain/EmpleadoRepository";
+import type { EmpleadoRepository } from "../domain/EmpleadoRepository";
 import { Empleado } from "../domain/Empleado";
 import { EmpleadoId } from "../domain/EmpleadoId";
 import { EmpleadoNotFoundError } from "../domain/EmpleadoNotFoundError";

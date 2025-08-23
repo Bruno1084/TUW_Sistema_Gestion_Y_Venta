@@ -22,7 +22,8 @@ export class EmpleadoController {
                 direccion,
                 telefono,
                 new Date(),
-                new Date()
+                new Date(),
+                true
             );
 
             res.status(201).json({ message: "Empleado creado correctamente" });
