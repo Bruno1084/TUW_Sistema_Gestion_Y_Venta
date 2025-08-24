@@ -45,6 +45,6 @@ export class ProductoCreate {
             rubro
         );
         
-        this.repository.create(producto);
+        await this.repository.create(producto);
     }
 }

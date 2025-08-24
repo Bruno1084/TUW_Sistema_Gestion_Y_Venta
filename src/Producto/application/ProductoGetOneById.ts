@@ -10,7 +10,7 @@ export class ProductoGetOneById {
         const producto = await this.repository.getOneById(new ProductoCodigoBarra(codigoBarra));
 
         if (!producto) {
-            throw new ProductoNotFoundError('Producto Not Found');
+            throw new ProductoNotFoundError('Producto no encontrado');
         }
 
         return producto;

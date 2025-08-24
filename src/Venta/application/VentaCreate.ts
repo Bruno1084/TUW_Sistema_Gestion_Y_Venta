@@ -4,6 +4,7 @@ import { VentaId } from "../domain/VentaId";
 import type { Empleado } from "../../Empleado/domain/Empleado";
 import { VentaPrecioTotal } from "../domain/VentaPrecioTotal";
 import { VentaFechaCreacion } from "../domain/VentaFechaCreacion";
+import type { Cliente } from "../../Cliente/domain/Cliente";
 
 export class VentaCreate {
     constructor(private repository: VentaRepository) { }
@@ -23,6 +24,6 @@ export class VentaCreate {
             new VentaFechaCreacion(fechaCreacion)
         );
 
-        this.repository.create(venta);
+        await this.repository.create(venta);
     }
 }
