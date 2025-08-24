@@ -14,7 +14,7 @@ import type { Marca } from "../../Marca/domain/Marca";
 import type { Rubro } from "../../Rubro/domain/Rubro";
 
 export class ProductoCreate {
-    constructor(private repository: ProductoRepository) { }
+    constructor(private repository: ProductoRepository) {}
 
     async run(
         codigoBarra: string,
