@@ -5,5 +5,6 @@ export interface ProveedorRepository {
     create(proveedor: Proveedor): Promise<void>;
     getAll(): Promise<Proveedor[]>;
     getOneById(proveedorId: ProveedorId): Promise<Proveedor | null>;
+    update(proveedor: Proveedor): Promise<void>
     delete(proveedorId: ProveedorId): Promise<void>;
 }

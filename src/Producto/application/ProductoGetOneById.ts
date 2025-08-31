@@ -8,10 +8,7 @@ export class ProductoGetOneById {
 
     async run(codigoBarra: string): Promise<Producto | null> {
         const producto = await this.repository.getOneById(new ProductoCodigoBarra(codigoBarra));
-
-        if (!producto) {
-            throw new ProductoNotFoundError('Producto no encontrado');
-        }
+        if (!producto) throw new ProductoNotFoundError('Producto no encontrado');
 
         return producto;
     }
