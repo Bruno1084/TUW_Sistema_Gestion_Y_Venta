@@ -7,9 +7,9 @@ import type { ProductoPrecioCompra } from "./ProductoPrecioCompra";
 import type { ProductoPrecioVenta } from "./ProductoPrecioVenta";
 import type { ProductoStock } from "./ProductoStock";
 import type { ProductoFechaModificacion } from "./ProductoFechaModificacion";
-import { Proveedor } from "../../Proveedor/domain/Proveedor";
-import { Marca } from "../../Marca/domain/Marca";
-import { Rubro } from "../../Rubro/domain/Rubro";
+import type { ProveedorId } from "../../Proveedor/domain/ProveedorId";
+import type { MarcaId } from "../../Marca/domain/MarcaId";
+import type { RubroId } from "../../Rubro/domain/RubroId";
 
 export class Producto {
     codigoBarra: ProductoCodigoBarra;
@@ -21,9 +21,9 @@ export class Producto {
     imgUri: ProductoImgUri;
     fechaCreacion: ProductoFechaCreacion;
     fechaModificacion: ProductoFechaModificacion;
-    proveedor: Proveedor;
-    marca: Marca;
-    rubro: Rubro;
+    proveedorId: ProveedorId;
+    marcaId: MarcaId;
+    rubroId: RubroId;
 
     constructor(
         codigoBarra: ProductoCodigoBarra,
@@ -35,9 +35,9 @@ export class Producto {
         imgUri: ProductoImgUri,
         fechaCreacion: ProductoFechaCreacion,
         fechaModificacion: ProductoFechaModificacion,
-        proveedor: Proveedor,
-        marca: Marca,
-        rubro: Rubro
+        proveedorId: ProveedorId,
+        marcaId: MarcaId,
+        rubroId: RubroId
     ) {
         this.codigoBarra = codigoBarra;
         this.nombre = nombre;
@@ -48,8 +48,8 @@ export class Producto {
         this.imgUri = imgUri;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
-        this.proveedor = proveedor;
-        this.marca = marca;
-        this.rubro = rubro;
+        this.proveedorId = proveedorId;
+        this.marcaId = marcaId;
+        this.rubroId = rubroId;
     }
 }

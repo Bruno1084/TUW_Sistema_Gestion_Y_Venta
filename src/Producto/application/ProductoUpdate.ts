@@ -1,0 +1,79 @@
+import type { ProveedorRepository } from "../../Proveedor/domain/ProveedorRepository";
+import type { ProductoRepository } from "../domain/ProductoRepository";
+import type { MarcaRepository } from "../../Marca/domain/MarcaRepository";
+import type { RubroRepository } from "../../Rubro/domain/RubroRepository";
+import { Producto } from "../domain/Producto";
+import { ProductoCodigoBarra } from "../domain/ProductoCodigoBarra";
+import { ProductoNombre } from "../domain/ProductoNombre";
+import { ProductoDescripcion } from "../domain/ProductoDescripcion";
+import { ProductoPrecioCompra } from "../domain/ProductoPrecioCompra";
+import { ProductoPrecioVenta } from "../domain/ProductoPrecioVenta";
+import { ProductoFechaModificacion } from "../domain/ProductoFechaModificacion";
+import { ProductoStock } from "../domain/ProductoStock";
+import { ProductoImgUri } from "../domain/ProductoImgUri";
+import { ProveedorId } from "../../Proveedor/domain/ProveedorId";
+import { MarcaId } from "../../Marca/domain/MarcaId";
+import { RubroId } from "../../Rubro/domain/RubroId";
+
+export class ProductoUpdate {
+    constructor(
+        private productoRepository: ProductoRepository,
+        private proveedorRepository: ProveedorRepository,
+        private marcaRepository: MarcaRepository,
+        private rubroRepository: RubroRepository
+    ) { }
+
+    async run(
+        codigoBarra: string,
+        updates: {
+            nombre?: string;
+            descripcion?: string;
+            precioCompra?: number;
+            precioVenta?: number;
+            stock?: number;
+            imgUri?: string;
+            proveedorId?: number,
+            marcaId: number,
+            rubroId: number
+        }
+    ): Promise<void> {
+        const productoExistente = await this.productoRepository.getOneById(new ProductoCodigoBarra(codigoBarra));
+        if (!productoExistente) throw new Error("Producto no encontrado");
+
+        let proveedor = productoExistente.proveedorId;
+        let marca = productoExistente.marcaId;
+        let rubro = productoExistente.rubroId;
+
+        if (updates.proveedorId) {
+            const proveedor = await this.proveedorRepository.getOneById(new ProveedorId(updates.proveedorId));
+            if (!proveedor) throw new Error("Proveedor no encontrado");
+        }
+
+        if (updates.marcaId) {
+            const marca = await this.marcaRepository.getOneById(new MarcaId(updates.marcaId));
+            if (!marca) throw new Error("Marca no encontrada");
+        }
+
+        if (updates.rubroId) {
+            const rubro = await this.rubroRepository.getOneById(new RubroId(updates.rubroId));
+            if (!rubro) throw new Error("Rubro no encontrado");
+        }
+
+        const productoActualizado = new Producto(
+            productoExistente.codigoBarra,
+            updates.nombre ? new ProductoNombre(updates.nombre) : productoExistente.nombre,
+            updates.descripcion ? new ProductoDescripcion(updates.descripcion) : productoExistente.descripcion,
+            updates.precioCompra !== undefined ? new ProductoPrecioCompra(updates.precioCompra) : productoExistente.precioCompra,
+            updates.precioVenta !== undefined ? new ProductoPrecioVenta(updates.precioVenta) : productoExistente.precioVenta,
+            updates.stock !== undefined ? new ProductoStock(updates.stock) : productoExistente.stock,
+            updates.imgUri ? new ProductoImgUri(updates.imgUri) : productoExistente.imgUri,
+            productoExistente.fechaCreacion,
+            new ProductoFechaModificacion(new Date()),
+            proveedor,
+            marca,
+            rubro
+        );
+
+        await this.productoRepository.update(productoActualizado);
+    }
+}
