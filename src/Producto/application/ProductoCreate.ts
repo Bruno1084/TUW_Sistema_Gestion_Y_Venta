@@ -9,12 +9,12 @@ import { ProductoNombre } from "../domain/ProductoNombre";
 import { ProductoPrecioCompra } from "../domain/ProductoPrecioCompra";
 import { ProductoPrecioVenta } from "../domain/ProductoPrecioVenta";
 import { ProductoStock } from "../domain/ProductoStock";
-import type { Proveedor } from "../../Proveedor/domain/Proveedor";
-import type { Marca } from "../../Marca/domain/Marca";
-import type { Rubro } from "../../Rubro/domain/Rubro";
+import type { ProveedorId } from "../../Proveedor/domain/ProveedorId";
+import type { MarcaId } from "../../Marca/domain/MarcaId";
+import type { RubroId } from "../../Rubro/domain/RubroId";
 
 export class ProductoCreate {
-    constructor(private repository: ProductoRepository) {}
+    constructor(private repository: ProductoRepository) { }
 
     async run(
         codigoBarra: string,
@@ -26,9 +26,9 @@ export class ProductoCreate {
         imgUri: string,
         fechaCreacion: Date,
         fechaModificacion: Date,
-        proveedor: Proveedor,
-        marca: Marca,
-        rubro: Rubro
+        proveedorId: ProveedorId,
+        marcaId: MarcaId,
+        rubroId: RubroId
     ): Promise<void> {
         const producto = new Producto(
             new ProductoCodigoBarra(codigoBarra),
@@ -40,11 +40,11 @@ export class ProductoCreate {
             new ProductoImgUri(imgUri),
             new ProductoFechaCreacion(fechaCreacion),
             new ProductoFechaModificacion(fechaModificacion),
-            proveedor,
-            marca,
-            rubro
+            proveedorId,
+            marcaId,
+            rubroId
         );
-        
+
         await this.repository.create(producto);
     }
 }
