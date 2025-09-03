@@ -2,12 +2,13 @@ import { Router } from "express";
 import type { ProductoRepository } from "../domain/ProductoRepository";
 import { ProductoController } from "./ProductoController";
 
-export function ProductoRouter(productoRepository: ProductoRepository): Router {
+export function productoRouter(productoController: ProductoController): Router {
     const router = Router();
-    const controller = new ProductoController(productoRepository);
 
-    router.post('/create', controller.createProducto.bind(controller));
-    router.get('/getAll', controller.getAllProducto.bind(controller));
+    router.post('/create', productoController.createProducto.bind(productoController));
+    router.get('/getAll', productoController.getAllProducto.bind(productoController));
+    router.get('/getOneById', productoController.getOneByIdProducto.bind(productoController));
+    router.post('/update', productoController.updateProducto.bind(productoController));
 
     return router;
 }

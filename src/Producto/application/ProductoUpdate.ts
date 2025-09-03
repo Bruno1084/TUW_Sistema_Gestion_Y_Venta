@@ -33,8 +33,8 @@ export class ProductoUpdate {
             stock?: number;
             imgUri?: string;
             proveedorId?: number,
-            marcaId: number,
-            rubroId: number
+            marcaId?: number,
+            rubroId?: number
         }
     ): Promise<void> {
         const productoExistente = await this.productoRepository.getOneById(new ProductoCodigoBarra(codigoBarra));
@@ -45,18 +45,19 @@ export class ProductoUpdate {
         let rubro = productoExistente.rubroId;
 
         if (updates.proveedorId) {
-            const proveedor = await this.proveedorRepository.getOneById(new ProveedorId(updates.proveedorId));
-            if (!proveedor) throw new Error("Proveedor no encontrado");
+            const proveedorExistente = await this.proveedorRepository.getOneById(new ProveedorId(updates.proveedorId));
+            if (!proveedorExistente) throw new Error("Proveedor no encontrado");
+            proveedor = new ProveedorId(updates.proveedorId);
         }
 
         if (updates.marcaId) {
-            const marca = await this.marcaRepository.getOneById(new MarcaId(updates.marcaId));
-            if (!marca) throw new Error("Marca no encontrada");
+            const marcaExistente = await this.marcaRepository.getOneById(new MarcaId(updates.marcaId));
+            if (!marcaExistente) throw new Error("Marca no encontrada");
         }
 
         if (updates.rubroId) {
-            const rubro = await this.rubroRepository.getOneById(new RubroId(updates.rubroId));
-            if (!rubro) throw new Error("Rubro no encontrado");
+            const rubroExistente = await this.rubroRepository.getOneById(new RubroId(updates.rubroId));
+            if (!rubroExistente) throw new Error("Rubro no encontrado");
         }
 
         const productoActualizado = new Producto(
