@@ -1,5 +1,4 @@
 import type { Request, Response } from "express";
-import type { ProductoRepository } from "../domain/ProductoRepository";
 import { ProductoCreate } from "../application/ProductoCreate";
 import { ProductoGetAll } from "../application/ProductoGetAll";
 import { ProductoGetOneById } from "../application/ProductoGetOneById";
@@ -19,7 +18,6 @@ export class ProductoController {
         try {
             const {
                 codigoBarra,
-                nombre,
                 descripcion,
                 precioCompra,
                 precioVenta,
@@ -32,7 +30,6 @@ export class ProductoController {
 
             await this.useCases.create.run(
                 codigoBarra,
-                nombre,
                 descripcion,
                 precioCompra,
                 precioVenta,
@@ -80,7 +77,6 @@ export class ProductoController {
         try {
             const { codigoBarra } = req.params;
             const {
-                nombre,
                 descripcion,
                 precioCompra,
                 precioVenta,
@@ -94,7 +90,6 @@ export class ProductoController {
             await this.useCases.update.run(
                 codigoBarra!,
                 {
-                    nombre,
                     descripcion,
                     precioCompra,
                     precioVenta,

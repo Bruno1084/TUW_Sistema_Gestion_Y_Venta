@@ -1,24 +1,23 @@
 import { Producto } from "../domain/Producto";
 import type { ProductoRepository } from "../domain/ProductoRepository";
+import type { ProveedorId } from "../../Proveedor/domain/ProveedorId";
+import type { MarcaId } from "../../Marca/domain/MarcaId";
+import type { RubroId } from "../../Rubro/domain/RubroId";
 import { ProductoCodigoBarra } from "../domain/ProductoCodigoBarra";
 import { ProductoDescripcion } from "../domain/ProductoDescripcion";
 import { ProductoFechaCreacion } from "../domain/ProductoFechaCreacion";
 import { ProductoFechaModificacion } from "../domain/ProductoFechaModificacion";
 import { ProductoImgUri } from "../domain/ProductoImgUri";
-import { ProductoNombre } from "../domain/ProductoNombre";
 import { ProductoPrecioCompra } from "../domain/ProductoPrecioCompra";
 import { ProductoPrecioVenta } from "../domain/ProductoPrecioVenta";
 import { ProductoStock } from "../domain/ProductoStock";
-import type { ProveedorId } from "../../Proveedor/domain/ProveedorId";
-import type { MarcaId } from "../../Marca/domain/MarcaId";
-import type { RubroId } from "../../Rubro/domain/RubroId";
+import { ProductoEsActivo } from "../domain/ProductoEsActivo";
 
 export class ProductoCreate {
     constructor(private repository: ProductoRepository) { }
 
     async run(
         codigoBarra: string,
-        nombre: string,
         descripcion: string,
         precioCompra: number,
         precioVenta: number,
@@ -28,11 +27,10 @@ export class ProductoCreate {
         fechaModificacion: Date,
         proveedorId: ProveedorId,
         marcaId: MarcaId,
-        rubroId: RubroId
+        rubroId: RubroId,
     ): Promise<void> {
         const producto = new Producto(
             new ProductoCodigoBarra(codigoBarra),
-            new ProductoNombre(nombre),
             new ProductoDescripcion(descripcion),
             new ProductoPrecioCompra(precioCompra),
             new ProductoPrecioVenta(precioVenta),
@@ -42,7 +40,8 @@ export class ProductoCreate {
             new ProductoFechaModificacion(fechaModificacion),
             proveedorId,
             marcaId,
-            rubroId
+            rubroId,
+            new ProductoEsActivo(true)
         );
 
         await this.repository.create(producto);

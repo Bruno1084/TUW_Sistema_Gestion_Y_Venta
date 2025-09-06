@@ -1,6 +1,6 @@
+import type { ProveedorRepository } from "../domain/ProveedorRepository";
 import type { Proveedor } from "../domain/Proveedor";
 import { ProveedorId } from "../domain/ProveedorId";
-import type { ProveedorRepository } from "../domain/ProveedorRepository";
 
 export class ProveedorGetOneById {
     constructor(private repository: ProveedorRepository) {}

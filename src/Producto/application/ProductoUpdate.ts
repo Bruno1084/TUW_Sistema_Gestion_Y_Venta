@@ -4,7 +4,6 @@ import type { MarcaRepository } from "../../Marca/domain/MarcaRepository";
 import type { RubroRepository } from "../../Rubro/domain/RubroRepository";
 import { Producto } from "../domain/Producto";
 import { ProductoCodigoBarra } from "../domain/ProductoCodigoBarra";
-import { ProductoNombre } from "../domain/ProductoNombre";
 import { ProductoDescripcion } from "../domain/ProductoDescripcion";
 import { ProductoPrecioCompra } from "../domain/ProductoPrecioCompra";
 import { ProductoPrecioVenta } from "../domain/ProductoPrecioVenta";
@@ -14,6 +13,7 @@ import { ProductoImgUri } from "../domain/ProductoImgUri";
 import { ProveedorId } from "../../Proveedor/domain/ProveedorId";
 import { MarcaId } from "../../Marca/domain/MarcaId";
 import { RubroId } from "../../Rubro/domain/RubroId";
+import { ProductoEsActivo } from "../domain/ProductoEsActivo";
 
 export class ProductoUpdate {
     constructor(
@@ -26,7 +26,6 @@ export class ProductoUpdate {
     async run(
         codigoBarra: string,
         updates: {
-            nombre?: string;
             descripcion?: string;
             precioCompra?: number;
             precioVenta?: number;
@@ -34,7 +33,8 @@ export class ProductoUpdate {
             imgUri?: string;
             proveedorId?: number,
             marcaId?: number,
-            rubroId?: number
+            rubroId?: number,
+            esActivo?: boolean
         }
     ): Promise<void> {
         const productoExistente = await this.productoRepository.getOneById(new ProductoCodigoBarra(codigoBarra));
@@ -62,7 +62,6 @@ export class ProductoUpdate {
 
         const productoActualizado = new Producto(
             productoExistente.codigoBarra,
-            updates.nombre ? new ProductoNombre(updates.nombre) : productoExistente.nombre,
             updates.descripcion ? new ProductoDescripcion(updates.descripcion) : productoExistente.descripcion,
             updates.precioCompra !== undefined ? new ProductoPrecioCompra(updates.precioCompra) : productoExistente.precioCompra,
             updates.precioVenta !== undefined ? new ProductoPrecioVenta(updates.precioVenta) : productoExistente.precioVenta,
@@ -72,7 +71,8 @@ export class ProductoUpdate {
             new ProductoFechaModificacion(new Date()),
             proveedor,
             marca,
-            rubro
+            rubro,
+            updates.esActivo ? new ProductoEsActivo(updates.esActivo) : productoExistente.esActivo
         );
 
         await this.productoRepository.update(productoActualizado);
