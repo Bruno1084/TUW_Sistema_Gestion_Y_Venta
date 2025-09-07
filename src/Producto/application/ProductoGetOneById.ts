@@ -1,6 +1,6 @@
+import type { ProductoRepository } from "../domain/ProductoRepository";
 import type { Producto } from "../domain/Producto";
 import { ProductoCodigoBarra } from "../domain/ProductoCodigoBarra";
-import type { ProductoRepository } from "../domain/ProductoRepository";
 import { ProductoNotFoundError } from "../domain/ProductoNotFoundError";
 
 export class ProductoGetOneById {
