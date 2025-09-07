@@ -1,16 +1,14 @@
 import { Router } from "express";
-import type { ProveedorRepository } from "../domain/ProveedorRepository";
 import { ProveedorController } from "./ProveedorController";
 
-export function ProveedorRouter(proveedorRepository: ProveedorRepository): Router {
+export function proveedorRouter(proveedorController: ProveedorController): Router {
     const router = Router();
-    const controller = new ProveedorController(proveedorRepository);
 
-    router.post('/create', controller.createProveedor.bind(controller));
-    router.get('/getAll', controller.getAllProveedor.bind(controller));
-    router.get('/getOneById', controller.getOneByIdProveedor.bind(controller));
-    router.post('/update', controller.updateProveedor.bind(controller));
-    router.post('/delete', controller.deleteProveedor.bind(controller));
+    router.post('/create', proveedorController.createProveedor.bind(proveedorController));
+    router.get('/getAll', proveedorController.getAllProveedor.bind(proveedorController));
+    router.get('/getOneById', proveedorController.getOneByIdProveedor.bind(proveedorController));
+    router.post('/update', proveedorController.updateProveedor.bind(proveedorController));
+    router.post('/delete', proveedorController.deleteProveedor.bind(proveedorController));
 
     return router;
 }

@@ -1,5 +1,4 @@
 import { Router } from "express";
-import type { ProductoRepository } from "../domain/ProductoRepository";
 import { ProductoController } from "./ProductoController";
 
 export function productoRouter(productoController: ProductoController): Router {

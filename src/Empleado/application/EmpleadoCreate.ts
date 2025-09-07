@@ -12,7 +12,6 @@ export class EmpleadoCreate {
     constructor(private repository: EmpleadoRepository) {}
 
     async run(
-        id: number,
         nombre: string,
         direccion: string,
         telefono: string,
@@ -21,7 +20,7 @@ export class EmpleadoCreate {
         esActivo: boolean
     ): Promise<void> {
         const empleado = new Empleado(
-            new EmpleadoId(id),
+            new EmpleadoId(0),
             new EmpleadoNombre(nombre),
             new EmpleadoDireccion(direccion),
             new EmpleadoTelefono(telefono),

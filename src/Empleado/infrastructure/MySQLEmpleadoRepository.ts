@@ -28,12 +28,11 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
 
     async create(empleado: Empleado): Promise<void> {
         const query = `
-      INSERT INTO empleados (id, nombre, direccion, telefono)
-      VALUES (?, ?, ?, ?)
+      INSERT INTO empleados (nombre, direccion, telefono)
+      VALUES (?, ?, ?)
     `;
 
         await this.pool.query(query, [
-            empleado.id.value,
             empleado.nombre.value,
             empleado.direccion.value,
             empleado.telefono.value
@@ -96,7 +95,9 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
     }
 
     async delete(empleadoId: EmpleadoId): Promise<void> {
-        const query = 'DELETE FROM empleados WHERE id = ?';
+        const query = `UPDATE empleados SET
+            es_activo = false
+            WHERE id = ?`;
 
         await this.pool.query(query, [empleadoId.value]);
     }

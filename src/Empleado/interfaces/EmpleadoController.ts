@@ -14,10 +14,9 @@ export class EmpleadoController {
 
     async createEmpleado(req: Request, res: Response): Promise<void> {
         try {
-            const { id, nombre, direccion, telefono } = req.body;
+            const { nombre, direccion, telefono } = req.body;
 
             await this.empleadoCreate.run(
-                id,
                 nombre,
                 direccion,
                 telefono,

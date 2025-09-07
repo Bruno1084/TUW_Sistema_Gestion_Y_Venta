@@ -12,16 +12,14 @@ export class ClienteCreate {
     constructor(private repository: ClienteRepository) {}
 
     async run(
-        id: number,
         nombre: string,
         direccion: string,
         telefono: string,
         fechaCreacion: Date,
         fechaModificacion: Date,
-        esActivo: boolean
     ): Promise<void> {
         const cliente = new Cliente(
-            new ClienteId(id),
+            new ClienteId(0),
             new ClienteNombre(nombre),
             new ClienteDireccion(direccion),
             new ClienteTelefono(telefono),

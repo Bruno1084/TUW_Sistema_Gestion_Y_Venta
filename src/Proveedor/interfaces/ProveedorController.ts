@@ -4,22 +4,17 @@ import { ProveedorDelete } from "../application/ProveedorDelete";
 import { ProveedorGetAll } from "../application/ProveedorGetAll";
 import { ProveedorGetOneById } from "../application/ProveedorGetOneById";
 import { ProveedorUpdate } from "../application/ProveedorUpdate";
-import type { ProveedorRepository } from "../domain/ProveedorRepository";
+
+type ProveedorUseCases = {
+    create: ProveedorCreate;
+    getAll: ProveedorGetAll;
+    getOneById: ProveedorGetOneById;
+    update: ProveedorUpdate;
+    delete: ProveedorDelete;
+}
 
 export class ProveedorController {
-    private proveedorCreate: ProveedorCreate;
-    private proveedorGetAll: ProveedorGetAll;
-    private proveedorGetOneById: ProveedorGetOneById;
-    private proveedorUpdate: ProveedorUpdate;
-    private proveedorDelete: ProveedorDelete;
-
-    constructor(private repository: ProveedorRepository) {
-        this.proveedorCreate = new ProveedorCreate(repository);
-        this.proveedorGetAll = new ProveedorGetAll(repository);
-        this.proveedorGetOneById = new ProveedorGetOneById(repository);
-        this.proveedorUpdate = new ProveedorUpdate(repository);
-        this.proveedorDelete = new ProveedorDelete(repository);
-    }
+    constructor(private useCases: ProveedorUseCases) { }
 
     async createProveedor(req: Request, res: Response): Promise<void> {
         try {
@@ -29,7 +24,7 @@ export class ProveedorController {
                 telefono,
             } = req.body;
 
-            await this.proveedorCreate.run(
+            await this.useCases.create.run(
                 nombre,
                 direccion,
                 telefono,
@@ -45,8 +40,8 @@ export class ProveedorController {
 
     async getAllProveedor(req: Request, res: Response): Promise<void> {
         try {
-            const productos = await this.proveedorGetAll.run();
-            res.status(200).json(productos);
+            const proveedores = await this.useCases.getAll.run();
+            res.status(200).json(proveedores);
         } catch (err: any) {
             res.status(500).json({ error: err.message });
         }
@@ -55,7 +50,7 @@ export class ProveedorController {
     async getOneByIdProveedor(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
-            const proveedor = await this.proveedorGetOneById.run(Number(id));
+            const proveedor = await this.useCases.getOneById.run(Number(id));
 
             if (!proveedor) {
                 res.status(404).json({ error: "Producto no encontrado" });
@@ -78,7 +73,7 @@ export class ProveedorController {
                 telefono,
             } = req.body;
 
-            this.proveedorUpdate.run(
+            this.useCases.update.run(
                 Number(id),
                 {
                     nombre,
@@ -97,7 +92,7 @@ export class ProveedorController {
         try {
             const { id } = req.params;
 
-            await this.proveedorDelete.run(Number(id));
+            await this.useCases.delete.run(Number(id));
 
             res.status(200).json({ message: 'Proveedor eliminado correctamente' });
         } catch (err: any) {
