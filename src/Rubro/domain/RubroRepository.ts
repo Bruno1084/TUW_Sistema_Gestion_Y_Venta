@@ -6,5 +6,5 @@ export interface RubroRepository {
     getAll(): Promise<Rubro[]>;
     getOneById(rubroId: RubroId): Promise<Rubro | null>;
     update(rubro: Rubro): Promise<void>;
-    delete(rubroId: RubroId): Promise<null>;
+    delete(rubroId: RubroId): Promise<void>;
 }

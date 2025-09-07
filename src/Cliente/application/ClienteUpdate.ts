@@ -8,15 +8,15 @@ import { ClienteFechaModificacion } from "../domain/ClienteFechaModificacion";
 import { ClienteEsActivo } from "../domain/ClienteEsActivo";
 
 export class ClienteUpdate {
-    constructor(private repository: ClienteRepository) {}
+    constructor(private repository: ClienteRepository) { }
 
     async run(
         id: number,
         updates: {
             nombre?: string,
             direccion?: string,
-            telefono?: string, 
-        }       
+            telefono?: string,
+        }
     ): Promise<void> {
         const clienteExistente = await this.repository.getOneById(new ClienteId(id));
         if (!clienteExistente) throw new Error("Producto no encontrado");

@@ -11,12 +11,12 @@ import { ClienteEsActivo } from "../domain/ClienteEsActivo";
 
 type MySQLCliente = {
     id: number;
-    nombre: string,
-    direccion: string,
-    telefono: string,
-    fecha_creacion: Date,
-    fecha_modificacion: Date,
-    es_activo: boolean
+    nombre: string;
+    direccion: string;
+    telefono: string;
+    fecha_creacion: Date;
+    fecha_modificacion: Date;
+    es_activo: boolean;
 }
 
 export class MySQLClienteRepository implements ClienteRepository {

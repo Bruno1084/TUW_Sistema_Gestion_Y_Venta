@@ -39,10 +39,31 @@ import { EmpleadoDelete } from "./Empleado/application/EmpleadoDelete";
 import { EmpleadoController } from "./Empleado/interfaces/EmpleadoController";
 import { EmpleadoGetOneById } from "./Empleado/application/EmpleadoGetOneById";
 import { empleadoRouter } from "./Empleado/interfaces/EmpleadoRouter";
+import { MySQLRubroRepository } from "./Rubro/infrastructure/MySQLRubroRepository";
+import { RubroCreate } from "./Rubro/application/RubroCreate";
+import { RubroGetAll } from "./Rubro/application/RubroGetAll";
+import { RubroGetOneById } from "./Rubro/application/RubroGetOneById";
+import { RubroUpdate } from "./Rubro/application/RubroUpdate";
+import { RubroDelete } from "./Rubro/application/RubroDelete";
+import { RubroController } from "./Rubro/interfaces/RubroController";
+import { rubroRouter } from "./Rubro/interfaces/RubroRouter";
 
 const app = express();
 app.use(express.json());
 const pool = createPoolMySQL();
+
+// Repositorio Rubro
+const rubroRepo = new MySQLRubroRepository(pool);
+
+const rubroUseCases = {
+    create: new RubroCreate(rubroRepo),
+    getAll: new RubroGetAll(rubroRepo),
+    getOneById: new RubroGetOneById(rubroRepo),
+    update: new RubroUpdate(rubroRepo),
+    delete: new RubroDelete(rubroRepo)
+};
+
+const rubroController = new RubroController(rubroUseCases);
 
 // Repositorio Empleado
 const empleadoRepo = new MySQLEmpleadoRepository(pool);
@@ -107,6 +128,9 @@ const productoUseCases = {
 };
 
 const productoController = new ProductoController(productoUseCases);
+
+// Routes - Rubro
+app.use('/rubros', rubroRouter(rubroController));
 
 // Routes - Empleado
 app.use('/empleados', empleadoRouter(empleadoController));
