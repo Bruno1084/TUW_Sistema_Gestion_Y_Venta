@@ -1,5 +1,5 @@
-import { Empleado } from "../domain/Empleado";
 import type { EmpleadoRepository } from "../domain/EmpleadoRepository";
+import { Empleado } from "../domain/Empleado";
 import { EmpleadoId } from "../domain/EmpleadoId";
 import { EmpleadoNombre } from "../domain/EmpleadoNombre";
 import { EmpleadoDireccion } from "../domain/EmpleadoDireccion";
@@ -17,7 +17,6 @@ export class EmpleadoCreate {
         telefono: string,
         fechaCreacion: Date,
         fechaModificacion: Date,
-        esActivo: boolean
     ): Promise<void> {
         const empleado = new Empleado(
             new EmpleadoId(0),
@@ -26,7 +25,7 @@ export class EmpleadoCreate {
             new EmpleadoTelefono(telefono),
             new EmpleadoFechaCreacion(fechaCreacion),
             new EmpleadoFechaModificacion(fechaModificacion),
-            new EmpleadoEsActivo(esActivo)
+            new EmpleadoEsActivo(true)
         );
         return this.repository.create(empleado);
     }

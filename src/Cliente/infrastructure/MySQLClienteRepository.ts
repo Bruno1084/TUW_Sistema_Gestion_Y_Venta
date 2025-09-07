@@ -1,8 +1,7 @@
-import type { Pool } from "mysql2/promise";
+import type { Pool, RowDataPacket } from "mysql2/promise";
 import type { ClienteRepository } from "../domain/ClienteRepository";
 import { Cliente } from "../domain/Cliente";
 import { ClienteId } from "../domain/ClienteId";
-import type { RowDataPacket } from "mysql2";
 import { ClienteNombre } from "../domain/ClienteNombre";
 import { ClienteDireccion } from "../domain/ClienteDireccion";
 import { ClienteTelefono } from "../domain/ClienteTelefono";
@@ -11,7 +10,13 @@ import { ClienteFechaModificacion } from "../domain/ClienteFechaModificacion";
 import { ClienteEsActivo } from "../domain/ClienteEsActivo";
 
 type MySQLCliente = {
-
+    id: number;
+    nombre: string,
+    direccion: string,
+    telefono: string,
+    fecha_creacion: Date,
+    fecha_modificacion: Date,
+    es_activo: boolean
 }
 
 export class MySQLClienteRepository implements ClienteRepository {

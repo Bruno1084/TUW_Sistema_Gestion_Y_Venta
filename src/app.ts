@@ -31,10 +31,31 @@ import { MarcaUpdate } from "./Marca/application/MarcaUpdate";
 import { MarcaDelete } from "./Marca/application/MarcaDelete";
 import { MarcaController } from "./Marca/interfaces/MarcaController";
 import { marcaRouter } from "./Marca/interfaces/MarcaRouter";
+import { MySQLEmpleadoRepository } from "./Empleado/infrastructure/MySQLEmpleadoRepository";
+import { EmpleadoCreate } from "./Empleado/application/EmpleadoCreate";
+import { EmpleadoGetAll } from "./Empleado/application/EmpleadoGetAll";
+import { EmpleadoUpdate } from "./Empleado/application/EmpleadoUpdate";
+import { EmpleadoDelete } from "./Empleado/application/EmpleadoDelete";
+import { EmpleadoController } from "./Empleado/interfaces/EmpleadoController";
+import { EmpleadoGetOneById } from "./Empleado/application/EmpleadoGetOneById";
+import { empleadoRouter } from "./Empleado/interfaces/EmpleadoRouter";
 
 const app = express();
 app.use(express.json());
 const pool = createPoolMySQL();
+
+// Repositorio Empleado
+const empleadoRepo = new MySQLEmpleadoRepository(pool);
+
+const empleadoUseCases = {
+    create: new EmpleadoCreate(empleadoRepo),
+    getAll: new EmpleadoGetAll(empleadoRepo),
+    getOneById: new EmpleadoGetOneById(empleadoRepo),
+    update: new EmpleadoUpdate(empleadoRepo),
+    delete: new EmpleadoDelete(empleadoRepo)
+};
+
+const empleadoController = new EmpleadoController(empleadoUseCases);
 
 // Repositorio Marca
 const marcaRepo = new MySQLMarcaRepository(pool);
@@ -86,6 +107,9 @@ const productoUseCases = {
 };
 
 const productoController = new ProductoController(productoUseCases);
+
+// Routes - Empleado
+app.use('/empleados', empleadoRouter(empleadoController));
 
 // Routes - Marca
 app.use("/marcas", marcaRouter(marcaController));

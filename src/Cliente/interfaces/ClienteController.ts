@@ -72,14 +72,11 @@ export class ClienteController {
                 telefono
             } = req.body;
 
-            await this.useCases.update.run(
-                Number(id),
-                {
-                    nombre,
-                    direccion,
-                    telefono
-                }
-            );
+            await this.useCases.update.run(Number(id), {
+                nombre,
+                direccion,
+                telefono
+            });
 
             res.status(201).json({ message: "Cliente actualizado correctamente" });
         } catch (err: any) {
