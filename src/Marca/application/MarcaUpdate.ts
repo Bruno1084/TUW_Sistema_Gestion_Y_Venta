@@ -20,7 +20,8 @@ export class MarcaUpdate {
             marcaExistente.id,
             updates.nombre? new MarcaNombre(updates.nombre) : marcaExistente.nombre,
             marcaExistente.fechaCreacion,
-            new MarcaFechaModificacion(new Date())
+            new MarcaFechaModificacion(new Date()),
+            marcaExistente.esActivo
         );
 
         await this.repository.update(marcaActualizada);

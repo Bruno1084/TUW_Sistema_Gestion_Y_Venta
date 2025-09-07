@@ -43,7 +43,7 @@ export class ClienteController {
             const clientes = await this.useCases.getAll.run();
             res.status(200).json(clientes);
         } catch (err: any) {
-            res.status(201).json({ error: err.message });
+            res.status(500).json({ error: err.message });
         }
     }
 
@@ -81,7 +81,7 @@ export class ClienteController {
                 }
             );
 
-            res.status(200).json({ message: "Cliente actualizado correctamente" });
+            res.status(201).json({ message: "Cliente actualizado correctamente" });
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
