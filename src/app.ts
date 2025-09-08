@@ -29,7 +29,7 @@ app.use('/marcas', initMarcaModule(pool));
 app.use('/proveedores', initProveedorModule(pool));
 app.use('/rubros', initRubroModule(pool));
 app.use('/productos', initProductoModule(pool, proveedorRepo, marcaRepo, rubroRepo));
-app.use('/compras', initCompraModule(pool, proveedorRepo, empleadoRepo))
+app.use('/compras', initCompraModule(pool));
 // app.use('/ventas', initVentaModule(pool));
 
 

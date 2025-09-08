@@ -7,16 +7,7 @@ import { CompraGetOneById } from "./application/CompraGetOneById";
 import { CompraController } from "./interfaces/CompraController";
 import { compraRouter } from "./interfaces/CompraRouter";
 
-// Dependencias
-import type { ProveedorRepository } from "../Proveedor/domain/ProveedorRepository";
-import type { EmpleadoRepository } from "../Empleado/domain/EmpleadoRepository";
-
-
-export function initCompraModule(
-    pool: Pool,
-    proveedorRepo: ProveedorRepository,
-    empleadoRepo: EmpleadoRepository
-): Router {
+export function initCompraModule(pool: Pool): Router {
     const repo = new MySQLCompraRepository(pool);
 
     const useCases = {

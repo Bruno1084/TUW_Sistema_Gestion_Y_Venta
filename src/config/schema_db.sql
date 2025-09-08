@@ -20,6 +20,7 @@ create table repartidores(
 
 create table cajeros(
 	id_empleado int not null,
+    contrasenia varchar(20) not null,
     primary key(id_empleado),
     foreign key(id_empleado) references empleados(id)
 );
