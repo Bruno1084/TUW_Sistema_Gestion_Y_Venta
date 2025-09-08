@@ -9,7 +9,7 @@ export class CajeroLogin {
         const cajero = await this.repository.getOneByNombre(new EmpleadoNombre(nombre));
         if (!cajero) throw new Error("Cajero no encontrado");
 
-        if (!cajero.constrasenia.comparar(contrasenia)) {
+        if (!cajero.contrasenia.comparar(contrasenia)) {
             throw new Error("Contraseña inválida");
         }
 

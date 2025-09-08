@@ -9,7 +9,7 @@ import { CajeroContrasenia } from "./CajeroContrasenia";
 import { Empleado } from "../../Empleado/domain/Empleado";
 
 export class Cajero extends Empleado {
-    constrasenia: CajeroContrasenia;
+    contrasenia: CajeroContrasenia;
 
     constructor(
         id: EmpleadoId,
@@ -23,6 +23,6 @@ export class Cajero extends Empleado {
     ) {
         super(id, nombre, direccion, telefono, fechaCreacion, fechaModificacion, esActivo);
 
-        this.constrasenia = contrasenia;
+        this.contrasenia = contrasenia;
     }
 }

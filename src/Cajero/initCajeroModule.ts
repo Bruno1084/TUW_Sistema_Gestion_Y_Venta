@@ -6,7 +6,7 @@ import { CajeroGetOneByNombre } from "./application/CajeroGetOneByNombre";
 import { CajeroController } from "./interfaces/CajeroController";
 import { cajeroRouter } from "./interfaces/CajeroRouter";
 
-export function initModuleCajero(pool: Pool) {
+export function initCajeroModule(pool: Pool) {
     const repo = new MySQLCajeroRepository(pool);
 
     const useCases = {

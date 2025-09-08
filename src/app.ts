@@ -11,6 +11,8 @@ import { MySQLProveedorRepository } from "./Proveedor/infrastructure/MySQLProvee
 import { MySQLMarcaRepository } from "./Marca/infrastructure/MySQLMarcaRepository";
 import { MySQLRubroRepository } from "./Rubro/infrastructure/MySQLRubroRepository";
 import { MySQLEmpleadoRepository } from "./Empleado/infrastructure/MySQLEmpleadoRepository";
+import { initCajeroModule } from "./Cajero/initCajeroModule";
+import { initAuthModule } from "./Auth/initAuthModule";
 
 const app = express();
 app.use(express.json());
@@ -23,8 +25,10 @@ const rubroRepo = new MySQLRubroRepository(pool);
 const empleadoRepo = new MySQLEmpleadoRepository(pool);
 
 // Routers
+app.use('/auth', initAuthModule(pool));
 app.use('/clientes', initClienteModule(pool));
 app.use('/empleados', initEmpleadoModule(pool));
+app.use('/cajeros', initCajeroModule(pool));
 app.use('/marcas', initMarcaModule(pool));
 app.use('/proveedores', initProveedorModule(pool));
 app.use('/rubros', initRubroModule(pool));

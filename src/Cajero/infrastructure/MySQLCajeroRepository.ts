@@ -52,7 +52,7 @@ export class MySQLCajeroRepository implements CajeroRepository {
             // Insertar cajero
             await conn.query(`ÌNSERT INTO cajeros (id_empleado, contrasenia) VALUES(?, ?)`, [
                 empleadoId,
-                cajero.constrasenia.value
+                cajero.contrasenia.value
             ]);
 
             await conn.commit();
