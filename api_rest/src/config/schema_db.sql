@@ -66,7 +66,6 @@ create table rubros(
 create table productos(
 	codigo_barra varchar(50) not null,
     id_proveedor int not null,
-    nombre varchar(50) not null,
     descripcion varchar(255) not null,
     id_marca int not null,
     id_rubro int not null,
