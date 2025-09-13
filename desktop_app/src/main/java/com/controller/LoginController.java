@@ -1,7 +1,6 @@
 package com.controller;
 
 import javafx.fxml.FXML;
-import com.model.SessionManager;
 import com.service.AuthService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -23,15 +22,15 @@ public class LoginController {
 
         try {
             if (!inputNombre.getText().isBlank() && !inputContrasenia.getText().isBlank()) {
-                String token = authService.login(inputNombre.getText(), inputContrasenia.getText());
-                SessionManager.setToken(token);
+//                String token = authService.login(inputNombre.getText(), inputContrasenia.getText());
+//                SessionManager.setToken(token);
 
-                // Redireccionar a Dashboard
+                // Redireccionar a Main
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/dashboard.fxml"));
                 Parent root = fxmlLoader.load();
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root));
-                stage.setTitle("Dashboard");
+                stage.setTitle("Sistema Gestión y Venta");
                 stage.show();
 
                 Stage currentStage = (Stage) btnIniciarSesion.getScene().getWindow();
