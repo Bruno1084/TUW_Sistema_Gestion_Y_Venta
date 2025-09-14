@@ -6,7 +6,6 @@ import { ProveedorId } from "../../Proveedor/domain/ProveedorId";
 import { CompraPrecioTotal } from "../domain/CompraPrecioTotal";
 import { CompraFechaCreacion } from "../domain/CompraFechaCreacion";
 import { EmpleadoId } from "../../Empleado/domain/EmpleadoId";
-import { ClienteId } from "../../Cliente/domain/ClienteId";
 
 type MySQLCompra = {
     id: number,
