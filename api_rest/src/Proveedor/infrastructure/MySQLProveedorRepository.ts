@@ -1,4 +1,4 @@
-import type { Pool, RowDataPacket } from "mysql2/promise";
+import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import type { ProveedorRepository } from "../domain/ProveedorRepository";
 import { Proveedor } from "../domain/Proveedor";
 import { ProveedorId } from "../domain/ProveedorId";
@@ -26,13 +26,13 @@ export class MySQLProveedorRepository implements ProveedorRepository {
         this.pool = pool;
     }
 
-    async create(proveedor: Proveedor): Promise<void> {
+    async create(proveedor: Proveedor): Promise<Proveedor> {
         const query = `
         INSERT INTO proveedores(nombre, direccion, telefono, fechaCreacion, fechaModificacion, es_activo)
         VALUES(?, ?, ?, ?, ?, ?)
         `;
 
-        await this.pool.query(query, [
+        const [result] = await this.pool.query<ResultSetHeader>(query, [
             proveedor.nombre.value,
             proveedor.direccion.value,
             proveedor.telefono.value,
@@ -40,6 +40,9 @@ export class MySQLProveedorRepository implements ProveedorRepository {
             proveedor.fechaModificacion.value,
             proveedor.esActivo.value
         ]);
+
+        const proveedorId = result.insertId;
+        return this.getOneById(new ProveedorId(proveedorId)) as Promise<Proveedor>;
     }
 
     async getAll(): Promise<Proveedor[]> {
@@ -81,7 +84,7 @@ export class MySQLProveedorRepository implements ProveedorRepository {
         );
     }
 
-    async update(proveedor: Proveedor): Promise<void> {
+    async update(proveedor: Proveedor): Promise<Proveedor> {
         const query = `
             UPDATE proveedores SET
             nombre = ?,
@@ -102,6 +105,8 @@ export class MySQLProveedorRepository implements ProveedorRepository {
             proveedor.fechaModificacion.value,
             proveedor.esActivo.value
         ]);
+
+        return this.getOneById(proveedor.id) as Promise<Proveedor>;
     }
 
     async delete(proveedorId: ProveedorId): Promise<void> {

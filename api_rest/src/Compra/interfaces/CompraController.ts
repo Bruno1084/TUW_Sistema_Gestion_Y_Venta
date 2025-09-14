@@ -20,14 +20,14 @@ export class CompraController {
                 empleadoId
             } = req.body;
 
-            await this.useCases.create.run(
+            const compraCreada = await this.useCases.create.run(
                 precioTotal,
                 new Date(),
                 proveedorId,
                 empleadoId
             );
 
-            res.status(201).json({ message: "Compra creada correctamente" });
+            res.status(201).json(compraCreada);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

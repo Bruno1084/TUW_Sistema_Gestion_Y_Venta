@@ -28,7 +28,7 @@ export class ProductoCreate {
         proveedorId: ProveedorId,
         marcaId: MarcaId,
         rubroId: RubroId,
-    ): Promise<void> {
+    ): Promise<Producto> {
         const producto = new Producto(
             new ProductoCodigoBarra(codigoBarra),
             new ProductoDescripcion(descripcion),
@@ -44,6 +44,6 @@ export class ProductoCreate {
             new ProductoEsActivo(true)
         );
 
-        await this.repository.create(producto);
+        return await this.repository.create(producto);
     }
 }

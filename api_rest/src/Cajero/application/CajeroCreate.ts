@@ -19,7 +19,7 @@ export class CajeroCreate {
         fechaCreacion: Date,
         fechaModificacion: Date,
         contrasenia: string
-    ): Promise<void> {
+    ): Promise<Cajero> {
         const cajero = new Cajero(
             new EmpleadoId(0),
             new EmpleadoNombre(nombre),

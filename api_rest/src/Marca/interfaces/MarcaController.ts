@@ -20,9 +20,9 @@ export class MarcaController {
         try {
             const { nombre } = req.body;
 
-            await this.useCases.create.run(nombre);
+            const marcaCreada = await this.useCases.create.run(nombre);
 
-            res.status(201).json({ message: "Cliente creado correctamente" });
+            res.status(201).json(marcaCreada);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
 
@@ -60,9 +60,9 @@ export class MarcaController {
             const { id } = req.params;
             const { nombre } = req.body;
 
-            this.useCases.update.run(Number(id), { nombre });
+            const marcaActualizada = await this.useCases.update.run(Number(id), { nombre });
 
-            res.status(201).json({ message: "Marca actualizada correctamente" });
+            res.status(201).json(marcaActualizada);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

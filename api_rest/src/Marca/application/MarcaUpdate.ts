@@ -12,7 +12,7 @@ export class MarcaUpdate {
         updates: {
             nombre?: string
         }
-    ): Promise<void> {
+    ): Promise<Marca> {
         const marcaExistente = await this.repository.getOneById(new MarcaId(id));
         if (!marcaExistente) throw new Error("Marca no encontrada");
 
@@ -24,6 +24,6 @@ export class MarcaUpdate {
             marcaExistente.esActivo
         );
 
-        await this.repository.update(marcaActualizada);
+        return await this.repository.update(marcaActualizada);
     }
 }

@@ -24,7 +24,7 @@ export class ClienteController {
                 telefono
             } = req.body;
 
-            await this.useCases.create.run(
+            const clienteCreado = await this.useCases.create.run(
                 nombre,
                 direccion,
                 telefono,
@@ -32,7 +32,7 @@ export class ClienteController {
                 new Date(),
             );
 
-            res.status(201).json({ message: "Cliente creado correctamente" });
+            res.status(201).json(clienteCreado);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
@@ -72,13 +72,13 @@ export class ClienteController {
                 telefono
             } = req.body;
 
-            await this.useCases.update.run(Number(id), {
+            const clienteActualizado = await this.useCases.update.run(Number(id), {
                 nombre,
                 direccion,
                 telefono
             });
 
-            res.status(201).json({ message: "Cliente actualizado correctamente" });
+            res.status(201).json(clienteActualizado);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

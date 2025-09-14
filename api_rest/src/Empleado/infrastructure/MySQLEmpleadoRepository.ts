@@ -1,4 +1,4 @@
-import type { Pool, RowDataPacket } from "mysql2/promise";
+import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import type { EmpleadoRepository } from "../domain/EmpleadoRepository";
 import { Empleado } from "../domain/Empleado";
 import { EmpleadoId } from "../domain/EmpleadoId";
@@ -26,13 +26,13 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
         this.pool = pool;
     }
 
-    async create(empleado: Empleado): Promise<void> {
+    async create(empleado: Empleado): Promise<Empleado> {
         const query = `
             INSERT INTO empleados (nombre, direccion, telefono, fecha_creacion, fecha_modificacion, es_activo)
             VALUES (?, ?, ?, ?, ?, ?)
-    `;
+        `;
 
-        await this.pool.query(query, [
+        const [result] = await this.pool.query<ResultSetHeader>(query, [
             empleado.nombre.value,
             empleado.direccion.value,
             empleado.telefono.value,
@@ -40,6 +40,9 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
             empleado.fechaModificacion.value,
             empleado.esActivo.value
         ]);
+
+        const empleadoId = result.insertId;
+        return this.getOneById(new EmpleadoId(empleadoId)) as Promise<Empleado>;
     }
 
     async getAll(): Promise<Empleado[]> {
@@ -82,7 +85,7 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
         );
     }
 
-    async update(empleado: Empleado): Promise<void> {
+    async update(empleado: Empleado): Promise<Empleado> {
         const query = `UPDATE empleados SET 
             nombre = ?,
             direccion = ?,
@@ -99,6 +102,8 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
             empleado.fechaModificacion.value,
             empleado.id.value
         ]);
+
+        return this.getOneById(empleado.id) as Promise<Empleado>;
     }
 
     async delete(empleadoId: EmpleadoId): Promise<void> {

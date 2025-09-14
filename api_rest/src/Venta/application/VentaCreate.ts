@@ -14,7 +14,7 @@ export class VentaCreate {
         empleadoId: number,
         precioTotal: number,
         fechaCreacion: Date
-    ): Promise<void> {
+    ): Promise<Venta> {
         const venta = new Venta(
             new VentaId(0),
             new ClienteId(clienteId),
@@ -23,6 +23,6 @@ export class VentaCreate {
             new VentaFechaCreacion(fechaCreacion)
         );
 
-        await this.repository.create(venta);
+        return await this.repository.create(venta);
     }
 }

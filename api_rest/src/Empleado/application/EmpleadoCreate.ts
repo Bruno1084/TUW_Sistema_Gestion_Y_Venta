@@ -17,7 +17,7 @@ export class EmpleadoCreate {
         telefono: string,
         fechaCreacion: Date,
         fechaModificacion: Date,
-    ): Promise<void> {
+    ): Promise<Empleado> {
         const empleado = new Empleado(
             new EmpleadoId(0),
             new EmpleadoNombre(nombre),

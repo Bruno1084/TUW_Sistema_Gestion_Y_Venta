@@ -14,7 +14,7 @@ export class CompraCreate {
         fechaCreacion: Date,
         proveedorId: ProveedorId,
         empleadoId: EmpleadoId
-    ): Promise<void> {
+    ): Promise<Compra> {
         const compra = new Compra(
             new CompraId(0),
             new CompraPrecioTotal(precioTotal),
@@ -23,6 +23,6 @@ export class CompraCreate {
             empleadoId
         );
 
-        await this.repository.create(compra);
+        return await this.repository.create(compra);
     }
 }

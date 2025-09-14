@@ -16,7 +16,7 @@ export class EmpleadoUpdate {
             direccion?: string,
             telefono?: string
         }
-    ): Promise<void> {
+    ): Promise<Empleado> {
         const empleadoExistente = await this.repository.getOneById(new EmpleadoId(id));
         if (!empleadoExistente) throw new Error("Empleado no encontrado");
 
@@ -31,6 +31,6 @@ export class EmpleadoUpdate {
             empleadoExistente.esActivo
         );
 
-        await this.repository.update(empleadoActualizado);
+        return await this.repository.update(empleadoActualizado);
     }
 }

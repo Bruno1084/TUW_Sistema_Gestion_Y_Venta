@@ -11,7 +11,7 @@ export class RubroCreate {
 
     async run(
         nombre: string
-    ): Promise<void> {
+    ): Promise<Rubro> {
         const rubro = new Rubro(
             new RubroId(0),
             new RubroNombre(nombre),
@@ -20,6 +20,6 @@ export class RubroCreate {
             new RubroEsActivo(true)
         );
 
-        await this.repository.create(rubro);
+        return await this.repository.create(rubro);
     }
 }

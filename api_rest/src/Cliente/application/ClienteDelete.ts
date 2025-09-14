@@ -5,6 +5,6 @@ export class ClienteDelete {
     constructor(private repository: ClienteRepository) {}
 
     async run(clienteId: number): Promise<void> {
-        await this.repository.delete(new ClienteId(clienteId));
+        return await this.repository.delete(new ClienteId(clienteId));
     }
 }

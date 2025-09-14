@@ -1,4 +1,4 @@
-import type { Pool, RowDataPacket } from "mysql2/promise";
+import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import type { RubroRepository } from "../domain/RubroRepository";
 import { RubroId } from "../domain/RubroId";
 import { Rubro } from "../domain/Rubro";
@@ -22,18 +22,21 @@ export class MySQLRubroRepository implements RubroRepository {
         this.pool = pool;
     }
 
-    async create(rubro: Rubro): Promise<void> {
+    async create(rubro: Rubro): Promise<Rubro> {
         const query = `
             INSERT INTO rubros(nombre, fecha_creacion, fecha_modificacion, es_activo)
             VALUES (?, ?, ?, ?)
         `;
 
-        await this.pool.query(query, [
+        const [result] = await this.pool.query<ResultSetHeader>(query, [
             rubro.nombre.value,
             rubro.fechaCreación.value,
             rubro.fechaModificacion.value,
             rubro.esActivo.value
         ]);
+
+        const rubroId = result.insertId;
+        return this.getOneById(new RubroId(rubroId)) as Promise<Rubro>;
     }
 
     async getAll(): Promise<Rubro[]> {
@@ -72,7 +75,7 @@ export class MySQLRubroRepository implements RubroRepository {
         );
     }
 
-    async update(rubro: Rubro): Promise<void> {
+    async update(rubro: Rubro): Promise<Rubro> {
         const query = `
             UPDATE rubros SET
             nombre = ?,
@@ -87,6 +90,8 @@ export class MySQLRubroRepository implements RubroRepository {
             rubro.fechaModificacion.value,
             rubro.id.value
         ]);
+
+        return this.getOneById(rubro.id) as Promise<Rubro>;
     }
 
     async delete(rubroId: RubroId): Promise<void> {

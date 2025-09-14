@@ -1,5 +1,5 @@
 import type { ProductoRepository } from "../domain/ProductoRepository";
-import type { Pool, RowDataPacket } from "mysql2/promise";
+import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import { Producto } from "../domain/Producto";
 import { ProductoCodigoBarra } from "../domain/ProductoCodigoBarra";
 import { ProductoDescripcion } from "../domain/ProductoDescripcion";
@@ -36,13 +36,13 @@ export class MySQLProductoRepository implements ProductoRepository {
         this.pool = pool;
     }
 
-    async create(producto: Producto): Promise<void> {
+    async create(producto: Producto): Promise<Producto> {
         const query = `
             INSERT INTO productos(codigo_barra, descripcion, id_proveedor, id_marca, id_rubro, precio_compra, precio_venta, stock, img_uri, fecha_creacion, fecha_modificacion, es_activo)
             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
-        await this.pool.query(query, [
+        await this.pool.query<ResultSetHeader>(query, [
             producto.codigoBarra.value,
             producto.descripcion.value,
             producto.proveedorId.value,
@@ -56,6 +56,8 @@ export class MySQLProductoRepository implements ProductoRepository {
             producto.fechaModificacion.value,
             producto.esActivo.value
         ]);
+
+        return this.getOneById(producto.codigoBarra) as Promise<Producto>;
     }
 
     async getAll(): Promise<Producto[]> {
@@ -108,7 +110,7 @@ export class MySQLProductoRepository implements ProductoRepository {
         );
     }
 
-    async update(producto: Producto): Promise<void> {
+    async update(producto: Producto): Promise<Producto> {
         const query = `
             UPDATE productos SET
             descripcion = ?,
@@ -137,6 +139,8 @@ export class MySQLProductoRepository implements ProductoRepository {
             producto.rubroId.value,
             producto.codigoBarra.value
         ]);
+
+        return this.getOneById(producto.codigoBarra) as Promise<Producto>;
     }
 
     async delete(productocodigoBarra: ProductoCodigoBarra): Promise<void> {

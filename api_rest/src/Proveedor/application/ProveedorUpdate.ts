@@ -18,7 +18,7 @@ export class ProveedorUpdate {
             telefono?: string,
             esActivo?: boolean
         }
-    ): Promise<void> {
+    ): Promise<Proveedor> {
         const proveedorExistente = await this.repository.getOneById(new ProveedorId(id));
         if (!proveedorExistente) throw new Error("Proveedor no encontrado");
 
@@ -32,6 +32,6 @@ export class ProveedorUpdate {
             updates.esActivo ? new ProveedorEsActivo(updates.esActivo) : proveedorExistente.esActivo
         );
 
-        await this.repository.update(proveedorActualizado);
+        return await this.repository.update(proveedorActualizado);
     }
 }

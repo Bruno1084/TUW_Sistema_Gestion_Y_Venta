@@ -1,4 +1,4 @@
-import type { Pool, RowDataPacket } from "mysql2/promise"
+import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise"
 import type { MarcaRepository } from "../domain/MarcaRepository"
 import { Marca } from "../domain/Marca";
 import { MarcaId } from "../domain/MarcaId";
@@ -22,18 +22,21 @@ export class MySQLMarcaRepository implements MarcaRepository {
         this.pool = pool;
     }
 
-    async create(marca: Marca): Promise<void> {
+    async create(marca: Marca): Promise<Marca> {
         const query = `
             INSERT INTO marcas(nombre, fecha_creacion, fecha_modificacion, es_activo)
             VALUES (?, ?, ?, ?)
         `;
 
-        await this.pool.query(query, [
+        const [result] = await this.pool.query<ResultSetHeader>(query, [
             marca.nombre.value,
             marca.fechaCreacion.value,
             marca.fechaModificacion.value,
             marca.esActivo.value
         ]);
+
+        const marcaId = result.insertId;
+        return this.getOneById(new MarcaId(marcaId)) as Promise<Marca>;
     }
 
     async getAll(): Promise<Marca[]> {
@@ -72,7 +75,7 @@ export class MySQLMarcaRepository implements MarcaRepository {
         );
     }
 
-    async update(marca: Marca): Promise<void> {
+    async update(marca: Marca): Promise<Marca> {
         const query = `
             UPDATES marcas SET
             nombre = ?,
@@ -87,6 +90,8 @@ export class MySQLMarcaRepository implements MarcaRepository {
             marca.fechaModificacion.value,
             marca.esActivo.value
         ]);
+
+        return this.getOneById(marca.id) as Promise<Marca>;
     }
 
     async delete(marcaId: MarcaId): Promise<void> {

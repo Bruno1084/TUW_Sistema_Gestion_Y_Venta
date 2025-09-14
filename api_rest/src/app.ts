@@ -26,20 +26,20 @@ const rubroRepo = new MySQLRubroRepository(pool);
 // const empleadoRepo = new MySQLEmpleadoRepository(pool);
 
 // Routers
-app.use('api/auth', initAuthModule(pool));
-app.use('api/clientes', initClienteModule(pool));
-app.use('api/empleados', initEmpleadoModule(pool));
-app.use('api/cajeros', initCajeroModule(pool));
-app.use('api/marcas', initMarcaModule(pool));
-app.use('api/proveedores', initProveedorModule(pool));
-app.use('api/rubros', initRubroModule(pool));
-app.use('api/productos', initProductoModule(pool, proveedorRepo, marcaRepo, rubroRepo));
-app.use('api/compras', initCompraModule(pool));
-app.use('api/ventas', initVentaModule(pool));
+app.use('/api/auth', initAuthModule(pool));
+app.use('/api/clientes', initClienteModule(pool));
+app.use('/api/empleados', initEmpleadoModule(pool));
+app.use('/api/cajeros', initCajeroModule(pool));
+app.use('/api/marcas', initMarcaModule(pool));
+app.use('/api/proveedores', initProveedorModule(pool));
+app.use('/api/rubros', initRubroModule(pool));
+app.use('/api/productos', initProductoModule(pool, proveedorRepo, marcaRepo, rubroRepo));
+app.use('/api/compras', initCompraModule(pool));
+app.use('/api/ventas', initVentaModule(pool));
 
 
 // Ping test
-app.get("/ping", (req: Request, res: Response) => {
+app.get("/api/ping", (req: Request, res: Response) => {
     res.status(200).send("Pong");
 });
 

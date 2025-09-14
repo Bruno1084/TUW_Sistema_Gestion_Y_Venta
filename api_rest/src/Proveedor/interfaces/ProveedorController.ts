@@ -24,7 +24,7 @@ export class ProveedorController {
                 telefono,
             } = req.body;
 
-            await this.useCases.create.run(
+            const proveedorCreado = await this.useCases.create.run(
                 nombre,
                 direccion,
                 telefono,
@@ -32,7 +32,7 @@ export class ProveedorController {
                 new Date()
             );
 
-            res.status(201).json({ message: "Proveedor creado correctamente" });
+            res.status(201).json(proveedorCreado);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
@@ -73,7 +73,7 @@ export class ProveedorController {
                 telefono,
             } = req.body;
 
-            this.useCases.update.run(
+            const proveedorActualizado = await this.useCases.update.run(
                 Number(id),
                 {
                     nombre,
@@ -82,7 +82,7 @@ export class ProveedorController {
                 }
             );
 
-            res.status(200).json({ message: "Proveedor actualizado correctamente" });
+            res.status(200).json(proveedorActualizado);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

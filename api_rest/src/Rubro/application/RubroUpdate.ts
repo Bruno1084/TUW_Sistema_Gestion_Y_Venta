@@ -12,7 +12,7 @@ export class RubroUpdate {
         updates: {
             nombre: string
         }
-    ): Promise<void> {
+    ): Promise<Rubro> {
         const rubroExistente = await this.repository.getOneById(new RubroId(id));
         if (!rubroExistente) throw new Error("Rubro no encontrado");
 
@@ -24,6 +24,6 @@ export class RubroUpdate {
             rubroExistente.esActivo
         );
 
-        await this.repository.update(rubroActualizado);
+        return await this.repository.update(rubroActualizado);
     }
 }

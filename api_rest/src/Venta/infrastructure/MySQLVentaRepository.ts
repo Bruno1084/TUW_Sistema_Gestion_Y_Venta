@@ -1,4 +1,4 @@
-import type { Pool, RowDataPacket } from "mysql2/promise";
+import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import type { VentaRepository } from "../domain/VentaRepository";
 import { Venta } from "../domain/Venta";
 import { VentaId } from "../domain/VentaId";
@@ -22,18 +22,21 @@ export class MySQLVentaRepository implements VentaRepository {
         this.pool = pool;
     }
 
-    async create(venta: Venta): Promise<void> {
+    async create(venta: Venta): Promise<Venta> {
         const query = `
             INSERT INTO ventas(id_cliente, id_empleado, precio_total, fecha_creacion)
             VALUES (?, ?, ?, ?)
         `;
 
-        await this.pool.query(query, [
+        const [result] = await this.pool.query<ResultSetHeader>(query, [
             venta.clienteId.value,
             venta.empleadoId.value,
             venta.precioTotal.value,
             venta.fechaCreacion.value
         ]);
+
+        const ventaId = result.insertId;
+        return this.getOneById(new VentaId(ventaId)) as Promise<Venta>;
     }
 
     async getAll(): Promise<Venta[]> {

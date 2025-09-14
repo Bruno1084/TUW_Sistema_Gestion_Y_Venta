@@ -17,7 +17,7 @@ export class ClienteCreate {
         telefono: string,
         fechaCreacion: Date,
         fechaModificacion: Date,
-    ): Promise<void> {
+    ): Promise<Cliente> {
         const cliente = new Cliente(
             new ClienteId(0),
             new ClienteNombre(nombre),
@@ -28,6 +28,6 @@ export class ClienteCreate {
             new ClienteEsActivo(true)
         );
 
-        await this.repository.create(cliente);
+        return await this.repository.create(cliente);
     }
 }

@@ -11,7 +11,7 @@ export class MarcaCreate {
 
     async run(
         nombre: string
-    ): Promise<void> {
+    ): Promise<Marca> {
         const marca = new Marca(
             new MarcaId(0),
             new MarcaNombre(nombre),
@@ -20,6 +20,6 @@ export class MarcaCreate {
             new MarcaEsActivo(true)
         );
 
-        await this.repository.create(marca);
+        return await this.repository.create(marca);
     }
 }

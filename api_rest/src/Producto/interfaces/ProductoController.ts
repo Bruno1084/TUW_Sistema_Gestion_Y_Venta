@@ -28,7 +28,7 @@ export class ProductoController {
                 rubroId
             } = req.body;
 
-            await this.useCases.create.run(
+            const productoCreado = await this.useCases.create.run(
                 codigoBarra,
                 descripcion,
                 precioCompra,
@@ -42,7 +42,7 @@ export class ProductoController {
                 rubroId
             );
 
-            res.status(201).json({ message: "Producto creado correctamente" });
+            res.status(201).json(productoCreado);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
@@ -87,7 +87,7 @@ export class ProductoController {
                 rubroId
             } = req.body;
 
-            await this.useCases.update.run(
+            const productoActualizado = await this.useCases.update.run(
                 codigoBarra!,
                 {
                     descripcion,
@@ -101,7 +101,7 @@ export class ProductoController {
                 }
             );
 
-            res.status(200).json({ message: 'Producto actualizado correctamente' });
+            res.status(200).json(productoActualizado);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

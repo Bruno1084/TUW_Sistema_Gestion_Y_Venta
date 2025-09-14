@@ -28,7 +28,7 @@ export class MySQLCajeroRepository implements CajeroRepository {
         this.pool = pool;
     }
 
-    async create(cajero: Cajero): Promise<void> {
+    async create(cajero: Cajero): Promise<Cajero> {
         const conn = await this.pool.getConnection();
 
         try {
@@ -54,8 +54,9 @@ export class MySQLCajeroRepository implements CajeroRepository {
                 empleadoId,
                 cajero.contrasenia.value
             ]);
-
             await conn.commit();
+
+            return this.getOneById(new EmpleadoId(empleadoId)) as Promise<Cajero>;
         } catch (err: any) {
             await conn.rollback();
             throw err;

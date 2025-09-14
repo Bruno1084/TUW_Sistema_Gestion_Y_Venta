@@ -1,4 +1,4 @@
-import type { Pool, RowDataPacket } from "mysql2/promise"
+import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise"
 import type { CompraRepository } from "../domain/CompraRepository"
 import { Compra } from "../domain/Compra";
 import { CompraId } from "../domain/CompraId";
@@ -22,18 +22,21 @@ export class MySQLCompraRepository implements CompraRepository {
         this.pool = pool;
     }
 
-    async create(compra: Compra): Promise<void> {
+    async create(compra: Compra): Promise<Compra> {
         const query = `
             INSERT INTO compras(id_proveedor, id_empleado, precio_total, fecha_creacion)
             VALUES (?, ?, ?, ?)
         `;
 
-        await this.pool.query(query, [
+        const [result] = await this.pool.query<ResultSetHeader>(query, [
             compra.proveedorId.value,
             compra.empleadoId.value,
             compra.precioTotal.value,
             compra.fechaCreacion.value
         ]);
+
+        const compraId = result.insertId;
+        return this.getOneById(new CompraId(compraId)) as Promise<Compra>;
     }
 
     async getAll(): Promise<Compra[]> {

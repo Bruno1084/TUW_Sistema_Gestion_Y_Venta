@@ -12,7 +12,7 @@ type VentaUseCases = {
 export class VentaController {
     constructor(private useCases: VentaUseCases) { }
 
-    async createVenta(req: Request, res: Response) {
+    async createVenta(req: Request, res: Response): Promise<void> {
         try {
             const {
                 clienteId,
@@ -21,20 +21,20 @@ export class VentaController {
                 fechaCreacion
             } = req.body;
 
-            await this.useCases.create.run(
+            const ventaCreada =  await this.useCases.create.run(
                 clienteId,
                 empleadoId,
                 precioTotal,
                 fechaCreacion
             );
 
-            res.status(201).json({ message: "Venta creada correctamente" });
+            res.status(201).json(ventaCreada);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
     }
 
-    async getAllVenta(req: Request, res: Response) {
+    async getAllVenta(req: Request, res: Response): Promise<void> {
         try {
             const ventas = await this.useCases.getAll.run();
             res.status(200).json(ventas);
@@ -43,7 +43,7 @@ export class VentaController {
         }
     }
 
-    async getOneByIdVenta(req: Request, res: Response) {
+    async getOneByIdVenta(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
             const venta = await this.useCases.getOneById.run(Number(id));

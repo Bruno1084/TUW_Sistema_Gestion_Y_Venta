@@ -35,7 +35,7 @@ export class ProductoUpdate {
             marcaId?: number,
             rubroId?: number,
         }
-    ): Promise<void> {
+    ): Promise<Producto> {
         const productoExistente = await this.productoRepository.getOneById(new ProductoCodigoBarra(codigoBarra));
         if (!productoExistente) throw new Error("Producto no encontrado");
 
@@ -74,6 +74,6 @@ export class ProductoUpdate {
             productoExistente.esActivo
         );
 
-        await this.productoRepository.update(productoActualizado);
+        return await this.productoRepository.update(productoActualizado);
     }
 }

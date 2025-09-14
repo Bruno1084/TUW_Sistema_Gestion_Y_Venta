@@ -17,7 +17,7 @@ export class ProveedorCreate {
         telefono: string,
         fechaCreacion: Date,
         fechaModificacion: Date
-    ): Promise<void> {
+    ): Promise<Proveedor> {
         const proveedor = new Proveedor(
             new ProveedorId(0),
             new ProveedorNombre(nombre),
@@ -28,6 +28,6 @@ export class ProveedorCreate {
             new ProveedorEsActivo(true)
         );
 
-        await this.repository.create(proveedor);
+        return await this.repository.create(proveedor);
     }
 }

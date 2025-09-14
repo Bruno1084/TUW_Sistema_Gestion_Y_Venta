@@ -21,7 +21,7 @@ export class CajeroController {
                 contrasenia
             } = req.body;
 
-            await this.useCases.create.run(
+            const cajeroCreado = await this.useCases.create.run(
                 nombre,
                 direccion,
                 telefono,
@@ -30,7 +30,7 @@ export class CajeroController {
                 contrasenia
             );
 
-            res.status(201).json({ message: "Empleado creado correctamente" });
+            res.status(201).json(cajeroCreado);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

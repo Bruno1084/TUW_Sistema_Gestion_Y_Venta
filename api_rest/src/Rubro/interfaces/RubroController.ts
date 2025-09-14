@@ -20,9 +20,9 @@ export class RubroController {
         try {
             const { nombre } = req.body;
 
-            await this.useCases.create.run(nombre);
+            const rubroCreado = await this.useCases.create.run(nombre);
 
-            res.status(201).json({ message: "Rubro creado correctamente" });
+            res.status(201).json(rubroCreado);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
@@ -58,9 +58,9 @@ export class RubroController {
             const { id } = req.params;
             const { nombre } = req.body;
 
-            await this.useCases.update.run(Number(id), { nombre });
+            const rubroActualizado = await this.useCases.update.run(Number(id), { nombre });
 
-            res.status(201).json({ message: "Rubro actualizado correctamente" });
+            res.status(201).json(rubroActualizado);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

@@ -1,4 +1,4 @@
-import type { Pool, RowDataPacket } from "mysql2/promise";
+import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import type { ClienteRepository } from "../domain/ClienteRepository";
 import { Cliente } from "../domain/Cliente";
 import { ClienteId } from "../domain/ClienteId";
@@ -26,13 +26,13 @@ export class MySQLClienteRepository implements ClienteRepository {
         this.pool = pool;
     }
 
-    async create(cliente: Cliente): Promise<void> {
+    async create(cliente: Cliente): Promise<Cliente> {
         const query = `
             INSERT INTO clientes(nombre, direccion, telefono, fecha_creacion, fecha_modificacion, es_activo)
             VALUES (?, ?, ?, ?, ?, ?)
         `;
 
-        await this.pool.query(query, [
+        const [result] = await this.pool.query<ResultSetHeader>(query, [
             cliente.nombre.value,
             cliente.direccion.value,
             cliente.telefono.value,
@@ -40,6 +40,9 @@ export class MySQLClienteRepository implements ClienteRepository {
             cliente.fechaModificacion.value,
             cliente.esActivo.value
         ]);
+
+        const clienteId = result.insertId;
+        return this.getOneById(new ClienteId(clienteId)) as Promise<Cliente>;
     }
 
     async getAll(): Promise<Cliente[]> {
@@ -82,7 +85,7 @@ export class MySQLClienteRepository implements ClienteRepository {
         );
     }
 
-    async update(cliente: Cliente): Promise<void> {
+    async update(cliente: Cliente): Promise<Cliente> {
         const query = `
             UPDATE clientes SET
             nombre = ?,
@@ -93,7 +96,7 @@ export class MySQLClienteRepository implements ClienteRepository {
             WHERE id = ?
         `;
 
-        await this.pool.query(query, [
+        await this.pool.query<ResultSetHeader>(query, [
             cliente.nombre.value,
             cliente.direccion.value,
             cliente.telefono.value,
@@ -101,6 +104,8 @@ export class MySQLClienteRepository implements ClienteRepository {
             cliente.fechaModificacion.value,
             cliente.id.value
         ]);
+
+        return this.getOneById(cliente.id) as Promise<Cliente>;
     }
 
     async delete(clienteId: ClienteId): Promise<void> {

@@ -17,7 +17,7 @@ export class ClienteUpdate {
             direccion?: string,
             telefono?: string,
         }
-    ): Promise<void> {
+    ): Promise<Cliente> {
         const clienteExistente = await this.repository.getOneById(new ClienteId(id));
         if (!clienteExistente) throw new Error("Producto no encontrado");
 
@@ -31,6 +31,6 @@ export class ClienteUpdate {
             new ClienteEsActivo(clienteExistente.esActivo.value),
         );
 
-        await this.repository.update(clienteActualizado);
+        return await this.repository.update(clienteActualizado);
     }
 }
