@@ -26,6 +26,7 @@ type MySQLProducto = {
     id_proveedor: number;
     id_marca: number;
     id_rubro: number;
+    es_activo: boolean;
 }
 
 export class MySQLProductoRepository implements ProductoRepository {
@@ -37,22 +38,23 @@ export class MySQLProductoRepository implements ProductoRepository {
 
     async create(producto: Producto): Promise<void> {
         const query = `
-            INSERT INTO productos(codigo_barra, descripcion, id_proveedor, id_marca, id_rubro, precio_compra, precio_venta, stock, img_uri, fecha_creacion, fecha_modificacion)
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO productos(codigo_barra, descripcion, id_proveedor, id_marca, id_rubro, precio_compra, precio_venta, stock, img_uri, fecha_creacion, fecha_modificacion, es_activo)
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         await this.pool.query(query, [
-            producto.codigoBarra,
-            producto.descripcion,
+            producto.codigoBarra.value,
+            producto.descripcion.value,
             producto.proveedorId.value,
-            producto.marcaId,
-            producto.rubroId,
-            producto.precioCompra,
-            producto.precioVenta,
-            producto.stock,
-            producto.imgUri,
+            producto.marcaId.value,
+            producto.rubroId.value,
+            producto.precioCompra.value,
+            producto.precioVenta.value,
+            producto.stock.value,
+            producto.imgUri.value,
             producto.fechaCreacion.value,
-            producto.fechaModificacion.value
+            producto.fechaModificacion.value,
+            producto.esActivo.value
         ]);
     }
 

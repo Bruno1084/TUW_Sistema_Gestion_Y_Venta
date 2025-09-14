@@ -75,6 +75,7 @@ create table productos(
 	img_uri varchar(255),
 	fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    es_activo bool not null default true,
     primary key(codigo_barra),
     foreign key(id_proveedor) references proveedores(id),
     foreign key(id_marca) references marcas(id),

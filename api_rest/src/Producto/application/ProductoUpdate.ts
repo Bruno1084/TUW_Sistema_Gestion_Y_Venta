@@ -34,7 +34,6 @@ export class ProductoUpdate {
             proveedorId?: number,
             marcaId?: number,
             rubroId?: number,
-            esActivo?: boolean
         }
     ): Promise<void> {
         const productoExistente = await this.productoRepository.getOneById(new ProductoCodigoBarra(codigoBarra));
@@ -72,7 +71,7 @@ export class ProductoUpdate {
             proveedor,
             marca,
             rubro,
-            updates.esActivo ? new ProductoEsActivo(updates.esActivo) : productoExistente.esActivo
+            productoExistente.esActivo
         );
 
         await this.productoRepository.update(productoActualizado);

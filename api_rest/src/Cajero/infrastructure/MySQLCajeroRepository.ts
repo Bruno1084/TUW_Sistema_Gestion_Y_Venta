@@ -17,7 +17,7 @@ type MySQLCajero = {
     telefono: string;
     fecha_creacion: Date;
     fecha_modificacion: Date;
-    esActivo: boolean;
+    es_activo: boolean;
     contrasenia: string
 };
 
@@ -50,7 +50,7 @@ export class MySQLCajeroRepository implements CajeroRepository {
             const empleadoId = empleado.insertId;
 
             // Insertar cajero
-            await conn.query(`ÌNSERT INTO cajeros (id_empleado, contrasenia) VALUES(?, ?)`, [
+            await conn.query(`INSERT INTO cajeros (id_empleado, contrasenia) VALUES(?, ?)`, [
                 empleadoId,
                 cajero.contrasenia.value
             ]);
@@ -67,7 +67,7 @@ export class MySQLCajeroRepository implements CajeroRepository {
     async getOneById(empleadoId: EmpleadoId): Promise<Cajero | null> {
         const query = `
             SELECT e.id, e.nombre, e.direccion, e.telefono,
-                e.fecha_creacion, e.fecha_modificacion, e.esActivo,
+                e.fecha_creacion, e.fecha_modificacion, e.es_activo,
                 c.contrasenia
             FROM empleados e
             INNER JOIN cajeros c ON e.id = c.id_empleado
@@ -93,7 +93,7 @@ export class MySQLCajeroRepository implements CajeroRepository {
     async getOneByNombre(nombre: EmpleadoNombre): Promise<Cajero | null> {
         const query = `
             SELECT e.id, e.nombre, e.direccion, e.telefono,
-               e.fecha_creacion, e.fecha_modificacion, e.esActivo,
+               e.fecha_creacion, e.fecha_modificacion, e.es_activo,
                c.contrasenia
             FROM empleados e
             INNER JOIN cajeros c ON e.id = c.id_empleado

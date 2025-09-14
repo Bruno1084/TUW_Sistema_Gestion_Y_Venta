@@ -106,6 +106,6 @@ export class MySQLClienteRepository implements ClienteRepository {
     async delete(clienteId: ClienteId): Promise<void> {
         const query = `UPDATE cliente SET es_activo = false WHERE id = ?`;
 
-        await this.pool.query(query, [clienteId]);
+        await this.pool.query(query, [clienteId.value]);
     }
 }

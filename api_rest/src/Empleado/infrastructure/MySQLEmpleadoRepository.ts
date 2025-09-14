@@ -16,7 +16,7 @@ type MySQLEmpleado = {
     telefono: string;
     fecha_creacion: Date;
     fecha_modificacion: Date;
-    esActivo: boolean;
+    es_activo: boolean;
 };
 
 export class MySQLEmpleadoRepository implements EmpleadoRepository {
@@ -56,7 +56,7 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
                     new EmpleadoTelefono(row.telefono),
                     new EmpleadoFechaCreacion(row.fecha_creacion),
                     new EmpleadoFechaModificacion(row.fecha_modificacion),
-                    new EmpleadoEsActivo(row.esActivo)
+                    new EmpleadoEsActivo(row.es_activo)
                 )
         );
     }
@@ -78,7 +78,7 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
             new EmpleadoTelefono(row!.telefono),
             new EmpleadoFechaCreacion(row!.fecha_creacion),
             new EmpleadoFechaModificacion(row!.fecha_modificacion),
-            new EmpleadoEsActivo(row!.esActivo)
+            new EmpleadoEsActivo(row!.es_activo)
         );
     }
 
