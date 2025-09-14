@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.DashboardController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/20.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.DashboardController">
     <AnchorPane prefHeight="200.0" prefWidth="200.0">
         <BorderPane fx:id="borderPaneMainBoard" layoutX="329.0" layoutY="241.0" prefHeight="600.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <top>
@@ -28,22 +28,15 @@
                     </AnchorPane>
                     <AnchorPane prefHeight="40.0" prefWidth="885.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="215.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <Label fx:id="txtFecha" layoutX="800.0" layoutY="12.0" text="MM:DD:YYYY" AnchorPane.rightAnchor="15.0" />
-                        <HBox alignment="CENTER" layoutY="1.0" spacing="5.0" AnchorPane.bottomAnchor="0.0"
-                              AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <HBox alignment="CENTER" layoutY="1.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <AnchorPane layoutX="106.0" layoutY="10.0">
-                                <Button fx:id="btnConfiguracion" mnemonicParsing="false" text="Configuración"
-                                        AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                        AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                                <Button fx:id="btnConfiguracion" mnemonicParsing="false" text="Configuración" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                             </AnchorPane>
                             <AnchorPane layoutX="174.0" layoutY="10.0">
-                                <Button fx:id="btnImportar" mnemonicParsing="false" text="Importar"
-                                        AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                        AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                                <Button fx:id="btnImportar" mnemonicParsing="false" text="Importar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                             </AnchorPane>
                             <AnchorPane layoutX="59.0" layoutY="10.0">
-                                <Button fx:id="btnExportar" mnemonicParsing="false" text="Exportar"
-                                        AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                        AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                                <Button fx:id="btnExportar" mnemonicParsing="false" text="Exportar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                             </AnchorPane>
                         </HBox>
                     </AnchorPane>
@@ -66,6 +59,7 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         </rowConstraints>
                         <VBox.margin>
@@ -139,7 +133,7 @@
                                 </padding>
                             </Button>
                         </AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="5">
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="6">
                             <Button fx:id="btnSideBarReportes" alignment="BASELINE_LEFT" layoutX="82.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleBtnSideBarReportes" text="Reportes" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <font>
                                     <Font name="System Bold" size="14.0" />
@@ -152,6 +146,21 @@
                                 </padding>
                             </Button>
                         </AnchorPane>
+                  <AnchorPane layoutX="18.0" layoutY="238.0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="5">
+                     <children>
+                        <Button fx:id="btnSideBarEmpleados" alignment="BASELINE_LEFT" layoutX="82.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleBtnSideBarEmpleados" text="Empleados" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIconView glyphName="USER" size="20" />
+                           </graphic>
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                        </Button>
+                     </children>
+                  </AnchorPane>
                     </GridPane>
                 </VBox>
             </left>

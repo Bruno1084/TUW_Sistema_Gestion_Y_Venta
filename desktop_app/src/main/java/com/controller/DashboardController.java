@@ -15,6 +15,7 @@ public class DashboardController {
     @FXML private Button btnSideBarCompras;
     @FXML private Button btnSideBarClientes;
     @FXML private Button btnSideBarProveedores;
+    @FXML private Button btnSideBarEmpleados;
     @FXML private Button btnSideBarReportes;
 
     @FXML private void loadCenterView(String fxmlFile) {
@@ -45,6 +46,10 @@ public class DashboardController {
 
     @FXML private void handleBtnSideBarProveedores (ActionEvent event) {
         loadCenterView("Proveedores.fxml");
+    }
+
+    @FXML private void handleBtnSideBarEmpleados (ActionEvent event) {
+        loadCenterView("Empleados.fxml");
     }
 
     @FXML private void handleBtnSideBarReportes (ActionEvent event) {
