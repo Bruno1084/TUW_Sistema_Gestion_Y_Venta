@@ -8,7 +8,7 @@ create table empleados(
     telefono varchar(15) not null,
 	fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    esActivo bool not null default true,
+    es_activo bool not null default true,
     primary key(id)
 );
 
@@ -32,7 +32,7 @@ create table clientes(
 	telefono varchar(15) not null,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	esActivo bool not null default true,
+	es_activo bool not null default true,
     primary key(id)
 );
 
@@ -43,7 +43,7 @@ create table proveedores(
     telefono varchar(15) not null,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	esActivo bool not null default true,
+	es_activo bool not null default true,
     primary key(id)
 );
 

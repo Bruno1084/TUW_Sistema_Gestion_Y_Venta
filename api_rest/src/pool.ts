@@ -4,7 +4,8 @@ export function createPoolMySQL() {
     const pool = mysql.createPool({
         host: 'localhost',
         user: 'root',
-        database: '',
+        password: 'root',
+        database: 'gestion_elcacho_db',
         connectionLimit: 10,
         idleTimeout: 60000,
         queueLimit: 0,

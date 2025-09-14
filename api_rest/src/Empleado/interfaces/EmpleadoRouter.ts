@@ -6,9 +6,9 @@ export function empleadoRouter(empleadoController: EmpleadoController): Router {
 
     router.post('/create', empleadoController.createEmpleado.bind(empleadoController));
     router.get('/getAll', empleadoController.getAllEmpleado.bind(empleadoController));
-    router.get('/getOneById', empleadoController.getOneByIdEmpleado.bind(empleadoController));
-    router.post('/update', empleadoController.updateEmpleado.bind(empleadoController));
-    router.post('/delete', empleadoController.deleteEmpleado.bind(empleadoController));
+    router.get('/getOneById/:id', empleadoController.getOneByIdEmpleado.bind(empleadoController));
+    router.put('/update/:id', empleadoController.updateEmpleado.bind(empleadoController));
+    router.delete('/delete/:id', empleadoController.deleteEmpleado.bind(empleadoController));
 
     return router;
 };

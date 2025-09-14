@@ -6,9 +6,9 @@ export function marcaRouter(marcaController: MarcaController): Router {
 
     router.post('/create', marcaController.createMarca.bind(marcaController));
     router.get('/getAll', marcaController.getAllMarca.bind(marcaController));
-    router.get('/getOneById', marcaController.getOneByIdMarca.bind(marcaController));
-    router.post('/update', marcaController.updateMarca.bind(marcaController));
-    router.post('/delete', marcaController.deleteMarca.bind(marcaController));
+    router.get('/getOneById/:id', marcaController.getOneByIdMarca.bind(marcaController));
+    router.put('/update/:id', marcaController.updateMarca.bind(marcaController));
+    router.delete('/delete/:id', marcaController.deleteMarca.bind(marcaController));
 
     return router;
 }
