@@ -89,7 +89,7 @@ export class MySQLProveedorRepository implements ProveedorRepository {
             telefono = ?,
             fecha_creacion = ?,
             fecha_modificacion = ?,
-            es_activo = ?,
+            es_activo = ?
             WHERE id = ?
         `;
 

@@ -89,7 +89,7 @@ export class MySQLClienteRepository implements ClienteRepository {
             direccion = ?,
             telefono = ?,
             fecha_creacion = ?,
-            fecha_modificacion = ?,
+            fecha_modificacion = ?
             WHERE id = ?
         `;
 

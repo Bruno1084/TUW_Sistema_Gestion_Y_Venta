@@ -88,7 +88,7 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
             direccion = ?,
             telefono = ?,
             fecha_creacion = ?,
-            fecha_modificacion = ?,
+            fecha_modificacion = ?
             WHERE id = ?`;
 
         await this.pool.query(query, [

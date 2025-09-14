@@ -77,7 +77,7 @@ export class MySQLMarcaRepository implements MarcaRepository {
             UPDATES marcas SET
             nombre = ?,
             fecha_creacion = ?,
-            fecha_modificacion = ?,
+            fecha_modificacion = ?
             WHERE id = ?
         `;
 
