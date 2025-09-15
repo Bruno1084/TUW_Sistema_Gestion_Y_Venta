@@ -67,7 +67,7 @@ export class ProductoController {
                 return;
             }
 
-            res.status(201).json(producto);
+            res.status(200).json(producto);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

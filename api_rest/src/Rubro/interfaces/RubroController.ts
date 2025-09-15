@@ -47,7 +47,7 @@ export class RubroController {
                 return;
             }
 
-            res.status(201).json(rubro);
+            res.status(200).json(rubro);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
@@ -60,7 +60,7 @@ export class RubroController {
 
             const rubroActualizado = await this.useCases.update.run(Number(id), { nombre });
 
-            res.status(201).json(rubroActualizado);
+            res.status(200).json(rubroActualizado);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

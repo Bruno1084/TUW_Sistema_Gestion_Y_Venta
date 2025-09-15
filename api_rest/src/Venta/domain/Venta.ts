@@ -24,4 +24,14 @@ export class Venta {
         this.precioTotal = precioTotal;
         this.fechaCreacion = fechaCreacion;
     }
+
+    toJSON() {
+        return {
+            id: this.id.value,
+            clienteId: this.clienteId.value,
+            empleadoId: this.empleadoId.value,
+            precioTotal: this.precioTotal.value,
+            fechaCreacion: this.fechaCreacion.value
+        };
+    }
 }

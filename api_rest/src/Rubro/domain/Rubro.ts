@@ -18,4 +18,14 @@ export class Rubro {
         this.fechaModificacion = fechaModificacion;
         this.esActivo = esActivo;
     }
+
+    toJSON() {
+        return {
+            id: this.id.value,
+            nombre: this.nombre.value,
+            fechaCreacion: this.fechaCreación.value,
+            fechaModificacion: this.fechaModificacion.value,
+            esActivo: this.esActivo.value
+        };
+    }
 }

@@ -57,7 +57,7 @@ export class ClienteController {
                 return;
             }
 
-            res.status(201).json(cliente);
+            res.status(200).json(cliente);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
@@ -78,7 +78,7 @@ export class ClienteController {
                 telefono
             });
 
-            res.status(201).json(clienteActualizado);
+            res.status(200).json(clienteActualizado);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

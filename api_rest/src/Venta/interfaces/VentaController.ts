@@ -53,7 +53,7 @@ export class VentaController {
                 return;
             }
 
-            res.status(201).json(venta);
+            res.status(200).json(venta);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

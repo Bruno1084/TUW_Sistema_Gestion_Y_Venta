@@ -57,7 +57,7 @@ export class EmpleadoController {
                 return;
             }
 
-            res.status(201).json(empleado);
+            res.status(200).json(empleado);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

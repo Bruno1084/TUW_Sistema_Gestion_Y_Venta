@@ -52,4 +52,21 @@ export class Producto {
         this.rubroId = rubroId;
         this.esActivo = esActivo;
     }
+
+    toJSON() {
+        return {
+            codigoBarra: this.codigoBarra.value,
+            descripcion: this.descripcion.value,
+            precioCompra: this.precioCompra.value,
+            precioVenta: this.precioVenta.value,
+            stock: this.stock.value,
+            imgUri: this.imgUri.value,
+            fechaCreacion: this.fechaCreacion.value,
+            fechaModificacion: this.fechaModificacion.value,
+            proveedorId: this.proveedorId.value,
+            marcaId: this.marcaId.value,
+            rubroId: this.rubroId.value,
+            esActivo: this.esActivo.value
+        };
+    }
 }

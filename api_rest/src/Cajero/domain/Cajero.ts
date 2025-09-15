@@ -25,4 +25,17 @@ export class Cajero extends Empleado {
 
         this.contrasenia = contrasenia;
     }
+
+    toJSON() {
+        return {
+            id: this.id.value,
+            nombre: this.nombre.value,
+            direccion: this.direccion.value,
+            telefono: this.telefono.value,
+            fechaCreacion: this.fechaCreacion.value,
+            fechaModificacion: this.fechaModificacion.value,
+            esActivo: this.esActivo.value,
+            contrasenia: this.contrasenia.value
+        }
+    }
 }

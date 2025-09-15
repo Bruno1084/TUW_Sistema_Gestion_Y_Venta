@@ -46,7 +46,7 @@ export class CajeroController {
                 return;
             }
 
-            res.status(201).json(cajero);
+            res.status(200).json(cajero);
         } catch (err: any) {
             res.status(500).json({ error: err.message });
         }
@@ -62,7 +62,7 @@ export class CajeroController {
                 return;
             }
 
-            res.status(201).json(cajero);
+            res.status(200).json(cajero);
         } catch (err: any) {
             res.status(500).json({ error: err.message });
         }

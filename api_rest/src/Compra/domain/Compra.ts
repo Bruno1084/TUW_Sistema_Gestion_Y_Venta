@@ -24,4 +24,14 @@ export class Compra {
         this.proveedorId = proveedorId;
         this.empleadoId = empleadoId;
     }
+
+    toJSON() {
+        return {
+            id: this.id.value,
+            precioTotal: this.precioTotal.value,
+            fechaCreacion: this.fechaCreacion.value,
+            proveedorId: this.proveedorId.value,
+            empleadoId: this.empleadoId.value
+        };
+    }
 }

@@ -52,7 +52,7 @@ export class CompraController {
                 return;
             }
 
-            res.status(201).json(compra);
+            res.status(200).json(compra);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

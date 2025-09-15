@@ -49,7 +49,7 @@ export class MarcaController {
                 return;
             }
 
-            res.status(201).json(marca);
+            res.status(200).json(marca);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
@@ -62,7 +62,7 @@ export class MarcaController {
 
             const marcaActualizada = await this.useCases.update.run(Number(id), { nombre });
 
-            res.status(201).json(marcaActualizada);
+            res.status(200).json(marcaActualizada);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

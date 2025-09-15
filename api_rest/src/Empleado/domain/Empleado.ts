@@ -32,4 +32,16 @@ export class Empleado {
         this.fechaModificacion = fechaModificacion;
         this.esActivo = esActivo;
     }
+
+    toJSON() {
+        return {
+            id: this.id.value,
+            nombre: this.nombre.value,
+            direccion: this.direccion.value,
+            telefono: this.telefono.value,
+            fechaCreacion: this.fechaCreacion.value,
+            fechaModificacion: this.fechaModificacion.value,
+            esActivo: this.esActivo.value,
+        };
+    }
 }

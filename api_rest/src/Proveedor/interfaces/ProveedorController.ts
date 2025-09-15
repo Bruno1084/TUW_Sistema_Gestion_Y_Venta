@@ -57,7 +57,7 @@ export class ProveedorController {
                 return;
             }
 
-            res.status(201).json(proveedor);
+            res.status(200).json(proveedor);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
