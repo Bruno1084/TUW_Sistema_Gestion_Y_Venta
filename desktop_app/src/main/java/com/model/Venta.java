@@ -9,6 +9,8 @@ public class Venta {
     private int idCliente;
     private int idEmpleado;
 
+    public Venta() {}
+
     public Venta(String id, float precioTotal, Date fechaCreacion, int idCliente, int idEmpleado) {
         this.id = id;
         this.precioTotal = precioTotal;

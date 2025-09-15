@@ -8,6 +8,8 @@ public class VentaDetalle {
     private float precioTotal;
     private float precioUnitario;
 
+    public VentaDetalle() {}
+
     public VentaDetalle(
             String id,
             String codigoProducto,

@@ -7,6 +7,8 @@ public class CompraDetalle {
     private float precioTotal;
     private float precioUnitario;
 
+    public CompraDetalle() {}
+
     public CompraDetalle(
             String idCompra,
             String codigoProducto,

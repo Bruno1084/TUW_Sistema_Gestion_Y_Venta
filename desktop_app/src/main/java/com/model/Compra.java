@@ -9,6 +9,8 @@ public class Compra {
     private int idProveedor;
     private int idEmpleado;
 
+    public Compra() {}
+
     public Compra(
             String id,
             float precioTotal,

@@ -5,6 +5,10 @@ import java.util.Date;
 public class Cajero extends Empleado{
     private String contrasenia;
 
+    public Cajero() {
+        super();
+    }
+
     public Cajero(
         String id,
         String nombre,

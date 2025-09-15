@@ -11,6 +11,8 @@ public class Empleado {
     private Date fechaModificacion;
     private boolean esActivo;
 
+    public Empleado() {}
+
     public Empleado(
             String id,
             String nombre,

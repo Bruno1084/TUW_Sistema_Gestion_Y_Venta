@@ -94,7 +94,7 @@ export class ProveedorController {
 
             await this.useCases.delete.run(Number(id));
 
-            res.status(200).json({ message: 'Proveedor eliminado correctamente' });
+            res.status(204).json({ message: 'Proveedor eliminado correctamente' });
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

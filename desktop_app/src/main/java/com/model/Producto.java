@@ -15,6 +15,8 @@ public class Producto {
     private int idMarca;
     private int idRubro;
 
+    public Producto() {}
+
     public Producto(
             String codigoBarra,
             String descripcion,

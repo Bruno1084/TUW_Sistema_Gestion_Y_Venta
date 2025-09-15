@@ -11,6 +11,8 @@ public class Proveedor {
     private Date fechaModificacion;
     private boolean esActivo;
 
+    public Proveedor() {}
+
     public Proveedor(
             String id,
             String nombre,

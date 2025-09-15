@@ -11,6 +11,8 @@ public class Cliente {
     private Date fechaModificacion;
     private boolean esActivo;
 
+    public Cliente() {}
+
     public Cliente(
             String id,
             String nombre,

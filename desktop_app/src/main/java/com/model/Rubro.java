@@ -8,6 +8,8 @@ public class Rubro {
     private Date fechaCreacion;
     private Date fechaModificacion;
 
+    public Rubro() {}
+
     public Rubro(String id, String nombre, Date fechaCreacion, Date fechaModificacion) {
         this.id = id;
         this.nombre = nombre;

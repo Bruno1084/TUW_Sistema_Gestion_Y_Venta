@@ -8,6 +8,8 @@ public class Marca {
     private Date fechaCreacion;
     private Date fechaModificacion;
 
+    public Marca() {}
+
     public Marca(String id, String nombre, Date fechaCreacion, Date fechaModificacion) {
         this.id = id;
         this.nombre = nombre;
