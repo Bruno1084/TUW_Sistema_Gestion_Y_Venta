@@ -13,10 +13,15 @@ import { MySQLRubroRepository } from "./Rubro/infrastructure/MySQLRubroRepositor
 import { initCajeroModule } from "./Cajero/initCajeroModule";
 import { initVentaModule } from "./Venta/initVentaModule";
 import { initUsuarioModule } from "./Usuario/initUsuarioModule";
+import { authMiddleware } from "./middlewares/authMiddleware";
 
 const app = express();
-app.use(express.json());
 const pool = createPoolMySQL();
+
+// Middlewares
+app.use(authMiddleware);
+app.use(express.json());
+
 
 // Dependencias
 const proveedorRepo = new MySQLProveedorRepository(pool);
@@ -36,7 +41,6 @@ app.use('/api/rubros', initRubroModule(pool));
 app.use('/api/productos', initProductoModule(pool, proveedorRepo, marcaRepo, rubroRepo));
 app.use('/api/compras', initCompraModule(pool));
 app.use('/api/ventas', initVentaModule(pool));
-
 
 // Ping test
 app.get("/api/ping", (req: Request, res: Response) => {

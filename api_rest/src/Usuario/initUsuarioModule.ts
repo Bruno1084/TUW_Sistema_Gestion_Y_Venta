@@ -1,5 +1,6 @@
 import type { Router } from "express";
-import type { Pool } from "mysql2/promise";import { UsuarioLogin } from "./application/UsuarioLogin";
+import type { Pool } from "mysql2/promise";
+import { UsuarioLogin } from "./application/UsuarioLogin";
 import { UsuarioRegister } from "./application/UsuarioRegister";
 import { UsuarioGetOneById } from "./application/UsuarioGetOneById";
 import { UsuarioGetOneByNombre } from "./application/UsuarioGetOneByNombre";

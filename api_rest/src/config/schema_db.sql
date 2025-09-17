@@ -1,6 +1,14 @@
 create schema gestion_elcacho_db;
 use gestion_elcacho_db;
 
+create table usuarios(
+    id int not null auto_increment,
+    nombre varchar(80) not null,
+    contrasenia_hash VARCHAR(128) NOT NULL,
+    contrasenia_salt VARCHAR(32) NOT NULL,
+    primary key(id)
+);
+
 create table empleados(
 	id int not null auto_increment,
     nombre varchar(80) not null,
@@ -14,14 +22,6 @@ create table empleados(
 
 create table repartidores(
 	id_empleado int not null,
-    primary key(id_empleado),
-    foreign key(id_empleado) references empleados(id)
-);
-
-create table cajeros(
-	id_empleado int not null,
-    contrasenia_hash VARCHAR(128) NOT NULL,
-    contrasenia_salt VARCHAR(32) NOT NULL,
     primary key(id_empleado),
     foreign key(id_empleado) references empleados(id)
 );
