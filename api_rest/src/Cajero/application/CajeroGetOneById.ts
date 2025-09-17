@@ -9,7 +9,7 @@ export class CajeroGetOneById {
         const cajero = await this.repository.getOneById(new EmpleadoId(id));
 
         if (!cajero) {
-            throw new Error('Cajero not found');
+            throw new Error('Cajero no encontrado');
         }
 
         return cajero;

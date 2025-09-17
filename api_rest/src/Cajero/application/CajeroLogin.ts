@@ -7,16 +7,11 @@ export class CajeroLogin {
 
     async run(nombre: string, contrasenia: string): Promise<string> {
         const cajero = await this.repository.getOneByNombre(new EmpleadoNombre(nombre));
+
         if (!cajero) throw new Error("Cajero no encontrado");
+        if (!cajero.contrasenia.comparar(contrasenia)) throw new Error("Contraseña inválida");
 
-        if (!cajero.contrasenia.comparar(contrasenia)) {
-            throw new Error("Contraseña inválida");
-        }
-
-        return jwt.sign(
-            { id: cajero.id.value, nombre: cajero.nombre.value },
-            process.env.JWT_SECRET ?? "default_secret",
-            { expiresIn: "1h" }
-        );
+        const payload = { sub: cajero.id.value, role: "cajero" };
+        return jwt.sign(payload, "default_secret", { expiresIn: "1h" });
     }
 }

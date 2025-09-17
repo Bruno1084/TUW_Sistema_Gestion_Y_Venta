@@ -31,6 +31,6 @@ export class CajeroCreate {
             new CajeroContrasenia(contrasenia)
         );
 
-        return this.repository.create(cajero);
+        return await this.repository.create(cajero);
     }
 }

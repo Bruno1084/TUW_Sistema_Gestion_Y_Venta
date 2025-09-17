@@ -18,7 +18,8 @@ type MySQLCajero = {
     fecha_creacion: Date;
     fecha_modificacion: Date;
     es_activo: boolean;
-    contrasenia: string
+    contrasenia_hash: string;
+    contrasenia_salt: string;
 };
 
 export class MySQLCajeroRepository implements CajeroRepository {
@@ -44,8 +45,7 @@ export class MySQLCajeroRepository implements CajeroRepository {
                 cajero.fechaCreacion.value,
                 cajero.fechaModificacion.value,
                 cajero.esActivo.value
-            ]
-            );
+            ]);
 
             const empleadoId = empleado.insertId;
 
@@ -69,7 +69,7 @@ export class MySQLCajeroRepository implements CajeroRepository {
         const query = `
             SELECT e.id, e.nombre, e.direccion, e.telefono,
                 e.fecha_creacion, e.fecha_modificacion, e.es_activo,
-                c.contrasenia
+                c.contrasenia_hash, c.contrasenia_salt
             FROM empleados e
             INNER JOIN cajeros c ON e.id = c.id_empleado
             WHERE e.id = ?
@@ -87,7 +87,7 @@ export class MySQLCajeroRepository implements CajeroRepository {
             new EmpleadoFechaCreacion(row!.fecha_creacion),
             new EmpleadoFechaModificacion(row!.fecha_modificacion),
             new EmpleadoEsActivo(row!.es_activo),
-            new CajeroContrasenia(row!.contrasenia)
+            CajeroContrasenia.fromHashed(row!.contrasenia_hash, row!.contrasenia_salt)
         );
     }
 
@@ -95,12 +95,12 @@ export class MySQLCajeroRepository implements CajeroRepository {
         const query = `
             SELECT e.id, e.nombre, e.direccion, e.telefono,
                e.fecha_creacion, e.fecha_modificacion, e.es_activo,
-               c.contrasenia
+               c.contrasenia_hash, c.contrasenia_salt
             FROM empleados e
             INNER JOIN cajeros c ON e.id = c.id_empleado
             WHERE e.nombre = ?
         `;
-        const [rows] = await this.pool.execute<(MySQLCajero & RowDataPacket)[]>(query, [nombre.value]);
+        const [rows] = await this.pool.query<(MySQLCajero & RowDataPacket)[]>(query, [nombre.value]);
 
         if (rows.length === 0) return null;
 
@@ -113,7 +113,7 @@ export class MySQLCajeroRepository implements CajeroRepository {
             new EmpleadoFechaCreacion(row!.fecha_creacion),
             new EmpleadoFechaModificacion(row!.fecha_modificacion),
             new EmpleadoEsActivo(row!.es_activo),
-            new CajeroContrasenia(row!.contrasenia)
+            CajeroContrasenia.fromHashed(row!.contrasenia_hash, row!.contrasenia_salt)
         );
     }
 }

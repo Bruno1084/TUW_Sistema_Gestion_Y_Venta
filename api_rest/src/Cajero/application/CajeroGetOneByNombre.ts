@@ -8,9 +8,7 @@ export class CajeroGetOneByNombre {
     async run(nombre: string): Promise<Cajero | null> {
         const cajero = await this.repository.getOneByNombre(new EmpleadoNombre(nombre));
 
-        if (!cajero) {
-            throw new Error('Cajero not found');
-        }
+        if (!cajero) throw new Error('Cajero no encontrado');
 
         return cajero;
     }

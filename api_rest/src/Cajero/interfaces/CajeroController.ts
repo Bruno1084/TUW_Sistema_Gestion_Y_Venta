@@ -2,11 +2,13 @@ import type { Request, Response } from "express";
 import type { CajeroCreate } from "../application/CajeroCreate"
 import type { CajeroGetOneById } from "../application/CajeroGetOneById";
 import type { CajeroGetOneByNombre } from "../application/CajeroGetOneByNombre";
+import type { CajeroLogin } from "../application/CajeroLogin";
 
 type CajeroUseCases = {
     create: CajeroCreate;
     getOneById: CajeroGetOneById;
     getOneByNombre: CajeroGetOneByNombre;
+    login: CajeroLogin;
 }
 
 export class CajeroController {
@@ -65,6 +67,16 @@ export class CajeroController {
             res.status(200).json(cajero);
         } catch (err: any) {
             res.status(500).json({ error: err.message });
+        }
+    }
+
+    async loginCajero(req: Request, res: Response): Promise<void> {
+        try {
+            const { nombre, contrasenia } = req.body;
+            const token = await this.useCases.login.run(nombre, contrasenia);
+            res.status(200).json({ token });
+        } catch (err: any) {
+            res.status(401).json({ error: err.message });
         }
     }
 }
