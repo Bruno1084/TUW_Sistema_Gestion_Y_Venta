@@ -9,3 +9,8 @@
     -fx-border-width: 2px;
     -fx-border-radius: 6px;
 }
+
+// BuscarProductos AnchorPane
+#inputBuscarProducto {
+    -fx-background-color: #f4f4f4;
+}
