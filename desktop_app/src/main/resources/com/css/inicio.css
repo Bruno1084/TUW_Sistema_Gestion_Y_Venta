@@ -1,0 +1,13 @@
+// Main AnchorPane
+#vBoxMainContainer {
+    -fx-background-color: #FFFFFF;
+}
+
+// Stats AnchorPane
+.anchorPaneStat {
+    -fx-border-color: #e5e4e4;
+    -fx-border-width: 2px;
+    -fx-border-radius: 6px;
+}
+
+// Chart Ventas

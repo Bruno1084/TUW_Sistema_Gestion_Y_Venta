@@ -26,7 +26,7 @@ public class LoginController {
 //                SessionManager.setToken(token);
 
                 // Redireccionar a Main
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/dashboard.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/sidebar.fxml"));
                 Parent root = fxmlLoader.load();
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root));

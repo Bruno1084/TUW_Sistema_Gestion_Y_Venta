@@ -8,8 +8,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import java.io.IOException;
 
-public class DashboardController {
+public class SidebarController {
     @FXML private BorderPane borderPaneMainBoard;
+    @FXML private Button btnSideBarInicio;
     @FXML private Button btnSideBarProductos;
     @FXML private Button btnSideBarVentas;
     @FXML private Button btnSideBarCompras;
@@ -26,6 +27,10 @@ public class DashboardController {
         } catch (IOException exception) {
             exception.printStackTrace();
         }
+    }
+
+    @FXML private void handleBtnSideBarInicio (ActionEvent event) {
+        loadCenterView("Inicio.fxml");
     }
 
     @FXML private void handleBtnSideBarProductos (ActionEvent event) {

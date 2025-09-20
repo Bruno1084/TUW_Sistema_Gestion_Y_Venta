@@ -14,7 +14,6 @@ public class Venta {
     public Venta(String id, float precioTotal, Date fechaCreacion, int idCliente, int idEmpleado) {
         this.id = id;
         this.precioTotal = precioTotal;
-        this.precioTotal = precioTotal;
         this.fechaCreacion = fechaCreacion;
         this.idCliente = idCliente;
         this.idEmpleado = idEmpleado;

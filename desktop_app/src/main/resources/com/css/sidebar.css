@@ -1,0 +1,19 @@
+// Sidebar VBox
+#vboxSidebar {
+    -fx-background-color: #fbfbfa;
+    -fx-border-color: #e5e4e4;
+}
+
+// Sidebar Buttons
+.btnSidebar {
+    -fx-background-color: transparent;
+}
+
+.btnSidebar:hover {
+    -fx-background-color: #f4f4f4;
+}
+
+// Main Pane
+#anchorPaneMain {
+    -fx-background-color: #ffffff;
+}
