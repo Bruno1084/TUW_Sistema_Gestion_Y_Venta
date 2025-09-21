@@ -34,243 +34,234 @@
             </Button>
             </AnchorPane>
             <AnchorPane prefHeight="80.0">
-            <children>
-               <AnchorPane layoutX="20.0" layoutY="20.0" styleClass="anchorPaneStat" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
-                  <children>
-                     <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
-                        <children>
-                           <AnchorPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                              <children>
-                                 <TextField fx:id="inputBuscarProducto" layoutX="133.0" layoutY="18.0" prefHeight="60.0" prefWidth="456.0" promptText="Buscar Productos" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                    <font>
-                                       <Font size="15.0" />
-                                    </font>
-                                 </TextField>
-                              </children>
-                           </AnchorPane>
-                           <AnchorPane prefHeight="200.0" prefWidth="100.0">
-                              <children>
-                                 <MenuButton fx:id="btnFiltrarProducto" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" text="Filtrar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                    <items>
-                                       <MenuItem mnemonicParsing="false" text="Código de Barra" />
-                                       <MenuItem mnemonicParsing="false" text="Descripción" />
-                                       <MenuItem mnemonicParsing="false" text="Precio de Venta" />
-                                    </items>
-                                    <graphic>
-                                       <FontAwesomeIconView glyphName="FILTER" size="15.0" />
-                                    </graphic>
-                                    <font>
-                                       <Font size="15.0" />
-                                    </font>
-                                 </MenuButton>
-                              </children>
-                           </AnchorPane>
-                        </children>
-                     </HBox>
-                  </children>
-               </AnchorPane>
-            </children>
+                <AnchorPane layoutX="20.0" layoutY="20.0" styleClass="anchorPaneStat" AnchorPane.bottomAnchor="10.0"
+                            AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
+                    <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" AnchorPane.bottomAnchor="15.0"
+                          AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                            <TextField fx:id="inputBuscarProducto" layoutX="133.0" layoutY="18.0"
+                                       prefHeight="60.0" prefWidth="456.0" promptText="Buscar Productos"
+                                       AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                       AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <font>
+                                    <Font size="15.0"/>
+                                </font>
+                            </TextField>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="100.0">
+                            <MenuButton fx:id="btnFiltrarProducto" mnemonicParsing="false" prefHeight="35.0"
+                                        prefWidth="100.0" text="Filtrar" AnchorPane.bottomAnchor="0.0"
+                                        AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                        AnchorPane.topAnchor="0.0">
+                                <items>
+                                    <MenuItem mnemonicParsing="false" text="Código de Barra"/>
+                                    <MenuItem mnemonicParsing="false" text="Descripción"/>
+                                    <MenuItem mnemonicParsing="false" text="Precio de Venta"/>
+                                </items>
+                                <graphic>
+                                    <FontAwesomeIconView glyphName="FILTER" size="15.0"/>
+                                </graphic>
+                                <font>
+                                    <Font size="15.0"/>
+                                </font>
+                            </MenuButton>
+                        </AnchorPane>
+                    </HBox>
+                </AnchorPane>
             </AnchorPane>
             <AnchorPane prefHeight="600.0" VBox.vgrow="ALWAYS">
-            <HBox prefHeight="600.0" prefWidth="870.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
-               <children>
-                      <AnchorPane prefHeight="198.0" prefWidth="521.0" HBox.hgrow="ALWAYS">
-                          <VBox styleClass="anchorPaneStat" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                              <AnchorPane prefHeight="40.0">
-                                  <Text layoutX="14.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Productos" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="8.0">
-                                      <font>
-                                          <Font name="System Bold" size="16.0" />
-                                      </font>
-                                  </Text>
-                              </AnchorPane>
-                              <AnchorPane VBox.vgrow="ALWAYS">
-                                  <TableView fx:id="tableProductos" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                      <columns>
-                                          <TableColumn fx:id="columnCodigoBarraProducto" maxWidth="110.0" prefWidth="75.0" text="Código" />
-                                          <TableColumn fx:id="columnDescripcionProducto" prefWidth="75.0" text="Descripción" />
-                                          <TableColumn fx:id="columnMarcaProducto" prefWidth="75.0" text="Marca" />
-                                          <TableColumn fx:id="columnRubroProducto" prefWidth="75.0" text="Rubro" />
-                                          <TableColumn fx:id="columnPrecioVentaProducto" prefWidth="75.0" text="Precio Venta" />
-                                          <TableColumn fx:id="columnStockProducto" prefWidth="75.0" text="Stock" />
-                                      </columns>
-                                      <columnResizePolicy>
-                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                      </columnResizePolicy>
-                                  </TableView>
-                              </AnchorPane>
-                          </VBox>
-                      </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="300.0">
-                     <children>
-                        <VBox styleClass="anchorPaneStat" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <AnchorPane prefHeight="40.0">
-                                 <children>
-                                    <Text layoutX="14.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Detalle de Producto" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="8.0">
-                                       <font>
-                                          <Font name="System Bold" size="16.0" />
-                                       </font>
-                                    </Text>
-                                 </children>
-                              </AnchorPane>
-                              <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: gray;" VBox.vgrow="ALWAYS">
-                                 <children>
-                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="48.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" />
-                                 </children></AnchorPane>
-                              <VBox>
-                                 <children>
-                                    <AnchorPane prefHeight="35.0" prefWidth="200.0" style="-fx-border-color: gray;">
-                                       <children>
-                                          <HBox layoutX="15.0" layoutY="9.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <children>
-                                                <AnchorPane>
-                                                   <children>
-                                                      <Text layoutX="14.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Código Barra:">
-                                                         <font>
-                                                            <Font name="System Bold" size="14.0" />
-                                                         </font>
-                                                      </Text>
-                                                   </children>
-                                                </AnchorPane>
-                                                <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="35.0" prefWidth="200.0" style="-fx-border-color: gray;">
-                                       <children>
-                                          <HBox layoutX="15.0" layoutY="9.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <children>
-                                                <AnchorPane>
-                                                   <children>
-                                                      <Text layoutX="14.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Descripción:">
-                                                         <font>
-                                                            <Font name="System Bold" size="14.0" />
-                                                         </font>
-                                                      </Text>
-                                                   </children>
-                                                </AnchorPane>
-                                                <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane layoutX="10.0" layoutY="45.0" prefHeight="35.0" prefWidth="200.0" style="-fx-border-color: gray;">
-                                       <children>
-                                          <HBox layoutX="15.0" layoutY="9.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <children>
-                                                <AnchorPane>
-                                                   <children>
-                                                      <Text layoutX="14.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Marca:">
-                                                         <font>
-                                                            <Font name="System Bold" size="14.0" />
-                                                         </font>
-                                                      </Text>
-                                                   </children>
-                                                </AnchorPane>
-                                                <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane layoutX="10.0" layoutY="80.0" prefHeight="35.0" prefWidth="200.0" style="-fx-border-color: gray;">
-                                       <children>
-                                          <HBox layoutX="15.0" layoutY="9.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <children>
-                                                <AnchorPane>
-                                                   <children>
-                                                      <Text layoutX="14.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rubro:">
-                                                         <font>
-                                                            <Font name="System Bold" size="14.0" />
-                                                         </font>
-                                                      </Text>
-                                                   </children>
-                                                </AnchorPane>
-                                                <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane layoutX="10.0" layoutY="115.0" prefHeight="35.0" prefWidth="200.0" style="-fx-border-color: gray;">
-                                       <children>
-                                          <HBox layoutX="15.0" layoutY="9.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <children>
-                                                <AnchorPane>
-                                                   <children>
-                                                      <Text layoutX="14.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Precio de Venta:">
-                                                         <font>
-                                                            <Font name="System Bold" size="14.0" />
-                                                         </font>
-                                                      </Text>
-                                                   </children>
-                                                </AnchorPane>
-                                                <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane layoutX="10.0" layoutY="150.0" prefHeight="35.0" prefWidth="200.0" style="-fx-border-color: gray;">
-                                       <children>
-                                          <HBox layoutX="15.0" layoutY="9.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <children>
-                                                <AnchorPane>
-                                                   <children>
-                                                      <Text layoutX="14.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Precio de Compra:">
-                                                         <font>
-                                                            <Font name="System Bold" size="14.0" />
-                                                         </font>
-                                                      </Text>
-                                                   </children>
-                                                </AnchorPane>
-                                                <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane layoutX="10.0" layoutY="185.0" prefHeight="35.0" prefWidth="200.0" style="-fx-border-color: gray;">
-                                       <children>
-                                          <HBox layoutX="15.0" layoutY="9.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <children>
-                                                <AnchorPane>
-                                                   <children>
-                                                      <Text layoutX="14.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stock:">
-                                                         <font>
-                                                            <Font name="System Bold" size="14.0" />
-                                                         </font>
-                                                      </Text>
-                                                   </children>
-                                                </AnchorPane>
-                                                <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane layoutX="10.0" layoutY="220.0" prefHeight="35.0" prefWidth="200.0" style="-fx-border-color: gray;">
-                                       <children>
-                                          <HBox layoutX="15.0" layoutY="9.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <children>
-                                                <AnchorPane>
-                                                   <children>
-                                                      <Button fx:id="btnEditarProducto" mnemonicParsing="false" text="Editar" />
-                                                   </children>
-                                                </AnchorPane>
-                                                <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                                   <children>
-                                                      <Button fx:id="btnEliminarProducto" mnemonicParsing="false" text="Eliminar" />
-                                                   </children>
-                                                </AnchorPane>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </AnchorPane>
-                                 </children>
-                              </VBox>
-                           </children>
+                <HBox prefHeight="600.0" prefWidth="870.0" spacing="10.0" AnchorPane.bottomAnchor="10.0"
+                      AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
+                    <AnchorPane prefHeight="198.0" prefWidth="521.0" HBox.hgrow="ALWAYS">
+                        <VBox styleClass="anchorPaneStat" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <AnchorPane prefHeight="40.0">
+                                <Text layoutX="14.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="Productos" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="14.0"
+                                      AnchorPane.topAnchor="8.0">
+                                    <font>
+                                        <Font name="System Bold" size="16.0"/>
+                                    </font>
+                                </Text>
+                            </AnchorPane>
+                            <AnchorPane VBox.vgrow="ALWAYS">
+                                <TableView fx:id="tableProductos" prefHeight="200.0" prefWidth="200.0"
+                                           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <columns>
+                                        <TableColumn fx:id="columnCodigoBarraProducto" maxWidth="110.0" prefWidth="75.0"
+                                                     text="Código"/>
+                                        <TableColumn fx:id="columnDescripcionProducto" prefWidth="75.0"
+                                                     text="Descripción"/>
+                                        <TableColumn fx:id="columnMarcaProducto" prefWidth="75.0" text="Marca"/>
+                                        <TableColumn fx:id="columnRubroProducto" prefWidth="75.0" text="Rubro"/>
+                                        <TableColumn fx:id="columnPrecioVentaProducto" prefWidth="75.0"
+                                                     text="Precio Venta"/>
+                                        <TableColumn fx:id="columnStockProducto" prefWidth="75.0" text="Stock"/>
+                                    </columns>
+                                    <columnResizePolicy>
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                    </columnResizePolicy>
+                                </TableView>
+                            </AnchorPane>
                         </VBox>
-                     </children>
-                  </AnchorPane>
-               </children>
-            </HBox>
+                    </AnchorPane>
+                    <AnchorPane prefHeight="200.0" prefWidth="300.0">
+                        <VBox styleClass="anchorPaneStat" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <AnchorPane prefHeight="40.0">
+                                <Text layoutX="14.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="Detalle de Producto" AnchorPane.bottomAnchor="8.0"
+                                      AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="8.0">
+                                    <font>
+                                        <Font name="System Bold" size="16.0"/>
+                                    </font>
+                                </Text>
+                            </AnchorPane>
+                            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: gray;"
+                                        VBox.vgrow="ALWAYS">
+                                <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="48.0" layoutY="25.0"
+                                           pickOnBounds="true" preserveRatio="true"/>
+                            </AnchorPane>
+                            <VBox>
+                                <AnchorPane prefHeight="35.0" prefWidth="200.0"
+                                            style="-fx-border-color: gray;">
+                                    <HBox layoutX="15.0" layoutY="9.0" AnchorPane.bottomAnchor="0.0"
+                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                          AnchorPane.topAnchor="0.0">
+                                        <AnchorPane>
+                                            <Text layoutX="14.0" layoutY="21.0"
+                                                  strokeType="OUTSIDE" strokeWidth="0.0"
+                                                  text="Código Barra:">
+                                                <font>
+                                                    <Font name="System Bold" size="14.0"/>
+                                                </font>
+                                            </Text>
+                                        </AnchorPane>
+                                        <AnchorPane prefHeight="200.0" prefWidth="200.0"/>
+                                    </HBox>
+                                </AnchorPane>
+                                <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="35.0"
+                                            prefWidth="200.0" style="-fx-border-color: gray;">
+                                    <HBox layoutX="15.0" layoutY="9.0" AnchorPane.bottomAnchor="0.0"
+                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                          AnchorPane.topAnchor="0.0">
+                                        <AnchorPane>
+                                            <Text layoutX="14.0" layoutY="21.0"
+                                                  strokeType="OUTSIDE" strokeWidth="0.0"
+                                                  text="Descripción:">
+                                                <font>
+                                                    <Font name="System Bold" size="14.0"/>
+                                                </font>
+                                            </Text>
+                                        </AnchorPane>
+                                        <AnchorPane prefHeight="200.0" prefWidth="200.0"/>
+                                    </HBox>
+                                </AnchorPane>
+                                <AnchorPane layoutX="10.0" layoutY="45.0" prefHeight="35.0"
+                                            prefWidth="200.0" style="-fx-border-color: gray;">
+                                    <HBox layoutX="15.0" layoutY="9.0" AnchorPane.bottomAnchor="0.0"
+                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                          AnchorPane.topAnchor="0.0">
+                                        <AnchorPane>
+                                            <Text layoutX="14.0" layoutY="21.0"
+                                                  strokeType="OUTSIDE" strokeWidth="0.0"
+                                                  text="Marca:">
+                                                <font>
+                                                    <Font name="System Bold" size="14.0"/>
+                                                </font>
+                                            </Text>
+                                        </AnchorPane>
+                                        <AnchorPane prefHeight="200.0" prefWidth="200.0"/>
+                                    </HBox>
+                                </AnchorPane>
+                                <AnchorPane layoutX="10.0" layoutY="80.0" prefHeight="35.0"
+                                            prefWidth="200.0" style="-fx-border-color: gray;">
+                                    <HBox layoutX="15.0" layoutY="9.0" AnchorPane.bottomAnchor="0.0"
+                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                          AnchorPane.topAnchor="0.0">
+                                        <AnchorPane>
+                                            <Text layoutX="14.0" layoutY="21.0"
+                                                  strokeType="OUTSIDE" strokeWidth="0.0"
+                                                  text="Rubro:">
+                                                <font>
+                                                    <Font name="System Bold" size="14.0"/>
+                                                </font>
+                                            </Text>
+                                        </AnchorPane>
+                                        <AnchorPane prefHeight="200.0" prefWidth="200.0"/>
+                                    </HBox>
+                                </AnchorPane>
+                                <AnchorPane layoutX="10.0" layoutY="115.0" prefHeight="35.0"
+                                            prefWidth="200.0" style="-fx-border-color: gray;">
+                                    <HBox layoutX="15.0" layoutY="9.0" AnchorPane.bottomAnchor="0.0"
+                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                          AnchorPane.topAnchor="0.0">
+                                        <AnchorPane>
+                                            <Text layoutX="14.0" layoutY="21.0"
+                                                  strokeType="OUTSIDE" strokeWidth="0.0"
+                                                  text="Precio de Venta:">
+                                                <font>
+                                                    <Font name="System Bold" size="14.0"/>
+                                                </font>
+                                            </Text>
+                                        </AnchorPane>
+                                        <AnchorPane prefHeight="200.0" prefWidth="200.0"/>
+                                    </HBox>
+                                </AnchorPane>
+                                <AnchorPane layoutX="10.0" layoutY="150.0" prefHeight="35.0"
+                                            prefWidth="200.0" style="-fx-border-color: gray;">
+                                    <HBox layoutX="15.0" layoutY="9.0" AnchorPane.bottomAnchor="0.0"
+                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                          AnchorPane.topAnchor="0.0">
+                                        <AnchorPane>
+                                            <Text layoutX="14.0" layoutY="21.0"
+                                                  strokeType="OUTSIDE" strokeWidth="0.0"
+                                                  text="Precio de Compra:">
+                                                <font>
+                                                    <Font name="System Bold" size="14.0"/>
+                                                </font>
+                                            </Text>
+                                        </AnchorPane>
+                                        <AnchorPane prefHeight="200.0" prefWidth="200.0"/>
+                                    </HBox>
+                                </AnchorPane>
+                                <AnchorPane layoutX="10.0" layoutY="185.0" prefHeight="35.0"
+                                            prefWidth="200.0" style="-fx-border-color: gray;">
+                                    <HBox layoutX="15.0" layoutY="9.0" AnchorPane.bottomAnchor="0.0"
+                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                          AnchorPane.topAnchor="0.0">
+                                        <AnchorPane>
+                                            <Text layoutX="14.0" layoutY="21.0"
+                                                  strokeType="OUTSIDE" strokeWidth="0.0"
+                                                  text="Stock:">
+                                                <font>
+                                                    <Font name="System Bold" size="14.0"/>
+                                                </font>
+                                            </Text>
+                                        </AnchorPane>
+                                        <AnchorPane prefHeight="200.0" prefWidth="200.0"/>
+                                    </HBox>
+                                </AnchorPane>
+                                <AnchorPane layoutX="10.0" layoutY="220.0" prefHeight="35.0"
+                                            prefWidth="200.0" style="-fx-border-color: gray;">
+                                    <HBox layoutX="15.0" layoutY="9.0" AnchorPane.bottomAnchor="0.0"
+                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                          AnchorPane.topAnchor="0.0">
+                                        <AnchorPane>
+                                            <Button fx:id="btnEditarProducto"
+                                                    mnemonicParsing="false" text="Editar"/>
+                                        </AnchorPane>
+                                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                            <Button fx:id="btnEliminarProducto"
+                                                    mnemonicParsing="false" text="Eliminar"/>
+                                        </AnchorPane>
+                                    </HBox>
+                                </AnchorPane>
+                            </VBox>
+                        </VBox>
+                    </AnchorPane>
+                </HBox>
             </AnchorPane>
         </VBox>
     </ScrollPane>
