@@ -31,7 +31,6 @@ const rubroRepo = new MySQLRubroRepository(pool);
 
 // Routers
 app.use('/api/usuarios', initUsuarioModule(pool));
-app.use('/api/cajeros', initUsuarioModule(pool));
 app.use('/api/cajeros', initCajeroModule(pool));
 app.use('/api/clientes', initClienteModule(pool));
 app.use('/api/empleados', initEmpleadoModule(pool));

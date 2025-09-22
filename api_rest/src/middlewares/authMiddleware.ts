@@ -4,8 +4,8 @@ import jwt from "jsonwebtoken";
 export function authMiddleware(req: Request, res: Response, next: NextFunction) {
     const publicRoutes = [
         "/api/ping",
-        "/api/auth/login",
-        "/api/auth/register",
+        "/api/usuarios/login",
+        "/api/usuarios/register",
     ];
 
     if (publicRoutes.includes(req.path)) {

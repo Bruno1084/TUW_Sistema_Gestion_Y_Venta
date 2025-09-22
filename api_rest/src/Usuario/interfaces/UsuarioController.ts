@@ -22,7 +22,12 @@ export class UsuarioController {
             } = req.body;
 
             const usuarioCreado = await this.useCases.register.run(nombre, contrasenia);
-            res.status(201).json(usuarioCreado);
+
+            const response = {
+                id: usuarioCreado.id.value,
+                nombre: usuarioCreado.nombre.value
+            }
+            res.status(201).json(response);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
@@ -36,7 +41,7 @@ export class UsuarioController {
             } = req.body;
 
             const token = await this.useCases.login.run(nombre, contrasenia);
-            res.status(200).json(token);
+            res.status(200).json({ token: token });
         } catch (err: any) {
             res.status(500).json({ error: err.message });
         }
@@ -45,9 +50,14 @@ export class UsuarioController {
     async getOneByIdUsuario(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
-
             const usuario = await this.useCases.getOneById.run(Number(id));
-            res.status(200).json(usuario);
+
+            const response = {
+                id: usuario?.id.value,
+                nombre: usuario?.nombre.value
+            }
+
+            res.status(200).json(response);
         } catch (err: any) {
             res.status(500).json({ error: err.message });
         }
@@ -56,11 +66,21 @@ export class UsuarioController {
     async getOneByNombreUsuario(req: Request, res: Response): Promise<void> {
         try {
             const { nombre } = req.params;
-
             const usuario = await this.useCases.getOneByNombre.run(nombre!);
-            res.status(200).json(usuario);
+
+            const response = {
+                id: usuario?.id.value,
+                nombre: usuario?.nombre.value
+            }
+
+            res.status(200).json(response);
         } catch (err: any) {
-            res.status(500).json({ error: err.message });
+            if (err.message === "Usuario no encontrado") {
+                res.status(404).json({ error: err.message });
+            } else {
+                console.error(err);
+                res.status(500).json({ error: "Error interno del servidor" });
+            }
         }
     }
 }

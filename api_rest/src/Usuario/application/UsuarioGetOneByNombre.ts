@@ -6,10 +6,6 @@ export class UsuarioGetOneByNombre {
     constructor(private repository: UsuarioRepository) { }
 
     async run(nombre: string): Promise<Usuario | null> {
-        const usuario = await this.repository.getOneByNombre(new UsuarioNombre(nombre));
-
-        if(!usuario) throw new Error('Usuario no encontrado');
-
-        return usuario;
+        return await this.repository.getOneByNombre(new UsuarioNombre(nombre));
     }
 }

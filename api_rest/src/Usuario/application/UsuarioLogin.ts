@@ -1,5 +1,5 @@
-import { UsuarioNombre } from "../domain/UsuarioNombre";
 import type { UsuarioRepository } from "../domain/UsuarioRepository";
+import { UsuarioNombre } from "../domain/UsuarioNombre";
 import jwt from  "jsonwebtoken";
 
 export class UsuarioLogin {
@@ -11,7 +11,7 @@ export class UsuarioLogin {
         if(!usuario)
             throw new Error('Usuario no encontrado');
 
-        if (usuario.contrasenia.comparar(contrasenia)) 
+        if (!usuario.contrasenia.comparar(contrasenia)) 
             throw new Error("Contraseña inválida");
 
         const payload = { sub: usuario.id.value };

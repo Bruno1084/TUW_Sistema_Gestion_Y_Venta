@@ -1,19 +1,19 @@
-import { UsuarioContrasenia } from "./UsuarioContrasenia";
 import type { UsuarioId } from "./UsuarioId";
 import { UsuarioNombre } from "./UsuarioNombre";
+import { UsuarioContrasenia } from "./UsuarioContrasenia";
 
 export class Usuario {
     id: UsuarioId;
     nombre: UsuarioNombre;
     contrasenia: UsuarioContrasenia;
 
-    constructor (id: UsuarioId, nombre: UsuarioNombre, contrasenia: UsuarioContrasenia) {
+    constructor(id: UsuarioId, nombre: UsuarioNombre, contrasenia: UsuarioContrasenia) {
         this.id = id;
         this.nombre = nombre;
         this.contrasenia = contrasenia;
     }
 
-        toJSON() {
+    toJSON() {
         return {
             id: this.id.value,
             nombre: this.nombre.value,

@@ -13,6 +13,11 @@ type MySQLUsuario = {
     contrasenia_salt: string;
 }
 
+type PublicUsuario = {
+    id: number;
+    nombre: string;
+}
+
 export class MySQLUsuarioRepository implements UsuarioRepository {
     private pool: Pool
 
