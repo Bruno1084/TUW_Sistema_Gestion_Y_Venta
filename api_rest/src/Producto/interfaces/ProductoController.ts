@@ -59,8 +59,8 @@ export class ProductoController {
 
     async getOneByIdProducto(req: Request, res: Response): Promise<void> {
         try {
-            const { codigoBarra } = req.params;
-            const producto = await this.useCases.getOneById.run(codigoBarra!);
+            const { codigo } = req.params;
+            const producto = await this.useCases.getOneById.run(codigo!);
 
             if (!producto) {
                 res.status(404).json({ error: "Producto no encontrado" });
@@ -75,7 +75,7 @@ export class ProductoController {
 
     async updateProducto(req: Request, res: Response): Promise<void> {
         try {
-            const { codigoBarra } = req.params;
+            const { codigo } = req.params;
             const {
                 descripcion,
                 precioCompra,
@@ -88,7 +88,7 @@ export class ProductoController {
             } = req.body;
 
             const productoActualizado = await this.useCases.update.run(
-                codigoBarra!,
+                codigo!,
                 {
                     descripcion,
                     precioCompra,

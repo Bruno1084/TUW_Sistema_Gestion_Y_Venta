@@ -1,7 +1,7 @@
 import type { ProductoRepository } from "../domain/ProductoRepository";
-import type { ProveedorId } from "../../Proveedor/domain/ProveedorId";
-import type { MarcaId } from "../../Marca/domain/MarcaId";
-import type { RubroId } from "../../Rubro/domain/RubroId";
+import { ProveedorId } from "../../Proveedor/domain/ProveedorId";
+import { MarcaId } from "../../Marca/domain/MarcaId";
+import { RubroId } from "../../Rubro/domain/RubroId";
 import { Producto } from "../domain/Producto";
 import { ProductoCodigoBarra } from "../domain/ProductoCodigoBarra";
 import { ProductoDescripcion } from "../domain/ProductoDescripcion";
@@ -25,9 +25,9 @@ export class ProductoCreate {
         imgUri: string,
         fechaCreacion: Date,
         fechaModificacion: Date,
-        proveedorId: ProveedorId,
-        marcaId: MarcaId,
-        rubroId: RubroId,
+        proveedorId: number,
+        marcaId: number,
+        rubroId: number,
     ): Promise<Producto> {
         const producto = new Producto(
             new ProductoCodigoBarra(codigoBarra),
@@ -38,9 +38,9 @@ export class ProductoCreate {
             new ProductoImgUri(imgUri),
             new ProductoFechaCreacion(fechaCreacion),
             new ProductoFechaModificacion(fechaModificacion),
-            proveedorId,
-            marcaId,
-            rubroId,
+            new ProveedorId(proveedorId),
+            new MarcaId(marcaId),
+            new RubroId(rubroId),
             new ProductoEsActivo(true)
         );
 

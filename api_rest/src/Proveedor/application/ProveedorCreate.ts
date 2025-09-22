@@ -23,8 +23,8 @@ export class ProveedorCreate {
             new ProveedorNombre(nombre),
             new ProveedorDireccion(direccion),
             new ProveedorTelefono(telefono),
-            new ProveedorFechaCreacion(fechaCreacion),
-            new ProveedorFechaModificacion(fechaModificacion),
+            new ProveedorFechaCreacion(new Date()),
+            new ProveedorFechaModificacion(new Date()),
             new ProveedorEsActivo(true)
         );
 

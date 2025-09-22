@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -26,18 +27,24 @@ public class EmpleadosController {
     private ObservableList<Empleado> empleados = FXCollections.observableArrayList();
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yy HH:mm");
 
-    @FXML private TextField inputSearchIdEmpleado;
-    @FXML private TextField inputSearchNombreEmpleado;
-    @FXML private TextField inputSearchDireccionEmpleado;
-    @FXML private TextField inputSearchTelefonoEmpleado;
-
+    // Table View Empleados
     @FXML private TableView<Empleado> tableEmpleados;
     @FXML private TableColumn<Empleado, String> columnIdEmpleado;
     @FXML private TableColumn<Empleado, String> columnNombreEmpleado;
     @FXML private TableColumn<Empleado, String> columnDireccionEmpleado;
     @FXML private TableColumn<Empleado, String> columnTelefonoEmpleado;
     @FXML private TableColumn<Empleado, Date> columnFechaCreacionEmpleado;
+    @FXML private TableColumn<Empleado, VBox> columnOpcionEmpleado;
 
+    // Buttons
+    @FXML private Button btnAniadirEmpleado;
+    @FXML private Button btnEditarEmpleado;
+    @FXML private Button btnEliminarEmpleado;
+
+    // Search Bar Empleados
+    @FXML private TextField inputBuscarEmpleado;
+
+    // Text
     @FXML private Text txtIdEmpleado;
     @FXML private Text txtNombreEmpleado;
     @FXML private Text txtDireccionEmpleado;
@@ -45,11 +52,7 @@ public class EmpleadosController {
     @FXML private Text txtFechaCreacionEmpleado;
     @FXML private Text txtFechaModificacionEmpleado;
 
-    @FXML private Button btnAniadirEmpleado;
-    @FXML private Button btnEditarEmpleado;
-    @FXML private Button btnEliminarEmpleado;
-
-
+    // Helper Methods
     public void agregarEmpleado(Empleado empleado) {
         empleados.add(empleado);
     }
@@ -60,7 +63,6 @@ public class EmpleadosController {
 
             empleados.clear();
             empleados.addAll(Arrays.asList(lista));
-
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error al cargar empleados");
@@ -78,7 +80,6 @@ public class EmpleadosController {
             }
         }
     }
-
 
     private void displayEmpleado(Empleado empleado) {
         txtIdEmpleado.setText(String.valueOf(empleado.getId()));
@@ -99,7 +100,7 @@ public class EmpleadosController {
         }
     }
 
-
+    // FXML Methods
     @FXML public void initialize() {
         tableEmpleados.setItems(empleados);
         columnIdEmpleado.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -143,10 +144,6 @@ public class EmpleadosController {
         }
     }
 
-    @FXML private void handleBuscarEmpleado(ActionEvent event) {
-
-    }
-
     @FXML private void handleEditarEmpleado(ActionEvent event) {
         try {
             Empleado seleccionado = tableEmpleados.getSelectionModel().getSelectedItem();
@@ -179,7 +176,6 @@ public class EmpleadosController {
             exception.printStackTrace();
         }
     }
-
 
     @FXML private void handleEliminarEmpleado(ActionEvent event) {
         try {

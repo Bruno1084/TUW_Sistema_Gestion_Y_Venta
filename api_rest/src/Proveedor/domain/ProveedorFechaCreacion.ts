@@ -8,8 +8,6 @@ export class ProveedorFechaCreacion {
     }
 
     private checkValue() {
-        if(this.value.getTime() > new Date().getTime()) {
-            throw new Error('Proveedor fecha creación no puede ser mayor a la fecha actual.');
-        }
+
     }
 }

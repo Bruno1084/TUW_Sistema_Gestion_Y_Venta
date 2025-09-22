@@ -28,7 +28,7 @@ export class MySQLProveedorRepository implements ProveedorRepository {
 
     async create(proveedor: Proveedor): Promise<Proveedor> {
         const query = `
-        INSERT INTO proveedores(nombre, direccion, telefono, fechaCreacion, fechaModificacion, es_activo)
+        INSERT INTO proveedores(nombre, direccion, telefono, fecha_creacion, fecha_modificacion, es_activo)
         VALUES(?, ?, ?, ?, ?, ?)
         `;
 

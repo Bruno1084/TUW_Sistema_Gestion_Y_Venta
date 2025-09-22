@@ -8,8 +8,6 @@ export class MarcaFechaModificacion {
     }
 
     private checkValue() {
-        if(this.value.getTime() > new Date().getTime()) {
-            throw new Error('Marca fecha modificación no puede ser mayor a la fecha actual.');
-        }
+
     }
 }

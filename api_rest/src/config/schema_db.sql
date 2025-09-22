@@ -53,6 +53,7 @@ create table marcas(
     nombre varchar(50),
 	fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    es_activo bool not null default true,
     primary key(id)
 );
 
@@ -61,6 +62,7 @@ create table rubros(
     nombre varchar(50),
 	fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    es_activo bool not null default true,
     primary key(id)
 );
 
