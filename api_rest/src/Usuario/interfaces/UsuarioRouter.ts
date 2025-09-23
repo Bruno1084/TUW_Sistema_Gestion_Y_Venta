@@ -7,7 +7,6 @@ export function usuarioRouter(usuarioController: UsuarioController): Router {
     router.post('/login', usuarioController.loginUsuario.bind(usuarioController));
     router.post('/register', usuarioController.registerUsuario.bind(usuarioController));
     router.get('/getOneById/:id', usuarioController.getOneByIdUsuario.bind(usuarioController));
-    router.get('/getOneByNombre/:nombre', usuarioController.getOneByNombreUsuario.bind(usuarioController));
 
     return router;
 };

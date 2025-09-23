@@ -91,6 +91,7 @@ public class ProductosController {
         columnMarcaProducto.setCellValueFactory(new PropertyValueFactory<>("Marca"));
         columnRubroProducto.setCellValueFactory(new PropertyValueFactory<>("Rubro"));
         columnPrecioVentaProducto.setCellValueFactory(new PropertyValueFactory<>("Precio de Venta"));
+        columnStockProducto.setCellValueFactory(new PropertyValueFactory<>("Stock"));
 
         tableProductos.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {

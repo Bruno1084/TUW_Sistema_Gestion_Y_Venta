@@ -1,5 +1,8 @@
 package com.controller;
 
+import com.model.SessionManager;
+import com.model.Usuario;
+import com.model.AuthResponse;
 import javafx.fxml.FXML;
 import com.service.AuthService;
 import javafx.event.ActionEvent;
@@ -22,8 +25,8 @@ public class LoginController {
 
         try {
             if (!inputNombre.getText().isBlank() && !inputContrasenia.getText().isBlank()) {
-//                String token = authService.login(inputNombre.getText(), inputContrasenia.getText());
-//                SessionManager.setToken(token);
+                AuthResponse authResponse = authService.login(inputNombre.getText(), inputContrasenia.getText());
+                SessionManager.getInstance().setToken(authResponse.getToken());
 
                 // Redireccionar a Main
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/sidebar.fxml"));

@@ -1,7 +1,7 @@
 export class UsuarioNombre {
-    value: String;
+    value: string;
 
-    constructor(value: String) {
+    constructor(value: string) {
         this.value = value;
     }
 }

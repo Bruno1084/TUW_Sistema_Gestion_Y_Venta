@@ -1,13 +1,23 @@
 package com.model;
 
 public class SessionManager {
-    private static String token;
+    private static SessionManager instance;
+    private String token;
 
-    public static void setToken(String t) {
-        token = t;
+    private SessionManager() {}
+
+    public static SessionManager getInstance() {
+        if (instance == null) {
+            instance = new SessionManager();
+        }
+        return instance;
     }
 
-    public static String getToken() {
+    public String getToken() {
         return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
