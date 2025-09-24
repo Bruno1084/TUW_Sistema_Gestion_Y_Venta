@@ -1,7 +1,6 @@
 package com.controller;
 
 import com.model.SessionManager;
-import com.model.Usuario;
 import com.model.AuthResponse;
 import javafx.fxml.FXML;
 import com.service.AuthService;

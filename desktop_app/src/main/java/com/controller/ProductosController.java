@@ -9,13 +9,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 public class ProductosController {
     private final ProductoService productoService = new ProductoService();
-    private ObservableList<Producto> productos = FXCollections.observableArrayList();
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yy HH:mm");
+    private final ObservableList<Producto> productos = FXCollections.observableArrayList();
 
     // Table View Productos
     @FXML private TableView<Producto> tableProductos;
@@ -74,10 +72,10 @@ public class ProductosController {
     }
 
     public void displayProducto(Producto producto) {
-        txtCodigoBarraProducto.setText(String.valueOf(producto.getCodigoBarra()));
+        txtCodigoBarraProducto.setText(producto.getCodigoBarra());
         txtDescripcionProducto.setText(producto.getDescripcion());
-        txtMarcaProducto.setText(String.valueOf(producto.getIdMarca()));
-        txtRubroProducto.setText(String.valueOf(producto.getIdRubro()));
+        txtMarcaProducto.setText(String.valueOf(producto.getMarcaId()));
+        txtRubroProducto.setText(String.valueOf(producto.getRubroId()));
         txtPrecioCompraProducto.setText(String.valueOf(producto.getPrecioCompra()));
         txtPrecioVentaProducto.setText(String.valueOf(producto.getPrecioVenta()));
         txtStockProducto.setText(String.valueOf(producto.getStock()));
@@ -86,12 +84,12 @@ public class ProductosController {
     // FXML Methods
     @FXML public void initialize() {
         tableProductos.setItems(productos);
-        columnCodigoBarraProducto.setCellValueFactory(new PropertyValueFactory<>("Código de Barra"));
-        columnDescripcionProducto.setCellValueFactory(new PropertyValueFactory<>("Descripción"));
-        columnMarcaProducto.setCellValueFactory(new PropertyValueFactory<>("Marca"));
-        columnRubroProducto.setCellValueFactory(new PropertyValueFactory<>("Rubro"));
-        columnPrecioVentaProducto.setCellValueFactory(new PropertyValueFactory<>("Precio de Venta"));
-        columnStockProducto.setCellValueFactory(new PropertyValueFactory<>("Stock"));
+        columnCodigoBarraProducto.setCellValueFactory(new PropertyValueFactory<>("codigoBarra"));
+        columnDescripcionProducto.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+        columnMarcaProducto.setCellValueFactory(new PropertyValueFactory<>("marcaId"));
+        columnRubroProducto.setCellValueFactory(new PropertyValueFactory<>("rubroId"));
+        columnPrecioVentaProducto.setCellValueFactory(new PropertyValueFactory<>("precioVenta"));
+        columnStockProducto.setCellValueFactory(new PropertyValueFactory<>("stock"));
 
         tableProductos.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {

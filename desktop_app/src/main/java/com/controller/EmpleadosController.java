@@ -24,7 +24,7 @@ import java.util.Date;
 
 public class EmpleadosController {
     private final EmpleadoService empleadoService = new EmpleadoService();
-    private ObservableList<Empleado> empleados = FXCollections.observableArrayList();
+    private final ObservableList<Empleado> empleados = FXCollections.observableArrayList();
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yy HH:mm");
 
     // Table View Empleados
@@ -37,6 +37,7 @@ public class EmpleadosController {
     @FXML private TableColumn<Empleado, VBox> columnOpcionEmpleado;
 
     // Buttons
+    @FXML private MenuButton btnFiltrarEmpleado;
     @FXML private Button btnAniadirEmpleado;
     @FXML private Button btnEditarEmpleado;
     @FXML private Button btnEliminarEmpleado;
@@ -82,7 +83,7 @@ public class EmpleadosController {
     }
 
     private void displayEmpleado(Empleado empleado) {
-        txtIdEmpleado.setText(String.valueOf(empleado.getId()));
+        txtIdEmpleado.setText(empleado.getId());
         txtNombreEmpleado.setText(empleado.getNombre());
         txtDireccionEmpleado.setText(empleado.getDireccion());
         txtTelefonoEmpleado.setText(empleado.getTelefono());

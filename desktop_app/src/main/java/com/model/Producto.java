@@ -11,9 +11,10 @@ public class Producto {
     private String imgUri;
     private Date fechaCreacion;
     private Date fechaModificacion;
-    private int idProveedor;
-    private int idMarca;
-    private int idRubro;
+    private int proveedorId;
+    private int marcaId;
+    private int rubroId;
+    private boolean esActivo;
 
     public Producto() {}
 
@@ -26,9 +27,10 @@ public class Producto {
             String imgUri,
             Date fechaCreacion,
             Date fechaModificacion,
-            int idProveedor,
-            int idMarca,
-            int idRubro
+            int proveedorId,
+            int marcaId,
+            int rubroId,
+            boolean esActivo
     ) {
         this.codigoBarra = codigoBarra;
         this.descripcion = descripcion;
@@ -38,9 +40,10 @@ public class Producto {
         this.imgUri = imgUri;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
-        this.idProveedor = idProveedor;
-        this.idMarca = idMarca;
-        this.idRubro = idRubro;
+        this.proveedorId = proveedorId;
+        this.marcaId = marcaId;
+        this.rubroId = rubroId;
+        this.esActivo = esActivo;
     }
 
     public String getCodigoBarra() {
@@ -107,27 +110,35 @@ public class Producto {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public int getIdProveedor() {
-        return idProveedor;
+    public int getProveedorId() {
+        return proveedorId;
     }
 
-    public void setIdProveedor(int idProveedor) {
-        this.idProveedor = idProveedor;
+    public void setProveedorId(int proveedorId) {
+        this.proveedorId = proveedorId;
     }
 
-    public int getIdMarca() {
-        return idMarca;
+    public int getMarcaId() {
+        return marcaId;
     }
 
-    public void setIdMarca(int idMarca) {
-        this.idMarca = idMarca;
+    public void setMarcaId(int marcaId) {
+        this.marcaId = marcaId;
     }
 
-    public int getIdRubro() {
-        return idRubro;
+    public int getRubroId() {
+        return rubroId;
     }
 
-    public void setIdRubro(int idRubro) {
-        this.idRubro = idRubro;
+    public void setRubroId(int rubroId) {
+        this.rubroId = rubroId;
+    }
+
+    public boolean isEsActivo() {
+        return esActivo;
+    }
+
+    public void setEsActivo(boolean esActivo) {
+        this.esActivo = esActivo;
     }
 }

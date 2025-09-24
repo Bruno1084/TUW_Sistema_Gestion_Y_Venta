@@ -5,7 +5,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Map;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.model.AuthResponse;
 import com.model.Usuario;
@@ -29,7 +28,6 @@ public class AuthService {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
         if (response.statusCode() == 200) {
             return mapper.readValue(response.body(), AuthResponse.class);
         } else {

@@ -1,5 +1,107 @@
 package com.service;
 
-public class ProveedorService {
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.model.Proveedor;
+import com.model.SessionManager;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
+public class ProveedorService {
+    private static final String BASE_URL = "http://localhost:8080/api/proveedores";
+    private final HttpClient client = HttpClient.newHttpClient();
+    private final ObjectMapper mapper = new ObjectMapper();
+
+    public Proveedor createProveedor(Proveedor proveedor) throws Exception {
+        String requestBody = mapper.writeValueAsString(proveedor);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/create"))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() == 201) {
+            return mapper.readValue(response.body(), Proveedor.class);
+        } else {
+            throw new RuntimeException("Error al crear proveedor: " + response.body());
+        }
+    }
+
+    public Proveedor[] getAllProveedor() throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/getAll"))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() == 200) {
+            return mapper.readValue(response.body(), Proveedor[].class);
+        } else {
+            throw new RuntimeException("Error al obtener empleados: " + response.body());
+        }
+    }
+
+    public Proveedor getProveedorById(int proveedorId) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/getOneById/" + proveedorId))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() == 200) {
+            return mapper.readValue(response.body(), Proveedor.class);
+        } else if (response.statusCode() == 404) {
+            return null;
+        } else {
+            throw new RuntimeException("Error al obtener proveedor: " + response.body());
+        }
+    }
+
+    public Proveedor updateProveedor(int proveedorId, Proveedor proveedor) throws Exception {
+        String requestBody = mapper.writeValueAsString(proveedor);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/update/" + proveedorId))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() == 200) {
+            return mapper.readValue(response.body(), Proveedor.class);
+        } else {
+            throw new RuntimeException("Error al actualizar proveedor: " + response.body());
+        }
+    }
+
+    public boolean deleteProveedor(int proveedorId) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/delete/" + proveedorId))
+                .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                .DELETE()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() == 204) {
+            return true;
+        } else if (response.statusCode() == 404) {
+            return false;
+        } else {
+            throw new RuntimeException("Error al eliminar proveedor: " + response.body());
+        }
+    }
 }
