@@ -20,12 +20,6 @@ create table empleados(
     primary key(id)
 );
 
-create table repartidores(
-	id_empleado int not null,
-    primary key(id_empleado),
-    foreign key(id_empleado) references empleados(id)
-);
-
 create table clientes(
 	id int not null auto_increment,
     nombre varchar(80) not null,
@@ -39,7 +33,7 @@ create table clientes(
 
 create table proveedores(
 	id int not null auto_increment,
-    nombre varchar(80) not null,
+    nombre varchar(80) unique not null,
     direccion varchar(255) not null,
     telefono varchar(15) not null,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -50,7 +44,7 @@ create table proveedores(
 
 create table marcas(
 	id int not null auto_increment,
-    nombre varchar(50),
+    nombre varchar(50) unique not null ,
 	fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     es_activo bool not null default true,
@@ -59,7 +53,7 @@ create table marcas(
 
 create table rubros(
 	id int not null auto_increment,
-    nombre varchar(50),
+    nombre varchar(50) unique not null,
 	fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     es_activo bool not null default true,

@@ -35,8 +35,12 @@ public class AuthService {
         }
     }
 
-    public Usuario register(Usuario usuario) throws Exception {
-        String requestBody = mapper.writeValueAsString(usuario);
+    public Usuario register(String nombre, String contrasenia) throws Exception {
+        Map<String, String> registerData = Map.of(
+                "nombre", nombre,
+                "contrasenia", contrasenia
+        );
+        String requestBody = mapper.writeValueAsString(registerData);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/register"))
