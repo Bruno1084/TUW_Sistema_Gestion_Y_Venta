@@ -121,7 +121,7 @@ public class EmpleadosController {
 
     @FXML private void handleAniadirEmpleado(ActionEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/ModalEmpleado.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/modal/ModalEmpleado.fxml"));
             Parent root = fxmlLoader.load();
 
             ModalEmpleadoController modalController = fxmlLoader.getController();

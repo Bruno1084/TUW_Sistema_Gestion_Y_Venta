@@ -17,8 +17,8 @@ public class ModalEmpleadoController {
     private Empleado empleado;
 
     @FXML private Text txtTituloEmpleado;
-    @FXML private TextField inputIdEmpleado;
     @FXML private TextField inputNombreEmpleado;
+    @FXML private TextField inputApellidoEmpleado;
     @FXML private TextField inputDireccionEmpleado;
     @FXML private TextField inputTelefonoEmpleado;
 
@@ -32,9 +32,10 @@ public class ModalEmpleadoController {
 
     public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
+        String[] nombre = empleado.getNombre().split(" ");
 
-        inputIdEmpleado.setText(empleado.getId());
-        inputNombreEmpleado.setText(empleado.getNombre());
+        inputNombreEmpleado.setText(nombre[0]);
+        inputApellidoEmpleado.setText(nombre[1]);
         inputDireccionEmpleado.setText(empleado.getDireccion());
         inputTelefonoEmpleado.setText(empleado.getTelefono());
     }
@@ -45,7 +46,7 @@ public class ModalEmpleadoController {
                 // Caso crear Empleado
                 Empleado nuevoEmpleado = new Empleado(
                         null,
-                        inputNombreEmpleado.getText(),
+                        inputNombreEmpleado.getText() + " " + inputApellidoEmpleado.getText(),
                         inputDireccionEmpleado.getText(),
                         inputTelefonoEmpleado.getText(),
                         new Date(),
@@ -61,7 +62,7 @@ public class ModalEmpleadoController {
 
             } else {
                 // Caso editar Empleado
-                empleado.setNombre(inputNombreEmpleado.getText());
+                empleado.setNombre(inputNombreEmpleado.getText() + " " + inputApellidoEmpleado.getText());
                 empleado.setDireccion(inputDireccionEmpleado.getText());
                 empleado.setTelefono(inputTelefonoEmpleado.getText());
                 empleado.setFechaModificacion(new Date());
@@ -80,7 +81,6 @@ public class ModalEmpleadoController {
             exception.printStackTrace();
         }
     }
-
 
     @FXML private void handleBtnCancelar(ActionEvent event) {
         Stage currentStage = (Stage) btnCancelarEmpleado.getScene().getWindow();
