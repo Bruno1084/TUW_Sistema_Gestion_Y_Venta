@@ -13,7 +13,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -34,7 +33,7 @@ public class EmpleadosController {
     @FXML private TableColumn<Empleado, String> columnDireccionEmpleado;
     @FXML private TableColumn<Empleado, String> columnTelefonoEmpleado;
     @FXML private TableColumn<Empleado, Date> columnFechaCreacionEmpleado;
-    @FXML private TableColumn<Empleado, VBox> columnOpcionEmpleado;
+    @FXML private TableColumn<Empleado, Date> columnFechaModificacionEmpleado;
 
     // Buttons
     @FXML private MenuButton btnFiltrarEmpleado;
@@ -48,6 +47,7 @@ public class EmpleadosController {
     // Text
     @FXML private Text txtIdEmpleado;
     @FXML private Text txtNombreEmpleado;
+    @FXML private Text txtApellidoEmpleado;
     @FXML private Text txtDireccionEmpleado;
     @FXML private Text txtTelefonoEmpleado;
     @FXML private Text txtFechaCreacionEmpleado;
@@ -83,8 +83,10 @@ public class EmpleadosController {
     }
 
     private void displayEmpleado(Empleado empleado) {
+        String[] nombre = empleado.getNombre().split(" ");
         txtIdEmpleado.setText(empleado.getId());
-        txtNombreEmpleado.setText(empleado.getNombre());
+        txtNombreEmpleado.setText(nombre[0]);
+        txtApellidoEmpleado.setText(nombre[1]);
         txtDireccionEmpleado.setText(empleado.getDireccion());
         txtTelefonoEmpleado.setText(empleado.getTelefono());
 
@@ -109,6 +111,7 @@ public class EmpleadosController {
         columnDireccionEmpleado.setCellValueFactory(new PropertyValueFactory<>("direccion"));
         columnTelefonoEmpleado.setCellValueFactory(new PropertyValueFactory<>("telefono"));
         columnFechaCreacionEmpleado.setCellValueFactory(new PropertyValueFactory<>("fechaCreacion"));
+        columnFechaModificacionEmpleado.setCellValueFactory(new PropertyValueFactory<>("fechaModificacion"));
 
         tableEmpleados.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
@@ -157,13 +160,14 @@ public class EmpleadosController {
                 return;
             }
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/ModalEmpleado.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/modal/ModalEmpleado.fxml"));
             Parent root = fxmlLoader.load();
 
             ModalEmpleadoController modalController = fxmlLoader.getController();
             modalController.setParentController(this);
 
             modalController.setEmpleado(seleccionado);
+            modalController.setTxtTituloEmpleado("Editar Empleado");
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
@@ -186,6 +190,14 @@ public class EmpleadosController {
                 empleadoService.deleteEmpleado(Integer.parseInt(empleadoSeleccionado.getId()));
 
                 empleados.remove(empleadoSeleccionado);
+
+                txtIdEmpleado.setText("");
+                txtNombreEmpleado.setText("");
+                txtApellidoEmpleado.setText("");
+                txtDireccionEmpleado.setText("");
+                txtTelefonoEmpleado.setText("");
+                txtFechaCreacionEmpleado.setText("");
+                txtFechaModificacionEmpleado.setText("");
             } else {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Atención");

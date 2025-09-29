@@ -40,6 +40,10 @@ public class ModalEmpleadoController {
         inputTelefonoEmpleado.setText(empleado.getTelefono());
     }
 
+    public void setTxtTituloEmpleado(String tituloModal) {
+        this.txtTituloEmpleado.setText(tituloModal);
+    }
+
     @FXML private void handleBtnGuardar(ActionEvent event) {
         try {
             if (empleado == null) {
