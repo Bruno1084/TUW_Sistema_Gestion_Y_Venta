@@ -9,7 +9,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class ClienteService {
-    private static final String BASE_URL = "http://localhost:8080/api/empleados";
+    private static final String BASE_URL = "http://localhost:8080/api/clientes";
     private final HttpClient client = HttpClient.newHttpClient();
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -17,9 +17,9 @@ public class ClienteService {
         String requestBody = mapper.writeValueAsString(cliente);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/clientes"))
+                .uri(URI.create(BASE_URL + "/create"))
                 .header("Content-Type", "application/json")
-                .header("Authorization", "Bearer" + SessionManager.getInstance().getToken())
+                .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
 

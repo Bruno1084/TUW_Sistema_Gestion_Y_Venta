@@ -17,8 +17,8 @@ public class ModalClienteController {
     private Cliente cliente;
 
     @FXML private Text txtTituloCliente;
-    @FXML private TextField inputIdCliente;
     @FXML private TextField inputNombreCliente;
+    @FXML private TextField inputApellidoCliente;
     @FXML private TextField inputDireccionCliente;
     @FXML private TextField inputTelefonoCliente;
 
@@ -32,35 +32,40 @@ public class ModalClienteController {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
 
-        inputIdCliente.setText(cliente.getId());
-        inputNombreCliente.setText(cliente.getNombre());
+        String[] nombre = cliente.getNombre().split(" ");
+        inputNombreCliente.setText(nombre[0]);
+        inputApellidoCliente.setText(nombre[1]);
         inputDireccionCliente.setText(cliente.getDireccion());
         inputTelefonoCliente.setText(cliente.getTelefono());
+    }
+
+    public void setTxtTituloCliente(String titulo) {
+        this.txtTituloCliente.setText(titulo);
     }
 
     @FXML private void handleBtnGuardar(ActionEvent event) {
         try {
             if (cliente == null) {
-                // Caso crear Empleado
-                Cliente nuevoEmpleado = new Cliente(
+                // Caso crear Cliente
+                Cliente nuevoCliente = new Cliente(
                         null,
-                        inputNombreCliente.getText(),
+                        inputNombreCliente.getText() + " " + inputApellidoCliente.getText(),
                         inputDireccionCliente.getText(),
-                        inputDireccionCliente.getText(),
+                        inputTelefonoCliente.getText(),
                         new Date(),
                         new Date(),
                         true
                 );
 
-                Cliente creado = clienteService.createCliente(nuevoEmpleado);
+                Cliente creado = clienteService.createCliente(nuevoCliente);
 
                 if (parentController != null) {
                     parentController.agregarCliente(creado);
                 }
 
             } else {
-                // Caso editar Empleado
-                cliente.setNombre(inputNombreCliente.getText());
+                // Caso editar Cliente
+                cliente.setNombre(inputNombreCliente.getText() + " " + inputApellidoCliente.getText());
                 cliente.setDireccion(inputDireccionCliente.getText());
                 cliente.setTelefono(inputTelefonoCliente.getText());
                 cliente.setFechaModificacion(new Date());

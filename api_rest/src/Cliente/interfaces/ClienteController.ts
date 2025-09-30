@@ -69,7 +69,7 @@ export class ClienteController {
             const {
                 nombre,
                 direccion,
-                telefono
+                telefono,
             } = req.body;
 
             const clienteActualizado = await this.useCases.update.run(Number(id), {

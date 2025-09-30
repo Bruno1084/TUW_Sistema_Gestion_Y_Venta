@@ -13,7 +13,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -34,7 +33,7 @@ public class ClientesController {
     @FXML private TableColumn<Cliente, String> columnDireccionCliente;
     @FXML private TableColumn<Cliente, String> columnTelefonoCliente;
     @FXML private TableColumn<Cliente, Date> columnFechaCreacionCliente;
-    @FXML private TableColumn<Cliente, VBox> columnOpcionCliente;
+    @FXML private TableColumn<Cliente, Date> columnFechaModificacionCliente;
 
     // Buttons
     @FXML private MenuButton btnFiltrarCliente;
@@ -48,6 +47,7 @@ public class ClientesController {
     // Text
     @FXML private Text txtIdCliente;
     @FXML private Text txtNombreCliente;
+    @FXML private Text txtApellidoCliente;
     @FXML private Text txtDireccionCliente;
     @FXML private Text txtTelefonoCliente;
     @FXML private Text txtFechaCreacionCliente;
@@ -83,10 +83,13 @@ public class ClientesController {
     }
 
     private void displayCliente(Cliente cliente) {
+        String[] nombre = cliente.getNombre().split(" ");
+
         txtIdCliente.setText(cliente.getId());
-        txtNombreCliente.setText(cliente.getNombre());
+        txtNombreCliente.setText(nombre[0]);
+        txtApellidoCliente.setText(nombre[1]);
         txtDireccionCliente.setText(cliente.getDireccion());
-        txtDireccionCliente.setText(cliente.getTelefono());
+        txtTelefonoCliente.setText(cliente.getTelefono());
 
         if (cliente.getFechaCreacion() != null) {
             txtFechaCreacionCliente.setText(DATE_FORMAT.format(cliente.getFechaCreacion()));
@@ -109,6 +112,7 @@ public class ClientesController {
         columnDireccionCliente.setCellValueFactory(new PropertyValueFactory<>("direccion"));
         columnTelefonoCliente.setCellValueFactory(new PropertyValueFactory<>("telefono"));
         columnFechaCreacionCliente.setCellValueFactory(new PropertyValueFactory<>("fechaCreacion"));
+        columnFechaModificacionCliente.setCellValueFactory(new PropertyValueFactory<>("fechaModificacion"));
 
         tableClientes.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
@@ -121,7 +125,7 @@ public class ClientesController {
 
     @FXML private void handleAniadirCliente(ActionEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/ModalCliente.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/modal/ModalCliente.fxml"));
             Parent root = fxmlLoader.load();
 
             ModalClienteController modalController = fxmlLoader.getController();
@@ -157,13 +161,15 @@ public class ClientesController {
                 return;
             }
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/ModalCliente.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/modal/ModalCliente.fxml"));
             Parent root = fxmlLoader.load();
 
             ModalClienteController modalController = fxmlLoader.getController();
             modalController.setParentController(this);
 
             modalController.setCliente(seleccionado);
+            modalController.setTxtTituloCliente("Editar Cliente");
+
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
@@ -186,6 +192,14 @@ public class ClientesController {
                 clienteService.deleteCliente(Integer.parseInt(clienteSeleccionado.getId()));
 
                 clientes.remove(clienteSeleccionado);
+
+                txtIdCliente.setText("");
+                txtNombreCliente.setText("");
+                txtApellidoCliente.setText("");
+                txtDireccionCliente.setText("");
+                txtTelefonoCliente.setText("");
+                txtFechaCreacionCliente.setText("");
+                txtFechaModificacionCliente.setText("");
             } else {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Atención");
