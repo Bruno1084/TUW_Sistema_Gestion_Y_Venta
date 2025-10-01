@@ -3,17 +3,6 @@ import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import type { ProductoDetailDTO, ProductoSimpleDTO } from "../application/ProductoDTO";
 import { Producto } from "../domain/Producto";
 import { ProductoCodigoBarra } from "../domain/ProductoCodigoBarra";
-import { ProductoDescripcion } from "../domain/ProductoDescripcion";
-import { ProductoPrecioCompra } from "../domain/ProductoPrecioCompra";
-import { ProductoPrecioVenta } from "../domain/ProductoPrecioVenta";
-import { ProveedorId } from "../../Proveedor/domain/ProveedorId";
-import { ProductoStock } from "../domain/ProductoStock";
-import { ProductoImgUri } from "../domain/ProductoImgUri";
-import { ProductoFechaCreacion } from "../domain/ProductoFechaCreacion";
-import { ProductoFechaModificacion } from "../domain/ProductoFechaModificacion";
-import { MarcaId } from "../../Marca/domain/MarcaId";
-import { RubroId } from "../../Rubro/domain/RubroId";
-import { ProductoEsActivo } from "../domain/ProductoEsActivo";
 
 type MySQLProducto = {
     codigo_barra: string;
@@ -37,7 +26,7 @@ export class MySQLProductoRepository implements ProductoRepository {
         this.pool = pool;
     }
 
-    async create(producto: Producto): Promise<Producto> {
+    async create(producto: Producto): Promise<ProductoSimpleDTO> {
         const query = `
             INSERT INTO productos(codigo_barra, descripcion, id_proveedor, id_marca, id_rubro, precio_compra, precio_venta, stock, img_uri, fecha_creacion, fecha_modificacion, es_activo)
             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -58,7 +47,7 @@ export class MySQLProductoRepository implements ProductoRepository {
             producto.esActivo.value
         ]);
 
-        return this.getOneById(producto.codigoBarra) as Promise<Producto>;
+        return this.getOneById(producto.codigoBarra) as Promise<ProductoSimpleDTO>;
     }
 
     async getAll(): Promise<ProductoSimpleDTO[]> {
@@ -130,7 +119,7 @@ export class MySQLProductoRepository implements ProductoRepository {
         );
     }
 
-    async getOneById(productoCodigoBarra: ProductoCodigoBarra): Promise<Producto | null> {
+    async getOneById(productoCodigoBarra: ProductoCodigoBarra): Promise<ProductoSimpleDTO | null> {
         const query = 'SELECT * FROM productos WHERE codigo_barra = ?';
 
         const [rows] = await this.pool.query<(MySQLProducto & RowDataPacket)[]>(query, [productoCodigoBarra.value]);
@@ -140,23 +129,23 @@ export class MySQLProductoRepository implements ProductoRepository {
         }
 
         const row = rows[0];
-        return new Producto(
-            new ProductoCodigoBarra(row!.codigo_barra),
-            new ProductoDescripcion(row!.descripcion),
-            new ProductoPrecioCompra(row!.precio_compra),
-            new ProductoPrecioVenta(row!.precio_venta),
-            new ProductoStock(row!.stock),
-            new ProductoImgUri(row!.img_uri),
-            new ProductoFechaCreacion(row!.fecha_creacion),
-            new ProductoFechaModificacion(row!.fecha_modificacion),
-            new ProveedorId(row!.id_proveedor),
-            new MarcaId(row!.id_marca),
-            new RubroId(row!.id_rubro),
-            new ProductoEsActivo(row!.es_activo)
-        );
+        return {
+            codigoBarra: row!.codigo_barra,
+            descripcion: row!.descripcion,
+            precioCompra: row!.precio_compra,
+            precioVenta: row!.precio_venta,
+            stock: row!.stock,
+            imgUri: row!.img_uri,
+            fechaCreacion: row!.fecha_creacion,
+            fechaModificacion: row!.fecha_modificacion,
+            proveedorId: row!.id_proveedor,
+            marcaId: row!.id_marca,
+            rubroId: row!.id_rubro,
+            esActivo: row!.es_activo
+        }
     }
 
-    async update(producto: Producto): Promise<Producto> {
+    async update(producto: Producto): Promise<ProductoSimpleDTO> {
         const query = `
             UPDATE productos SET
             descripcion = ?,
@@ -186,7 +175,7 @@ export class MySQLProductoRepository implements ProductoRepository {
             producto.codigoBarra.value
         ]);
 
-        return this.getOneById(producto.codigoBarra) as Promise<Producto>;
+        return this.getOneById(producto.codigoBarra) as Promise<ProductoSimpleDTO>;
     }
 
     async delete(productocodigoBarra: ProductoCodigoBarra): Promise<void> {

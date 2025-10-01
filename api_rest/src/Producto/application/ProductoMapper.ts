@@ -43,7 +43,8 @@ export class ProductoMapper {
             fechaModificacion: producto.fechaModificacion.value,
             proveedorId: producto.proveedorId.value,
             marcaId: producto.marcaId.value,
-            rubroId: producto.rubroId.value
+            rubroId: producto.rubroId.value,
+            esActivo: producto.esActivo.value
         }
     }
 }

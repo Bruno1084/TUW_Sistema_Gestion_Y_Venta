@@ -34,4 +34,5 @@ export interface ProductoSimpleDTO {
     proveedorId: number;
     marcaId: number;
     rubroId: number;
+    esActivo: boolean
 }

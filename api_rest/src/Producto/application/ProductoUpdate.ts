@@ -1,4 +1,5 @@
 import type { ProveedorRepository } from "../../Proveedor/domain/ProveedorRepository";
+import type { ProductoSimpleDTO } from "./ProductoDTO";
 import type { ProductoRepository } from "../domain/ProductoRepository";
 import type { MarcaRepository } from "../../Marca/domain/MarcaRepository";
 import type { RubroRepository } from "../../Rubro/domain/RubroRepository";
@@ -14,6 +15,7 @@ import { ProveedorId } from "../../Proveedor/domain/ProveedorId";
 import { MarcaId } from "../../Marca/domain/MarcaId";
 import { RubroId } from "../../Rubro/domain/RubroId";
 import { ProductoEsActivo } from "../domain/ProductoEsActivo";
+import { ProductoFechaCreacion } from "../domain/ProductoFechaCreacion";
 
 export class ProductoUpdate {
     constructor(
@@ -35,18 +37,13 @@ export class ProductoUpdate {
             marcaId?: number,
             rubroId?: number,
         }
-    ): Promise<Producto> {
+    ): Promise<ProductoSimpleDTO> {
         const productoExistente = await this.productoRepository.getOneById(new ProductoCodigoBarra(codigoBarra));
         if (!productoExistente) throw new Error("Producto no encontrado");
-
-        let proveedor = productoExistente.proveedorId;
-        let marca = productoExistente.marcaId;
-        let rubro = productoExistente.rubroId;
 
         if (updates.proveedorId) {
             const proveedorExistente = await this.proveedorRepository.getOneById(new ProveedorId(updates.proveedorId));
             if (!proveedorExistente) throw new Error("Proveedor no encontrado");
-            proveedor = new ProveedorId(updates.proveedorId);
         }
 
         if (updates.marcaId) {
@@ -60,18 +57,18 @@ export class ProductoUpdate {
         }
 
         const productoActualizado = new Producto(
-            productoExistente.codigoBarra,
-            updates.descripcion ? new ProductoDescripcion(updates.descripcion) : productoExistente.descripcion,
-            updates.precioCompra !== undefined ? new ProductoPrecioCompra(updates.precioCompra) : productoExistente.precioCompra,
-            updates.precioVenta !== undefined ? new ProductoPrecioVenta(updates.precioVenta) : productoExistente.precioVenta,
-            updates.stock !== undefined ? new ProductoStock(updates.stock) : productoExistente.stock,
-            updates.imgUri ? new ProductoImgUri(updates.imgUri) : productoExistente.imgUri,
-            productoExistente.fechaCreacion,
+            new ProductoCodigoBarra(productoExistente.codigoBarra),
+            updates.descripcion ? new ProductoDescripcion(updates.descripcion) : new ProductoDescripcion(productoExistente.descripcion),
+            updates.precioCompra !== undefined ? new ProductoPrecioCompra(updates.precioCompra) : new ProductoPrecioCompra(productoExistente.precioCompra),
+            updates.precioVenta !== undefined ? new ProductoPrecioVenta(updates.precioVenta) : new ProductoPrecioVenta(productoExistente.precioVenta),
+            updates.stock !== undefined ? new ProductoStock(updates.stock) : new ProductoStock(productoExistente.stock),
+            updates.imgUri ? new ProductoImgUri(updates.imgUri) : new ProductoImgUri(productoExistente.imgUri),
+            new ProductoFechaCreacion(productoExistente.fechaCreacion),
             new ProductoFechaModificacion(new Date()),
-            proveedor,
-            marca,
-            rubro,
-            productoExistente.esActivo
+            new ProveedorId(updates.proveedorId!),
+            new MarcaId(updates.marcaId!),
+            new RubroId(updates.rubroId!),
+            new ProductoEsActivo(productoExistente.esActivo)
         );
 
         return await this.productoRepository.update(productoActualizado);

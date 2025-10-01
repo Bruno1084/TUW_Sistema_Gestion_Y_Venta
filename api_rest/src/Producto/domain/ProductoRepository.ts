@@ -3,10 +3,10 @@ import type { ProductoDetailDTO, ProductoSimpleDTO } from "../application/Produc
 import type { ProductoCodigoBarra } from "./ProductoCodigoBarra";
 
 export interface ProductoRepository {
-    create(producto: Producto): Promise<Producto>;
+    create(producto: Producto): Promise<ProductoSimpleDTO>;
     getAll(): Promise<ProductoSimpleDTO[]>;
     getAllWithDetail(): Promise<ProductoDetailDTO[]>;
-    getOneById(productoCodigoBarra: ProductoCodigoBarra): Promise<Producto | null>;
-    update(producto: Producto): Promise<Producto>;
+    getOneById(productoCodigoBarra: ProductoCodigoBarra): Promise<ProductoSimpleDTO | null>;
+    update(producto: Producto): Promise<ProductoSimpleDTO>;
     delete(productocodigoBarra: ProductoCodigoBarra): Promise<void>;
 }
