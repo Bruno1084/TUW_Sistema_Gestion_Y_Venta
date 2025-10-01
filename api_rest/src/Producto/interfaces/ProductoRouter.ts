@@ -6,6 +6,7 @@ export function productoRouter(productoController: ProductoController): Router {
 
     router.post('/create', productoController.createProducto.bind(productoController));
     router.get('/getAll', productoController.getAllProducto.bind(productoController));
+    router.get('/getAllWithDetail', productoController.getAllProductoWithDetail.bind(productoController));
     router.get('/getOneById/:codigo', productoController.getOneByIdProducto.bind(productoController));
     router.put('/update/:codigo', productoController.updateProducto.bind(productoController));
 

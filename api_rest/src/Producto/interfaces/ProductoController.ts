@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+import type { ProductoGetAllWithDetail } from "../application/ProductoGetAllWithDetail";
 import { ProductoCreate } from "../application/ProductoCreate";
 import { ProductoGetAll } from "../application/ProductoGetAll";
 import { ProductoGetOneById } from "../application/ProductoGetOneById";
@@ -7,6 +8,7 @@ import { ProductoUpdate } from "../application/ProductoUpdate";
 type ProductoUseCases = {
     create: ProductoCreate;
     getAll: ProductoGetAll;
+    getAllWithDetail: ProductoGetAllWithDetail;
     getOneById: ProductoGetOneById;
     update: ProductoUpdate;
 }
@@ -51,6 +53,15 @@ export class ProductoController {
     async getAllProducto(req: Request, res: Response): Promise<void> {
         try {
             const productos = await this.useCases.getAll.run();
+            res.status(200).json(productos);
+        } catch (err: any) {
+            res.status(500).json({ error: err.message });
+        }
+    }
+
+        async getAllProductoWithDetail(req: Request, res: Response): Promise<void> {
+        try {
+            const productos = await this.useCases.getAllWithDetail.run();
             res.status(200).json(productos);
         } catch (err: any) {
             res.status(500).json({ error: err.message });

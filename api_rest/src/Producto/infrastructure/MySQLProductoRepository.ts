@@ -1,5 +1,6 @@
 import type { ProductoRepository } from "../domain/ProductoRepository";
 import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
+import type { ProductoDetailDTO, ProductoSimpleDTO } from "../application/ProductoDTO";
 import { Producto } from "../domain/Producto";
 import { ProductoCodigoBarra } from "../domain/ProductoCodigoBarra";
 import { ProductoDescripcion } from "../domain/ProductoDescripcion";
@@ -60,27 +61,72 @@ export class MySQLProductoRepository implements ProductoRepository {
         return this.getOneById(producto.codigoBarra) as Promise<Producto>;
     }
 
-    async getAll(): Promise<Producto[]> {
+    async getAll(): Promise<ProductoSimpleDTO[]> {
         const query = `SELECT * FROM productos WHERE es_activo = true`;
 
-        const [rows] = await this.pool.query<(MySQLProducto & RowDataPacket)[]>(query);
+        const [rows] = await this.pool.query<(RowDataPacket & MySQLProducto)[]>(query);
 
         return rows.map(
-            (row) =>
-                new Producto(
-                    new ProductoCodigoBarra(row.codigo_barra),
-                    new ProductoDescripcion(row.descripcion),
-                    new ProductoPrecioCompra(row.precio_compra),
-                    new ProductoPrecioVenta(row.precio_venta),
-                    new ProductoStock(row.stock),
-                    new ProductoImgUri(row.img_uri),
-                    new ProductoFechaCreacion(row.fecha_creacion),
-                    new ProductoFechaModificacion(row.fecha_modificacion),
-                    new ProveedorId(row.id_proveedor),
-                    new MarcaId(row.id_marca),
-                    new RubroId(row.id_rubro),
-                    new ProductoEsActivo(row.es_activo)
-                )
+            (row) => ({
+                codigoBarra: row!.codigo_barra,
+                descripcion: row!.descripcion,
+                precioCompra: row!.precio_compra,
+                precioVenta: row!.precio_venta,
+                stock: row!.stock,
+                imgUri: row!.img_uri,
+                fechaCreacion: row!.fecha_creacion,
+                fechaModificacion: row!.fecha_modificacion,
+                proveedorId: row!.id_proveedor,
+                marcaId: row!.id_marca,
+                rubroId: row!.id_rubro,
+                esActivo: row!.es_activo
+            })
+        );
+    }
+
+    async getAllWithDetail(): Promise<ProductoDetailDTO[]> {
+        const query = `
+            SELECT 
+            p.codigo_barra,
+            p.descripcion,
+            p.precio_venta,
+            p.stock,
+            m.id AS marca_id, m.nombre AS marca_nombre,
+            pr.id AS proveedor_id, pr.nombre AS proveedor_nombre,
+            r.id AS rubro_id, r.nombre AS rubro_nombre
+            FROM productos p
+            JOIN marcas m ON p.id_marca = m.id
+            JOIN proveedores pr ON p.id_proveedor = pr.id
+            JOIN rubros r ON p.id_rubro = r.id
+            WHERE p.es_activo = true
+        `;
+
+        const [rows] = await this.pool.query<(RowDataPacket)[]>(query);
+
+        return rows.map(
+            (row) => ({
+                codigoBarra: row!.codigo_barra,
+                descripcion: row!.descripcion,
+                precioCompra: row!.precio_compra,
+                precioVenta: row!.precio_venta,
+                stock: row!.stock,
+                imgUri: row!.img_uri,
+                fechaCreacion: row!.fecha_creacion,
+                fechaModificacion: row!.fecha_modificacion,
+                proveedor: {
+                    id: row!.proveedor_id,
+                    nombre: row!.proveedor_nombre,
+                },
+                marca: {
+                    id: row!.marca_id,
+                    nombre: row!.marca_nombre,
+                },
+                rubro: {
+                    id: row!.rubro_id,
+                    nombre: row!.rubro_nombre
+                },
+                esActivo: row!.es_activo
+            })
         );
     }
 

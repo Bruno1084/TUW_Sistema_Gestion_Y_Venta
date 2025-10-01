@@ -1,10 +1,10 @@
 import type { ProductoRepository } from "../domain/ProductoRepository";
-import type { Producto } from "../domain/Producto";
+import type { ProductoSimpleDTO } from "./ProductoDTO";
 
 export class ProductoGetAll {
     constructor(private repository: ProductoRepository) { }
 
-    async run(): Promise<Producto[]> {
+    async run(): Promise<ProductoSimpleDTO[]> {
         return this.repository.getAll();
     }
 }
