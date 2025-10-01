@@ -13,6 +13,7 @@ import { productoRouter } from "./interfaces/ProductoRouter";
 import type { MySQLProveedorRepository } from "../Proveedor/infrastructure/MySQLProveedorRepository";
 import type { MySQLMarcaRepository } from "../Marca/infrastructure/MySQLMarcaRepository";
 import type { MySQLRubroRepository } from "../Rubro/infrastructure/MySQLRubroRepository";
+import { ProductoGetAllWithDetail } from "./application/ProductoGetAllWithDetail";
 
 
 export function initProductoModule(
@@ -26,6 +27,7 @@ export function initProductoModule(
     const useCases = {
         create: new ProductoCreate(repo),
         getAll: new ProductoGetAll(repo),
+        getAllWithDetail: new ProductoGetAllWithDetail(repo),
         getOneById: new ProductoGetOneById(repo),
         update: new ProductoUpdate(repo, proveedorRepo, marcaRepo, rubroRepo),
         delete: new ProductoDelete(repo)

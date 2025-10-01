@@ -1,4 +1,5 @@
 import type { ProductoRepository } from "../domain/ProductoRepository";
+import type { ProductoSimpleDTO } from "./ProductoDTO";
 import { ProveedorId } from "../../Proveedor/domain/ProveedorId";
 import { MarcaId } from "../../Marca/domain/MarcaId";
 import { RubroId } from "../../Rubro/domain/RubroId";
@@ -28,7 +29,7 @@ export class ProductoCreate {
         proveedorId: number,
         marcaId: number,
         rubroId: number,
-    ): Promise<Producto> {
+    ): Promise<ProductoSimpleDTO> {
         const producto = new Producto(
             new ProductoCodigoBarra(codigoBarra),
             new ProductoDescripcion(descripcion),

@@ -1,4 +1,4 @@
-export interface ProductoDTO {
+export interface ProductoDetailDTO {
     codigoBarra: string;
     descripcion: string;
     precioCompra: number;
@@ -19,5 +19,20 @@ export interface ProductoDTO {
         id: number;
         nombre: string;
     };
+    esActivo: boolean
+}
+
+export interface ProductoSimpleDTO {
+    codigoBarra: string;
+    descripcion: string;
+    precioCompra: number;
+    precioVenta: number;
+    stock: number;
+    imgUri: string;
+    fechaCreacion: Date;
+    fechaModificacion: Date;
+    proveedorId: number;
+    marcaId: number;
+    rubroId: number;
     esActivo: boolean
 }
