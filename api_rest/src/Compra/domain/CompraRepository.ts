@@ -1,8 +1,10 @@
+import type { CompraDetailDTO, CompraSimpleDTO } from "../application/CompraDTO";
 import type { Compra } from "./Compra";
 import { CompraId } from "./CompraId";
 
 export interface CompraRepository {
-    create(compra: Compra): Promise<Compra>;
-    getAll(): Promise<Compra[]>;
-    getOneById(compraId: CompraId): Promise<Compra | null>;
+    create(compra: Compra): Promise<CompraSimpleDTO>;
+    getAll(): Promise<CompraSimpleDTO[]>;
+    getAllWithDetail(): Promise<CompraDetailDTO[]>;
+    getOneById(compraId: CompraId): Promise<CompraSimpleDTO | null>;
 }

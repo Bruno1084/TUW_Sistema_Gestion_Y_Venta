@@ -2,10 +2,12 @@ import type { Request, Response } from "express";
 import type { CompraCreate } from "../application/CompraCreate"
 import type { CompraGetAll } from "../application/CompraGetAll";
 import type { CompraGetOneById } from "../application/CompraGetOneById";
+import type { CompraGetAllWithDetail } from "../application/CompraGetAllWithDetail";
 
 type CompraUseCases = {
     create: CompraCreate;
     getAll: CompraGetAll;
+    getAllWithDetail: CompraGetAllWithDetail;
     getOneById: CompraGetOneById;
 }
 
@@ -36,6 +38,15 @@ export class CompraController {
     async getAllCompra(req: Request, res: Response): Promise<void> {
         try {
             const compras = await this.useCases.getAll.run();
+            res.status(200).json(compras);
+        } catch (err: any) {
+            res.status(500).json({ error: err.message });
+        }
+    }
+
+    async getAllWithDetail(req: Request, res: Response): Promise<void> {
+        try {
+            const compras = await this.useCases.getAllWithDetail.run();
             res.status(200).json(compras);
         } catch (err: any) {
             res.status(500).json({ error: err.message });
