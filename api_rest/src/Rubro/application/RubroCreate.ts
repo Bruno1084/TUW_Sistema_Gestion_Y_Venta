@@ -1,4 +1,5 @@
 import type { RubroRepository } from "../domain/RubroRepository";
+import type { RubroDTO } from "./RubroDTO";
 import { Rubro } from "../domain/Rubro";
 import { RubroFechaCracion } from "../domain/RubroFechaCreacion";
 import { RubroFechaModificacion } from "../domain/RubroFechaModificacion";
@@ -11,7 +12,7 @@ export class RubroCreate {
 
     async run(
         nombre: string
-    ): Promise<Rubro> {
+    ): Promise<RubroDTO> {
         const rubro = new Rubro(
             new RubroId(0),
             new RubroNombre(nombre),
