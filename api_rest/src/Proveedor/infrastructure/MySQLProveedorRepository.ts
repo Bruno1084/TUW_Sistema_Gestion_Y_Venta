@@ -1,13 +1,8 @@
 import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import type { ProveedorRepository } from "../domain/ProveedorRepository";
+import type { ProveedorDTO } from "../application/ProveedorDTO";
 import { Proveedor } from "../domain/Proveedor";
 import { ProveedorId } from "../domain/ProveedorId";
-import { ProveedorNombre } from "../domain/ProveedorNombre";
-import { ProveedorDireccion } from "../domain/ProveedorDireccion";
-import { ProveedorTelefono } from "../domain/ProveedorTelefono";
-import { ProveedorFechaCreacion } from "../domain/ProveedorFechaCreacion";
-import { ProveedorFechaModificacion } from "../domain/ProveedorFechaModificacion";
-import { ProveedorEsActivo } from "../domain/ProveedorEsActivo";
 
 type MySQLProveedor = {
     id: number;
@@ -26,7 +21,7 @@ export class MySQLProveedorRepository implements ProveedorRepository {
         this.pool = pool;
     }
 
-    async create(proveedor: Proveedor): Promise<Proveedor> {
+    async create(proveedor: Proveedor): Promise<ProveedorDTO> {
         const query = `
         INSERT INTO proveedores(nombre, direccion, telefono, fecha_creacion, fecha_modificacion, es_activo)
         VALUES(?, ?, ?, ?, ?, ?)
@@ -42,29 +37,28 @@ export class MySQLProveedorRepository implements ProveedorRepository {
         ]);
 
         const proveedorId = result.insertId;
-        return this.getOneById(new ProveedorId(proveedorId)) as Promise<Proveedor>;
+        return this.getOneById(new ProveedorId(proveedorId)) as Promise<ProveedorDTO>;
     }
 
-    async getAll(): Promise<Proveedor[]> {
+    async getAll(): Promise<ProveedorDTO[]> {
         const query = `SELECT * FROM proveedores WHERE es_activo = true`;
 
         const [rows] = await this.pool.query<(MySQLProveedor & RowDataPacket)[]>(query);
 
         return rows.map(
-            (row) =>
-                new Proveedor(
-                    new ProveedorId(row.id),
-                    new ProveedorNombre(row.nombre),
-                    new ProveedorDireccion(row.direccion),
-                    new ProveedorTelefono(row.telefono),
-                    new ProveedorFechaCreacion(row.fecha_creacion),
-                    new ProveedorFechaModificacion(row.fecha_modificacion),
-                    new ProveedorEsActivo(row.es_activo)
-                )
+            (row) => ({
+                id: row!.id,
+                nombre: row!.nombre,
+                direccion: row!.direccion,
+                telefono: row!.telefono,
+                fechaCreacion: row!.fecha_creacion,
+                fechaModificacion: row!.fecha_modificacion,
+                esActivo: row!.es_activo
+            })
         );
     }
 
-    async getOneById(proveedorId: ProveedorId): Promise<Proveedor | null> {
+    async getOneById(proveedorId: ProveedorId): Promise<ProveedorDTO | null> {
         const query = `SELECT * FROM proveedores WHERE id = ?`;
 
         const [rows] = await this.pool.query<(MySQLProveedor & RowDataPacket)[]>(query, [proveedorId.value]);
@@ -73,18 +67,19 @@ export class MySQLProveedorRepository implements ProveedorRepository {
             return null;
         }
 
-        return new Proveedor(
-            new ProveedorId(rows[0]!.id),
-            new ProveedorNombre(rows[0]!.nombre),
-            new ProveedorDireccion(rows[0]!.direccion),
-            new ProveedorTelefono(rows[0]!.telefono),
-            new ProveedorFechaCreacion(rows[0]!.fecha_creacion),
-            new ProveedorFechaModificacion(rows[0]!.fecha_modificacion),
-            new ProveedorEsActivo(rows[0]!.es_activo)
-        );
+        const row = rows[0];
+        return {
+            id: row!.id,
+            nombre: row!.nombre,
+            direccion: row!.direccion,
+            telefono: row!.telefono,
+            fechaCreacion: row!.fecha_creacion,
+            fechaModificacion: row!.fecha_modificacion,
+            esActivo: row!.es_activo
+        }
     }
 
-    async update(proveedor: Proveedor): Promise<Proveedor> {
+    async update(proveedor: Proveedor): Promise<ProveedorDTO> {
         const query = `
             UPDATE proveedores SET
             nombre = ?,
@@ -106,7 +101,7 @@ export class MySQLProveedorRepository implements ProveedorRepository {
             proveedor.esActivo.value
         ]);
 
-        return this.getOneById(proveedor.id) as Promise<Proveedor>;
+        return this.getOneById(proveedor.id) as Promise<ProveedorDTO>;
     }
 
     async delete(proveedorId: ProveedorId): Promise<void> {

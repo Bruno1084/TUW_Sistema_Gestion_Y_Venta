@@ -1,4 +1,5 @@
 import type { ProveedorRepository } from "../domain/ProveedorRepository";
+import type { ProveedorDTO } from "./ProveedorDTO";
 import { Proveedor } from "../domain/Proveedor";
 import { ProveedorDireccion } from "../domain/ProveedorDireccion";
 import { ProveedorFechaCreacion } from "../domain/ProveedorFechaCreacion";
@@ -17,14 +18,14 @@ export class ProveedorCreate {
         telefono: string,
         fechaCreacion: Date,
         fechaModificacion: Date
-    ): Promise<Proveedor> {
+    ): Promise<ProveedorDTO> {
         const proveedor = new Proveedor(
             new ProveedorId(0),
             new ProveedorNombre(nombre),
             new ProveedorDireccion(direccion),
             new ProveedorTelefono(telefono),
-            new ProveedorFechaCreacion(new Date()),
-            new ProveedorFechaModificacion(new Date()),
+            new ProveedorFechaCreacion(fechaCreacion),
+            new ProveedorFechaModificacion(fechaModificacion),
             new ProveedorEsActivo(true)
         );
 
