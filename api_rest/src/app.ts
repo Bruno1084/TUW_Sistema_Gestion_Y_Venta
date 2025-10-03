@@ -10,7 +10,6 @@ import { initRubroModule } from "./Rubro/initRubroModule";
 import { MySQLProveedorRepository } from "./Proveedor/infrastructure/MySQLProveedorRepository";
 import { MySQLMarcaRepository } from "./Marca/infrastructure/MySQLMarcaRepository";
 import { MySQLRubroRepository } from "./Rubro/infrastructure/MySQLRubroRepository";
-import { initCajeroModule } from "./Cajero/initCajeroModule";
 import { initVentaModule } from "./Venta/initVentaModule";
 import { initUsuarioModule } from "./Usuario/initUsuarioModule";
 import { authMiddleware } from "./middlewares/authMiddleware";
@@ -27,11 +26,9 @@ app.use(express.json());
 const proveedorRepo = new MySQLProveedorRepository(pool);
 const marcaRepo = new MySQLMarcaRepository(pool);
 const rubroRepo = new MySQLRubroRepository(pool);
-// const empleadoRepo = new MySQLEmpleadoRepository(pool);
 
 // Routers
 app.use('/api/usuarios', initUsuarioModule(pool));
-app.use('/api/cajeros', initCajeroModule(pool));
 app.use('/api/clientes', initClienteModule(pool));
 app.use('/api/empleados', initEmpleadoModule(pool));
 app.use('/api/marcas', initMarcaModule(pool));

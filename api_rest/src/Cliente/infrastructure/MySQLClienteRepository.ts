@@ -2,12 +2,7 @@ import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import type { ClienteRepository } from "../domain/ClienteRepository";
 import { Cliente } from "../domain/Cliente";
 import { ClienteId } from "../domain/ClienteId";
-import { ClienteNombre } from "../domain/ClienteNombre";
-import { ClienteDireccion } from "../domain/ClienteDireccion";
-import { ClienteTelefono } from "../domain/ClienteTelefono";
-import { ClienteFechaCreacion } from "../domain/ClienteFechaCreacion";
-import { ClienteFechaModificacion } from "../domain/ClienteFechaModificacion";
-import { ClienteEsActivo } from "../domain/ClienteEsActivo";
+import type { ClienteDTO } from "../application/ClienteDTO";
 
 type MySQLCliente = {
     id: number;
@@ -26,7 +21,7 @@ export class MySQLClienteRepository implements ClienteRepository {
         this.pool = pool;
     }
 
-    async create(cliente: Cliente): Promise<Cliente> {
+    async create(cliente: Cliente): Promise<ClienteDTO> {
         const query = `
             INSERT INTO clientes(nombre, direccion, telefono, fecha_creacion, fecha_modificacion, es_activo)
             VALUES (?, ?, ?, ?, ?, ?)
@@ -42,29 +37,28 @@ export class MySQLClienteRepository implements ClienteRepository {
         ]);
 
         const clienteId = result.insertId;
-        return this.getOneById(new ClienteId(clienteId)) as Promise<Cliente>;
+        return this.getOneById(new ClienteId(clienteId)) as Promise<ClienteDTO>;
     }
 
-    async getAll(): Promise<Cliente[]> {
+    async getAll(): Promise<ClienteDTO[]> {
         const query = `SELECT * FROM clientes WHERE es_activo = true`;
 
-        const [rows] = await this.pool.query<(MySQLCliente & RowDataPacket)[]>(query);
+        const [rows] = await this.pool.query<(RowDataPacket & MySQLCliente)[]>(query);
 
         return rows.map(
-            (row) =>
-                new Cliente(
-                    new ClienteId(row.id),
-                    new ClienteNombre(row.nombre),
-                    new ClienteDireccion(row.direccion),
-                    new ClienteTelefono(row.telefono),
-                    new ClienteFechaCreacion(row.fecha_creacion),
-                    new ClienteFechaModificacion(row.fecha_modificacion),
-                    new ClienteEsActivo(row.es_activo)
-                )
+            (row) => ({
+                id: row!.id,
+                nombre: row!.nombre,
+                direccion: row!.direccion,
+                telefono: row!.telefono,
+                fechaCreacion: row!.fecha_creacion,
+                fechaModificacion: row!.fecha_modificacion,
+                esActivo: row!.es_activo
+            })
         );
     }
 
-    async getOneById(clienteId: ClienteId): Promise<Cliente | null> {
+    async getOneById(clienteId: ClienteId): Promise<ClienteDTO | null> {
         const query = `SELECT * FROM clientes WHERE id = ?`;
 
         const [rows] = await this.pool.query<(MySQLCliente & RowDataPacket)[]>(query, [clienteId.value]);
@@ -74,18 +68,18 @@ export class MySQLClienteRepository implements ClienteRepository {
         }
 
         const row = rows[0];
-        return new Cliente(
-            new ClienteId(row!.id),
-            new ClienteNombre(row!.nombre),
-            new ClienteDireccion(row!.direccion),
-            new ClienteTelefono(row!.telefono),
-            new ClienteFechaCreacion(row!.fecha_creacion),
-            new ClienteFechaModificacion(row!.fecha_modificacion),
-            new ClienteEsActivo(row!.es_activo)
-        );
+        return {
+            id: row!.id,
+            nombre: row!.nombre,
+            direccion: row!.direccion,
+            telefono: row!.telefono,
+            fechaCreacion: row!.fecha_creacion,
+            fechaModificacion: row!.fecha_modificacion,
+            esActivo: row!.es_activo
+        }
     }
 
-    async update(cliente: Cliente): Promise<Cliente> {
+    async update(cliente: Cliente): Promise<ClienteDTO> {
         const query = `
             UPDATE clientes SET
             nombre = ?,
@@ -105,7 +99,7 @@ export class MySQLClienteRepository implements ClienteRepository {
             cliente.id.value
         ]);
 
-        return this.getOneById(cliente.id) as Promise<Cliente>;
+        return this.getOneById(cliente.id) as Promise<ClienteDTO>;
     }
 
     async delete(clienteId: ClienteId): Promise<void> {

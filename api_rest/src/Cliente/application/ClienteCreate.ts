@@ -7,6 +7,7 @@ import { ClienteTelefono } from "../domain/ClienteTelefono";
 import { ClienteFechaCreacion } from "../domain/ClienteFechaCreacion";
 import { ClienteFechaModificacion } from "../domain/ClienteFechaModificacion";
 import { ClienteEsActivo } from "../domain/ClienteEsActivo";
+import type { ClienteDTO } from "./ClienteDTO";
 
 export class ClienteCreate {
     constructor(private repository: ClienteRepository) {}
@@ -17,7 +18,7 @@ export class ClienteCreate {
         telefono: string,
         fechaCreacion: Date,
         fechaModificacion: Date,
-    ): Promise<Cliente> {
+    ): Promise<ClienteDTO> {
         const cliente = new Cliente(
             new ClienteId(0),
             new ClienteNombre(nombre),
