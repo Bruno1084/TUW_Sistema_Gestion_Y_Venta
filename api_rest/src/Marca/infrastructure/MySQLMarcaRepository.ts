@@ -1,11 +1,8 @@
 import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise"
 import type { MarcaRepository } from "../domain/MarcaRepository"
+import type { MarcaDTO } from "../application/MarcaDTO";
 import { Marca } from "../domain/Marca";
 import { MarcaId } from "../domain/MarcaId";
-import { MarcaNombre } from "../domain/MarcaNombre";
-import { MarcaFechaCreacion } from "../domain/MarcaFechaCreacion";
-import { MarcaFechaModificacion } from "../domain/MarcaFechaModificacion";
-import { MarcaEsActivo } from "../domain/MarcaEsActivo";
 
 type MySQLMarca = {
     id: number,
@@ -22,7 +19,7 @@ export class MySQLMarcaRepository implements MarcaRepository {
         this.pool = pool;
     }
 
-    async create(marca: Marca): Promise<Marca> {
+    async create(marca: Marca): Promise<MarcaDTO> {
         const query = `
             INSERT INTO marcas(nombre, fecha_creacion, fecha_modificacion, es_activo)
             VALUES (?, ?, ?, ?)
@@ -36,27 +33,26 @@ export class MySQLMarcaRepository implements MarcaRepository {
         ]);
 
         const marcaId = result.insertId;
-        return this.getOneById(new MarcaId(marcaId)) as Promise<Marca>;
+        return this.getOneById(new MarcaId(marcaId)) as Promise<MarcaDTO>;
     }
 
-    async getAll(): Promise<Marca[]> {
+    async getAll(): Promise<MarcaDTO[]> {
         const query = `SELECT * FROM marcas WHERE es_activo = true`;
 
         const [rows] = await this.pool.query<(MySQLMarca & RowDataPacket)[]>(query);
 
         return rows.map(
-            (row) =>
-                new Marca(
-                    new MarcaId(row.id),
-                    new MarcaNombre(row.nombre),
-                    new MarcaFechaCreacion(row.fecha_creacion),
-                    new MarcaFechaModificacion(row.fecha_modificacion),
-                    new MarcaEsActivo(row.es_activo)
-                )
+            (row) => ({
+                id: row!.id,
+                nombre: row!.nombre,
+                fechaCreacion: row!.fecha_creacion,
+                fechaModificacion: row!.fecha_modificacion,
+                esActivo: row!.es_activo
+            })
         );
     }
 
-    async getOneById(marcaId: MarcaId): Promise<Marca | null> {
+    async getOneById(marcaId: MarcaId): Promise<MarcaDTO | null> {
         const query = `SELECT * FROM marcas WHERE id = ?`;
 
         const [rows] = await this.pool.query<(MySQLMarca & RowDataPacket)[]>(query, [marcaId.value]);
@@ -66,16 +62,16 @@ export class MySQLMarcaRepository implements MarcaRepository {
         }
 
         const row = rows[0];
-        return new Marca(
-            new MarcaId(row!.id),
-            new MarcaNombre(row!.nombre),
-            new MarcaFechaCreacion(row!.fecha_creacion),
-            new MarcaFechaModificacion(row!.fecha_modificacion),
-            new MarcaEsActivo(row!.es_activo)
-        );
+        return {
+            id: row!.id,
+            nombre: row!.nombre,
+            fechaCreacion: row!.fecha_creacion,
+            fechaModificacion: row!.fecha_modificacion,
+            esActivo: row!.es_activo
+        }
     }
 
-    async update(marca: Marca): Promise<Marca> {
+    async update(marca: Marca): Promise<MarcaDTO> {
         const query = `
             UPDATES marcas SET
             nombre = ?,
@@ -91,7 +87,7 @@ export class MySQLMarcaRepository implements MarcaRepository {
             marca.esActivo.value
         ]);
 
-        return this.getOneById(marca.id) as Promise<Marca>;
+        return this.getOneById(marca.id) as Promise<MarcaDTO>;
     }
 
     async delete(marcaId: MarcaId): Promise<void> {

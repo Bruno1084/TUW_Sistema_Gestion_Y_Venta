@@ -1,4 +1,5 @@
 import type { MarcaRepository } from "../domain/MarcaRepository";
+import type { MarcaDTO } from "./MarcaDTO";
 import { Marca } from "../domain/Marca";
 import { MarcaId } from "../domain/MarcaId";
 import { MarcaNombre } from "../domain/MarcaNombre";
@@ -12,7 +13,7 @@ export class MarcaUpdate {
         updates: {
             nombre?: string
         }
-    ): Promise<Marca> {
+    ): Promise<MarcaDTO> {
         const marcaExistente = await this.repository.getOneById(new MarcaId(id));
         if (!marcaExistente) throw new Error("Marca no encontrada");
 

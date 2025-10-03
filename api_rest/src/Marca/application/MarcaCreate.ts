@@ -1,4 +1,5 @@
 import type { MarcaRepository } from "../domain/MarcaRepository";
+import type { MarcaDTO } from "./MarcaDTO";
 import { Marca } from "../domain/Marca";
 import { MarcaFechaCreacion } from "../domain/MarcaFechaCreacion";
 import { MarcaFechaModificacion } from "../domain/MarcaFechaModificacion";
@@ -7,11 +8,11 @@ import { MarcaNombre } from "../domain/MarcaNombre";
 import { MarcaEsActivo } from "../domain/MarcaEsActivo";
 
 export class MarcaCreate {
-    constructor(private repository: MarcaRepository) {}
+    constructor(private repository: MarcaRepository) { }
 
     async run(
         nombre: string
-    ): Promise<Marca> {
+    ): Promise<MarcaDTO> {
         const marca = new Marca(
             new MarcaId(0),
             new MarcaNombre(nombre),
