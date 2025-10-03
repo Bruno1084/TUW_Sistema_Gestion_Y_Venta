@@ -1,6 +1,6 @@
-import { ClienteId } from "../domain/ClienteId";
 import type { ClienteRepository } from "../domain/ClienteRepository";
 import type { ClienteDTO } from "./ClienteDTO";
+import { ClienteId } from "../domain/ClienteId";
 
 export class ClienteGetOneById {
     constructor(private repository: ClienteRepository) {}

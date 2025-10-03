@@ -1,5 +1,6 @@
-import { Cliente } from "../domain/Cliente";
 import type { ClienteRepository } from "../domain/ClienteRepository";
+import type { ClienteDTO } from "./ClienteDTO";
+import { Cliente } from "../domain/Cliente";
 import { ClienteId } from "../domain/ClienteId";
 import { ClienteNombre } from "../domain/ClienteNombre";
 import { ClienteDireccion } from "../domain/ClienteDireccion";
@@ -7,7 +8,6 @@ import { ClienteTelefono } from "../domain/ClienteTelefono";
 import { ClienteFechaCreacion } from "../domain/ClienteFechaCreacion";
 import { ClienteFechaModificacion } from "../domain/ClienteFechaModificacion";
 import { ClienteEsActivo } from "../domain/ClienteEsActivo";
-import type { ClienteDTO } from "./ClienteDTO";
 
 export class ClienteCreate {
     constructor(private repository: ClienteRepository) {}

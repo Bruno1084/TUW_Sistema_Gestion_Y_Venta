@@ -1,4 +1,5 @@
 import type { EmpleadoRepository } from "../domain/EmpleadoRepository";
+import type { EmpleadoDTO } from "./EmpleadoDTO";
 import { Empleado } from "../domain/Empleado";
 import { EmpleadoId } from "../domain/EmpleadoId";
 import { EmpleadoNombre } from "../domain/EmpleadoNombre";
@@ -17,7 +18,7 @@ export class EmpleadoCreate {
         telefono: string,
         fechaCreacion: Date,
         fechaModificacion: Date,
-    ): Promise<Empleado> {
+    ): Promise<EmpleadoDTO> {
         const empleado = new Empleado(
             new EmpleadoId(0),
             new EmpleadoNombre(nombre),

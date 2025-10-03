@@ -1,13 +1,8 @@
 import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import type { EmpleadoRepository } from "../domain/EmpleadoRepository";
+import type { EmpleadoDTO } from "../application/EmpleadoDTO";
 import { Empleado } from "../domain/Empleado";
 import { EmpleadoId } from "../domain/EmpleadoId";
-import { EmpleadoNombre } from "../domain/EmpleadoNombre";
-import { EmpleadoDireccion } from "../domain/EmpleadoDireccion";
-import { EmpleadoTelefono } from "../domain/EmpleadoTelefono";
-import { EmpleadoFechaCreacion } from "../domain/EmpleadoFechaCreacion";
-import { EmpleadoFechaModificacion } from "../domain/EmpleadoFechaModificacion";
-import { EmpleadoEsActivo } from "../domain/EmpleadoEsActivo";
 
 type MySQLEmpleado = {
     id: number;
@@ -26,7 +21,7 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
         this.pool = pool;
     }
 
-    async create(empleado: Empleado): Promise<Empleado> {
+    async create(empleado: Empleado): Promise<EmpleadoDTO> {
         const query = `
             INSERT INTO empleados (nombre, direccion, telefono, fecha_creacion, fecha_modificacion, es_activo)
             VALUES (?, ?, ?, ?, ?, ?)
@@ -42,29 +37,28 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
         ]);
 
         const empleadoId = result.insertId;
-        return this.getOneById(new EmpleadoId(empleadoId)) as Promise<Empleado>;
+        return this.getOneById(new EmpleadoId(empleadoId)) as Promise<EmpleadoDTO>;
     }
 
-    async getAll(): Promise<Empleado[]> {
+    async getAll(): Promise<EmpleadoDTO[]> {
         const query = 'SELECT * FROM empleados WHERE es_activo = true';
 
         const [rows] = await this.pool.query<(MySQLEmpleado & RowDataPacket)[]>(query);
 
         return rows.map(
-            (row) =>
-                new Empleado(
-                    new EmpleadoId(row.id),
-                    new EmpleadoNombre(row.nombre),
-                    new EmpleadoDireccion(row.direccion),
-                    new EmpleadoTelefono(row.telefono),
-                    new EmpleadoFechaCreacion(row.fecha_creacion),
-                    new EmpleadoFechaModificacion(row.fecha_modificacion),
-                    new EmpleadoEsActivo(row.es_activo)
-                )
+            (row) => ({
+                id: row!.id,
+                nombre: row!.nombre,
+                direccion: row!.direccion,
+                telefono: row!.telefono,
+                fechaCreacion: row!.fecha_creacion,
+                fechaModificacion: row!.fecha_modificacion,
+                esActivo: row!.es_activo
+            })
         );
     }
 
-    async getOneById(empleadoId: EmpleadoId): Promise<Empleado | null> {
+    async getOneById(empleadoId: EmpleadoId): Promise<EmpleadoDTO | null> {
         const query = 'SELECT * FROM empleados WHERE id = ?';
 
         const [rows] = await this.pool.query<(MySQLEmpleado & RowDataPacket)[]>(query, [empleadoId.value]);
@@ -74,18 +68,18 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
         }
 
         const row = rows[0];
-        return new Empleado(
-            new EmpleadoId(row!.id),
-            new EmpleadoNombre(row!.nombre),
-            new EmpleadoDireccion(row!.direccion),
-            new EmpleadoTelefono(row!.telefono),
-            new EmpleadoFechaCreacion(row!.fecha_creacion),
-            new EmpleadoFechaModificacion(row!.fecha_modificacion),
-            new EmpleadoEsActivo(row!.es_activo)
-        );
+        return {
+            id: row!.id,
+            nombre: row!.nombre,
+            direccion: row!.direccion,
+            telefono: row!.telefono,
+            fechaCreacion: row!.fecha_creacion,
+            fechaModificacion: row!.fecha_modificacion,
+            esActivo: row!.es_activo
+        }
     }
 
-    async update(empleado: Empleado): Promise<Empleado> {
+    async update(empleado: Empleado): Promise<EmpleadoDTO> {
         const query = `UPDATE empleados SET 
             nombre = ?,
             direccion = ?,
@@ -103,7 +97,7 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
             empleado.id.value
         ]);
 
-        return this.getOneById(empleado.id) as Promise<Empleado>;
+        return this.getOneById(empleado.id) as Promise<EmpleadoDTO>;
     }
 
     async delete(empleadoId: EmpleadoId): Promise<void> {

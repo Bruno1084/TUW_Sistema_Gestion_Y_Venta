@@ -1,5 +1,5 @@
-import { ClienteId } from "../domain/ClienteId";
 import type { ClienteRepository } from "../domain/ClienteRepository";
+import { ClienteId } from "../domain/ClienteId";
 
 export class ClienteDelete {
     constructor(private repository: ClienteRepository) {}

@@ -1,8 +1,8 @@
 import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import type { ClienteRepository } from "../domain/ClienteRepository";
+import type { ClienteDTO } from "../application/ClienteDTO";
 import { Cliente } from "../domain/Cliente";
 import { ClienteId } from "../domain/ClienteId";
-import type { ClienteDTO } from "../application/ClienteDTO";
 
 type MySQLCliente = {
     id: number;
