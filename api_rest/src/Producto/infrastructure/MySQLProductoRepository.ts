@@ -78,11 +78,24 @@ export class MySQLProductoRepository implements ProductoRepository {
             SELECT 
             p.codigo_barra,
             p.descripcion,
+            p.precio_compra,
             p.precio_venta,
             p.stock,
-            m.id AS marca_id, m.nombre AS marca_nombre,
-            pr.id AS proveedor_id, pr.nombre AS proveedor_nombre,
-            r.id AS rubro_id, r.nombre AS rubro_nombre
+            p.img_uri,
+            p.fecha_creacion,
+            p.fecha_modificacion,
+            m.id AS marca_id,
+            m.nombre AS marca_nombre,
+            m.fecha_creacion AS marca_fecha_creacion,
+            m.fecha_modificacion AS marca_fecha_modificacion,
+            pr.id AS proveedor_id,
+            pr.nombre AS proveedor_nombre,
+            pr.fecha_creacion AS proveedor_fecha_creacion,
+            pr.fecha_modificacion AS proveedor_fecha_modificacion,
+            r.id AS rubro_id,
+            r.nombre AS rubro_nombre,
+            r.fecha_creacion AS rubro_fecha_creacion,
+            r.fecha_modificacion AS rubro_fecha_modificacion
             FROM productos p
             JOIN marcas m ON p.id_marca = m.id
             JOIN proveedores pr ON p.id_proveedor = pr.id
@@ -105,14 +118,22 @@ export class MySQLProductoRepository implements ProductoRepository {
                 proveedor: {
                     id: row!.proveedor_id,
                     nombre: row!.proveedor_nombre,
+                    direccion: row!.proveedor_direccion,
+                    telefono: row!.proveedor_telefono,
+                    fechaCreacion: row!.proveedor_fecha_creacion,
+                    fechaModificacion: row!.proveedor_fecha_modificacion
                 },
                 marca: {
                     id: row!.marca_id,
                     nombre: row!.marca_nombre,
+                    fechaCreacion: row!.marca_fecha_creacion,
+                    fechaModificacion: row!.marca_fecha_modificacion
                 },
                 rubro: {
                     id: row!.rubro_id,
-                    nombre: row!.rubro_nombre
+                    nombre: row!.rubro_nombre,
+                    fechaCreacion: row!.rubro_fecha_creacion,
+                    fechaModificacion: row!.rubro_fecha_modificacion
                 },
                 esActivo: row!.es_activo
             })

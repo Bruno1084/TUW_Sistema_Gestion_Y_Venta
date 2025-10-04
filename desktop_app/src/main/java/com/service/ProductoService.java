@@ -3,10 +3,13 @@ package com.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.model.Producto;
 import com.model.SessionManager;
+import com.model.dto.ProductoDetailDTO;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
 
 public class ProductoService {
     private static final String BASE_URL = "http://localhost:8080/api/productos";
@@ -44,6 +47,23 @@ public class ProductoService {
 
         if (response.statusCode() == 200) {
             return mapper.readValue(response.body(), Producto[].class);
+        } else {
+            throw new RuntimeException("Error al obtener productos: " + response.body());
+        }
+    }
+
+    public ProductoDetailDTO[] getAllWithDetailProducto() throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/getAllWithDetail"))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() == 200) {
+            return mapper.readValue(response.body(), ProductoDetailDTO[].class);
         } else {
             throw new RuntimeException("Error al obtener productos: " + response.body());
         }

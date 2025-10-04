@@ -10,14 +10,22 @@ export interface ProductoDetailDTO {
     proveedor: {
         id: number;
         nombre: string;
+        direccion: string;
+        telefono: string;
+        fechaCreacion: Date;
+        fechaModificacion: Date;
     };
     marca: {
         id: number;
         nombre: string;
+        fechaCreacion: Date;
+        fechaModificacion: Date;
     };
     rubro: {
         id: number;
         nombre: string;
+        fechaCreacion: Date;
+        fechaModificacion: Date;
     };
     esActivo: boolean
 }
