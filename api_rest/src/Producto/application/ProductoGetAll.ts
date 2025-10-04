@@ -5,6 +5,6 @@ export class ProductoGetAll {
     constructor(private repository: ProductoRepository) { }
 
     async run(): Promise<ProductoSimpleDTO[]> {
-        return this.repository.getAll();
+        return await this.repository.getAll();
     }
 }

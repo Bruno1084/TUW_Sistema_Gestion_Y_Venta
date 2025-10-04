@@ -2,10 +2,12 @@ import type { Request, Response } from "express"
 import type { VentaCreate } from "../application/VentaCreate"
 import type { VentaGetAll } from "../application/VentaGetAll"
 import type { VentaGetOneById } from "../application/VentaGetOneById"
+import type { VentaGetAllWithDetail } from "../application/VentaGetAllWithDetail"
 
 type VentaUseCases = {
     create: VentaCreate,
     getAll: VentaGetAll,
+    getAllWithDetail: VentaGetAllWithDetail,
     getOneById: VentaGetOneById
 }
 
@@ -21,7 +23,7 @@ export class VentaController {
                 fechaCreacion
             } = req.body;
 
-            const ventaCreada =  await this.useCases.create.run(
+            const ventaCreada = await this.useCases.create.run(
                 clienteId,
                 empleadoId,
                 precioTotal,
@@ -37,6 +39,15 @@ export class VentaController {
     async getAllVenta(req: Request, res: Response): Promise<void> {
         try {
             const ventas = await this.useCases.getAll.run();
+            res.status(200).json(ventas);
+        } catch (err: any) {
+            res.status(500).json({ error: err.message });
+        }
+    }
+
+    async getAllWithDetailVenta(req: Request, res: Response): Promise<void> {
+        try {
+            const ventas = await this.useCases.getAllWithDetail.run();
             res.status(200).json(ventas);
         } catch (err: any) {
             res.status(500).json({ error: err.message });

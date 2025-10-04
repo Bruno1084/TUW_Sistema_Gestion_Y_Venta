@@ -90,7 +90,7 @@ export class MySQLProductoRepository implements ProductoRepository {
             WHERE p.es_activo = true
         `;
 
-        const [rows] = await this.pool.query<(RowDataPacket)[]>(query);
+        const [rows] = await this.pool.query<(RowDataPacket & MySQLProducto)[]>(query);
 
         return rows.map(
             (row) => ({

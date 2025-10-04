@@ -1,4 +1,5 @@
 import type { VentaRepository } from "../domain/VentaRepository";
+import type { VentaSimpleDTO } from "./VentaDTO";
 import { Venta } from "../domain/Venta";
 import { VentaId } from "../domain/VentaId";
 import { VentaPrecioTotal } from "../domain/VentaPrecioTotal";
@@ -14,7 +15,7 @@ export class VentaCreate {
         empleadoId: number,
         precioTotal: number,
         fechaCreacion: Date
-    ): Promise<Venta> {
+    ): Promise<VentaSimpleDTO> {
         const venta = new Venta(
             new VentaId(0),
             new ClienteId(clienteId),
