@@ -3,7 +3,7 @@ package com.model;
 import java.util.Date;
 
 public class Proveedor {
-    private String id;
+    private int id;
     private String nombre;
     private String direccion;
     private String telefono;
@@ -14,7 +14,7 @@ public class Proveedor {
     public Proveedor() {}
 
     public Proveedor(
-            String id,
+            int id,
             String nombre,
             String direccion,
             String telefono,
@@ -31,11 +31,11 @@ public class Proveedor {
         this.esActivo = esActivo;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -33,7 +33,7 @@ public class ModalProveedorController {
     public void setProveedor(Proveedor proveedor) {
         this.proveedor = proveedor;
 
-        inputIdProveedor.setText(proveedor.getId());
+        inputIdProveedor.setText(String.valueOf(proveedor.getId()));
         inputNombreProveedor.setText(proveedor.getNombre());
         inputDireccionProveedor.setText(proveedor.getDireccion());
         inputTelefonoProveedor.setText(proveedor.getTelefono());
@@ -44,13 +44,13 @@ public class ModalProveedorController {
             if (proveedor == null) {
                 // Caso crear Empleado
                 Proveedor nuevoProveedor = new Proveedor(
-                        null,
-                        inputNombreProveedor.getText(),
-                        inputDireccionProveedor.getText(),
-                        inputDireccionProveedor.getText(),
-                        new Date(),
-                        new Date(),
-                        true
+                    0,
+                    inputNombreProveedor.getText(),
+                    inputDireccionProveedor.getText(),
+                    inputDireccionProveedor.getText(),
+                    new Date(),
+                    new Date(),
+                    true
                 );
 
                 Proveedor creado = proveedorService.createProveedor(nuevoProveedor);
@@ -66,7 +66,7 @@ public class ModalProveedorController {
                 proveedor.setTelefono(inputTelefonoProveedor.getText());
                 proveedor.setFechaModificacion(new Date());
 
-                Proveedor actualizado = proveedorService.updateProveedor(Integer.parseInt(proveedor.getId()), proveedor);
+                Proveedor actualizado = proveedorService.updateProveedor(Integer.parseInt(String.valueOf(proveedor.getId())), proveedor);
 
                 if (parentController != null) {
                     parentController.actualizarProveedor(actualizado);

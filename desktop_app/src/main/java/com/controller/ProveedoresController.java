@@ -77,7 +77,7 @@ public class ProveedoresController {
 
     public void actualizarProveedor(Proveedor actualizado) {
         for (int i = 0; i < proveedores.size(); i++) {
-            if (proveedores.get(i).getId().equals(actualizado.getId())) {
+            if (proveedores.get(i).getId() == actualizado.getId()) {
                 proveedores.set(i, actualizado);
                 break;
             }
@@ -85,7 +85,7 @@ public class ProveedoresController {
     }
 
     private void displayProveedor(Proveedor proveedor) {
-        txtIdProveedor.setText(proveedor.getId());
+        txtIdProveedor.setText(String.valueOf(proveedor.getId()));
         txtNombreProveedor.setText(proveedor.getNombre());
         txtDireccionProveedor.setText(proveedor.getDireccion());
         txtTelefonoProveedor.setText(proveedor.getTelefono());
@@ -185,7 +185,7 @@ public class ProveedoresController {
             Proveedor proveedorSeleccionado = tableProveedores.getSelectionModel().getSelectedItem();
 
             if (proveedorSeleccionado != null) {
-                proveedorService.deleteProveedor(Integer.parseInt(proveedorSeleccionado.getId()));
+                proveedorService.deleteProveedor(proveedorSeleccionado.getId());
 
                 proveedores.remove(proveedorSeleccionado);
             } else {

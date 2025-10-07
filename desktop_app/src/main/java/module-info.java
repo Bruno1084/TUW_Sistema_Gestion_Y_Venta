@@ -5,12 +5,11 @@ module com.sistema_gestion_y_venta {
     requires com.fasterxml.jackson.databind;
     requires javafx.graphics;
     requires javafx.base;
+    requires org.controlsfx.controls;
 
     opens com.controller to javafx.fxml;
     opens com.controller.modal to javafx.fxml;
     opens com.model to com.fasterxml.jackson.databind, javafx.base;
-    opens com.model.dto to com.fasterxml.jackson.databind, javafx.base;
-
     opens com to javafx.fxml;
     exports com;
 }

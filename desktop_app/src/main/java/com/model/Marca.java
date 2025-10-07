@@ -3,25 +3,25 @@ package com.model;
 import java.util.Date;
 
 public class Marca {
-    private String id;
+    private int id;
     private String nombre;
     private Date fechaCreacion;
     private Date fechaModificacion;
 
     public Marca() {}
 
-    public Marca(String id, String nombre, Date fechaCreacion, Date fechaModificacion) {
+    public Marca(int id, String nombre, Date fechaCreacion, Date fechaModificacion) {
         this.id = id;
         this.nombre = nombre;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

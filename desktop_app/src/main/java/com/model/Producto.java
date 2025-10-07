@@ -11,10 +11,9 @@ public class Producto {
     private String imgUri;
     private Date fechaCreacion;
     private Date fechaModificacion;
-    private int proveedorId;
-    private int marcaId;
-    private int rubroId;
-    private boolean esActivo;
+    private Proveedor proveedor;
+    private Marca marca;
+    private Rubro rubro;
 
     public Producto() {}
 
@@ -27,10 +26,9 @@ public class Producto {
             String imgUri,
             Date fechaCreacion,
             Date fechaModificacion,
-            int proveedorId,
-            int marcaId,
-            int rubroId,
-            boolean esActivo
+            Proveedor proveedor,
+            Marca marca,
+            Rubro rubro
     ) {
         this.codigoBarra = codigoBarra;
         this.descripcion = descripcion;
@@ -40,10 +38,9 @@ public class Producto {
         this.imgUri = imgUri;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
-        this.proveedorId = proveedorId;
-        this.marcaId = marcaId;
-        this.rubroId = rubroId;
-        this.esActivo = esActivo;
+        this.proveedor = proveedor;
+        this.marca = marca;
+        this.rubro = rubro;
     }
 
     public String getCodigoBarra() {
@@ -110,35 +107,27 @@ public class Producto {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public int getProveedorId() {
-        return proveedorId;
+    public Proveedor getProveedor() {
+        return proveedor;
     }
 
-    public void setProveedorId(int proveedorId) {
-        this.proveedorId = proveedorId;
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
     }
 
-    public int getMarcaId() {
-        return marcaId;
+    public Marca getMarca() {
+        return marca;
     }
 
-    public void setMarcaId(int marcaId) {
-        this.marcaId = marcaId;
+    public void setMarca(Marca marca) {
+        this.marca = marca;
     }
 
-    public int getRubroId() {
-        return rubroId;
+    public Rubro getRubro() {
+        return rubro;
     }
 
-    public void setRubroId(int rubroId) {
-        this.rubroId = rubroId;
-    }
-
-    public boolean isEsActivo() {
-        return esActivo;
-    }
-
-    public void setEsActivo(boolean esActivo) {
-        this.esActivo = esActivo;
+    public void setRubro(Rubro rubro) {
+        this.rubro = rubro;
     }
 }
