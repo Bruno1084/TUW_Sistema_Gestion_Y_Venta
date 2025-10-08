@@ -1,11 +1,11 @@
-import type { MarcaNombre } from "../../Marca/domain/MarcaNombre";
-import type { ProveedorNombre } from "../../Proveedor/domain/ProveedorNombre";
-import type { RubroNombre } from "../../Rubro/domain/RubroNombre";
-import type { Producto } from "../domain/Producto";
 import type { ProductoSimpleDTO, ProductoDetailDTO } from "./ProductoDTO";
+import type { Marca } from "../../Marca/domain/Marca";
+import type { Proveedor } from "../../Proveedor/domain/Proveedor";
+import type { Rubro } from "../../Rubro/domain/Rubro";
+import type { Producto } from "../domain/Producto";
 
 export class ProductoMapper {
-    static toDetailDTO(producto: Producto, marca: MarcaNombre, rubro: RubroNombre, proveedor: ProveedorNombre): ProductoDetailDTO {
+    static toDetailDTO(producto: Producto, marca: Marca, rubro: Rubro, proveedor: Proveedor): ProductoDetailDTO {
         return {
             codigoBarra: producto.codigoBarra.value,
             descripcion: producto.descripcion.value,
@@ -17,17 +17,24 @@ export class ProductoMapper {
             fechaModificacion: producto.fechaModificacion.value,
             proveedor: {
                 id: producto.proveedorId.value,
-                nombre: proveedor.value
+                nombre: proveedor.nombre.value,
+                direccion: proveedor.direccion.value,
+                telefono: proveedor.telefono.value,
+                fechaCreacion: proveedor.fechaCreacion.value,
+                fechaModificacion: proveedor.fechaModificacion.value
             },
             marca: {
                 id: producto.marcaId.value,
-                nombre: marca.value
+                nombre: marca.nombre.value,
+                fechaCreacion: marca.fechaCreacion.value,
+                fechaModificacion: marca.fechaModificacion.value
             },
             rubro: {
                 id: producto.rubroId.value,
-                nombre: rubro.value
+                nombre: rubro.nombre.value,
+                fechaCreacion: rubro.fechaCreación.value,
+                fechaModificacion: rubro.fechaModificacion.value
             },
-            esActivo: producto.esActivo.value
         }
     }
 
@@ -44,7 +51,6 @@ export class ProductoMapper {
             proveedorId: producto.proveedorId.value,
             marcaId: producto.marcaId.value,
             rubroId: producto.rubroId.value,
-            esActivo: producto.esActivo.value
         }
     }
 }

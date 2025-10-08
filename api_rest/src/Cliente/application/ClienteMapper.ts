@@ -10,7 +10,6 @@ export class ClienteMapper {
             telefono: cliente.telefono.value,
             fechaCreacion: cliente.fechaCreacion.value,
             fechaModificacion: cliente.fechaModificacion.value,
-            esActivo: cliente.esActivo.value
         }
     }
 }

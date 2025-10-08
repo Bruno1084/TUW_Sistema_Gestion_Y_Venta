@@ -7,7 +7,6 @@ import { ClienteDireccion } from "../domain/ClienteDireccion";
 import { ClienteTelefono } from "../domain/ClienteTelefono";
 import { ClienteFechaCreacion } from "../domain/ClienteFechaCreacion";
 import { ClienteFechaModificacion } from "../domain/ClienteFechaModificacion";
-import { ClienteEsActivo } from "../domain/ClienteEsActivo";
 
 export class ClienteCreate {
     constructor(private repository: ClienteRepository) {}
@@ -26,7 +25,6 @@ export class ClienteCreate {
             new ClienteTelefono(telefono),
             new ClienteFechaCreacion(fechaCreacion),
             new ClienteFechaModificacion(fechaModificacion),
-            new ClienteEsActivo(true)
         );
 
         return await this.repository.create(cliente);

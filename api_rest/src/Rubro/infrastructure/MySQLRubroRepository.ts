@@ -21,15 +21,14 @@ export class MySQLRubroRepository implements RubroRepository {
 
     async create(rubro: Rubro): Promise<RubroDTO> {
         const query = `
-            INSERT INTO rubros(nombre, fecha_creacion, fecha_modificacion, es_activo)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO rubros(nombre, fecha_creacion, fecha_modificacion)
+            VALUES (?, ?, ?)
         `;
 
         const [result] = await this.pool.query<ResultSetHeader>(query, [
             rubro.nombre.value,
             rubro.fechaCreación.value,
             rubro.fechaModificacion.value,
-            rubro.esActivo.value
         ]);
 
         const rubroId = result.insertId;
@@ -47,7 +46,6 @@ export class MySQLRubroRepository implements RubroRepository {
                 nombre: row!.nombre,
                 fechaCreacion: row!.fecha_creacion,
                 fechaModificacion: row!.fecha_modificacion,
-                esActivo: row!.es_activo
             })
         );
     }
@@ -67,7 +65,6 @@ export class MySQLRubroRepository implements RubroRepository {
             nombre: row!.nombre,
             fechaCreacion: row!.fecha_creacion,
             fechaModificacion: row!.fecha_modificacion,
-            esActivo: row!.es_activo
         }
     }
 

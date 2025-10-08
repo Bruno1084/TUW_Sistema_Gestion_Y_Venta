@@ -14,7 +14,6 @@ import { ProductoImgUri } from "../domain/ProductoImgUri";
 import { ProveedorId } from "../../Proveedor/domain/ProveedorId";
 import { MarcaId } from "../../Marca/domain/MarcaId";
 import { RubroId } from "../../Rubro/domain/RubroId";
-import { ProductoEsActivo } from "../domain/ProductoEsActivo";
 import { ProductoFechaCreacion } from "../domain/ProductoFechaCreacion";
 
 export class ProductoUpdate {
@@ -68,7 +67,6 @@ export class ProductoUpdate {
             new ProveedorId(updates.proveedorId!),
             new MarcaId(updates.marcaId!),
             new RubroId(updates.rubroId!),
-            new ProductoEsActivo(productoExistente.esActivo)
         );
 
         return await this.productoRepository.update(productoActualizado);

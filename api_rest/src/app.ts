@@ -18,8 +18,8 @@ const app = express();
 const pool = createPoolMySQL();
 
 // Middlewares
-app.use(authMiddleware);
 app.use(express.json());
+app.use(authMiddleware);
 
 
 // Dependencias

@@ -10,7 +10,6 @@ export class ProveedorMapper {
             telefono: proveedor.telefono.value,
             fechaCreacion: proveedor.fechaCreacion.value,
             fechaModificacion: proveedor.fechaModificacion.value,
-            esActivo: proveedor.esActivo.value
         }
     }
 }

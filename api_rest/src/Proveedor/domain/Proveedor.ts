@@ -4,7 +4,6 @@ import type { ProveedorDireccion } from "./ProveedorDireccion";
 import type { ProveedorTelefono } from "./ProveedorTelefono";
 import type { ProveedorFechaCreacion } from "./ProveedorFechaCreacion";
 import type { ProveedorFechaModificacion } from "./ProveedorFechaModificacion";
-import type { ProveedorEsActivo } from "./ProveedorEsActivo";
 
 export class Proveedor {
     id: ProveedorId;
@@ -13,7 +12,6 @@ export class Proveedor {
     telefono: ProveedorTelefono;
     fechaCreacion: ProveedorFechaCreacion;
     fechaModificacion: ProveedorFechaModificacion;
-    esActivo: ProveedorEsActivo;
 
     constructor(
         id: ProveedorId,
@@ -22,7 +20,6 @@ export class Proveedor {
         telefono: ProveedorTelefono,
         fechaCreacion: ProveedorFechaCreacion,
         fechaModificacion: ProveedorFechaModificacion,
-        esActivo: ProveedorEsActivo
     ) {
         this.id = id;
         this.nombre = nombre;
@@ -30,7 +27,6 @@ export class Proveedor {
         this.telefono = telefono;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
-        this.esActivo = esActivo;
     }
 
     toJSON() {
@@ -41,7 +37,6 @@ export class Proveedor {
             telefono: this.telefono.value,
             fechaCreacion: this.fechaCreacion.value,
             fechaModificacion: this.fechaModificacion.value,
-            esActivo: this.esActivo.value
         };
     }
 }

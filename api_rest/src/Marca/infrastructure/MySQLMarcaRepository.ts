@@ -21,15 +21,14 @@ export class MySQLMarcaRepository implements MarcaRepository {
 
     async create(marca: Marca): Promise<MarcaDTO> {
         const query = `
-            INSERT INTO marcas(nombre, fecha_creacion, fecha_modificacion, es_activo)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO marcas(nombre, fecha_creacion, fecha_modificacion)
+            VALUES (?, ?, ?)
         `;
 
         const [result] = await this.pool.query<ResultSetHeader>(query, [
             marca.nombre.value,
             marca.fechaCreacion.value,
             marca.fechaModificacion.value,
-            marca.esActivo.value
         ]);
 
         const marcaId = result.insertId;
@@ -37,7 +36,11 @@ export class MySQLMarcaRepository implements MarcaRepository {
     }
 
     async getAll(): Promise<MarcaDTO[]> {
-        const query = `SELECT * FROM marcas WHERE es_activo = true`;
+        const query = `
+        SELECT
+        id, nombre, fecha_creacion, fecha_modificacion
+        FROM marcas WHERE es_activo = true
+        `;
 
         const [rows] = await this.pool.query<(MySQLMarca & RowDataPacket)[]>(query);
 
@@ -47,13 +50,15 @@ export class MySQLMarcaRepository implements MarcaRepository {
                 nombre: row!.nombre,
                 fechaCreacion: row!.fecha_creacion,
                 fechaModificacion: row!.fecha_modificacion,
-                esActivo: row!.es_activo
             })
         );
     }
 
     async getOneById(marcaId: MarcaId): Promise<MarcaDTO | null> {
-        const query = `SELECT * FROM marcas WHERE id = ?`;
+        const query = `
+        SELECT
+        id, nombre, fecha_creacion, fecha_modificacion
+        FROM marcas WHERE id = ?`;
 
         const [rows] = await this.pool.query<(MySQLMarca & RowDataPacket)[]>(query, [marcaId.value]);
 
@@ -67,13 +72,12 @@ export class MySQLMarcaRepository implements MarcaRepository {
             nombre: row!.nombre,
             fechaCreacion: row!.fecha_creacion,
             fechaModificacion: row!.fecha_modificacion,
-            esActivo: row!.es_activo
         }
     }
 
     async update(marca: Marca): Promise<MarcaDTO> {
         const query = `
-            UPDATES marcas SET
+            UPDATE marcas SET
             nombre = ?,
             fecha_creacion = ?,
             fecha_modificacion = ?
@@ -84,7 +88,7 @@ export class MySQLMarcaRepository implements MarcaRepository {
             marca.nombre.value,
             marca.fechaCreacion.value,
             marca.fechaModificacion.value,
-            marca.esActivo.value
+            marca.id.value
         ]);
 
         return this.getOneById(marca.id) as Promise<MarcaDTO>;

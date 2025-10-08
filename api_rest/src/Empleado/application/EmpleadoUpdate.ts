@@ -7,7 +7,6 @@ import { EmpleadoId } from "../domain/EmpleadoId";
 import { EmpleadoNombre } from "../domain/EmpleadoNombre";
 import { EmpleadoTelefono } from "../domain/EmpleadoTelefono";
 import { EmpleadoFechaCreacion } from "../domain/EmpleadoFechaCreacion";
-import { EmpleadoEsActivo } from "../domain/EmpleadoEsActivo";
 
 export class EmpleadoUpdate {
     constructor(private repository: EmpleadoRepository) { }
@@ -31,7 +30,6 @@ export class EmpleadoUpdate {
             updates.telefono ? new EmpleadoTelefono(updates.telefono) : new EmpleadoTelefono(empleadoExistente.telefono),
             new EmpleadoFechaCreacion(empleadoExistente.fechaCreacion),
             new EmpleadoFechaModificacion(new Date()),
-            new EmpleadoEsActivo(empleadoExistente.esActivo)
         );
 
         return await this.repository.update(empleadoActualizado);

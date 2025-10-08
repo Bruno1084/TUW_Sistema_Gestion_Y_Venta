@@ -3,5 +3,4 @@ export interface RubroDTO {
     nombre: string;
     fechaCreacion: Date;
     fechaModificacion: Date;
-    esActivo: boolean;
 }

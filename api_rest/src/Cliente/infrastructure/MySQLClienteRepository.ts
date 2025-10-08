@@ -23,7 +23,7 @@ export class MySQLClienteRepository implements ClienteRepository {
 
     async create(cliente: Cliente): Promise<ClienteDTO> {
         const query = `
-            INSERT INTO clientes(nombre, direccion, telefono, fecha_creacion, fecha_modificacion, es_activo)
+            INSERT INTO clientes(nombre, direccion, telefono, fecha_creacion, fecha_modificacion)
             VALUES (?, ?, ?, ?, ?, ?)
         `;
 
@@ -33,7 +33,6 @@ export class MySQLClienteRepository implements ClienteRepository {
             cliente.telefono.value,
             cliente.fechaCreacion.value,
             cliente.fechaModificacion.value,
-            cliente.esActivo.value
         ]);
 
         const clienteId = result.insertId;
@@ -41,7 +40,16 @@ export class MySQLClienteRepository implements ClienteRepository {
     }
 
     async getAll(): Promise<ClienteDTO[]> {
-        const query = `SELECT * FROM clientes WHERE es_activo = true`;
+        const query = `
+        SELECT
+        id,
+        nombre,
+        direccion,
+        telefono,
+        fecha_creacion,
+        fecha_modificacion
+        FROM clientes WHERE es_activo = true
+        `;
 
         const [rows] = await this.pool.query<(RowDataPacket & MySQLCliente)[]>(query);
 
@@ -53,7 +61,6 @@ export class MySQLClienteRepository implements ClienteRepository {
                 telefono: row!.telefono,
                 fechaCreacion: row!.fecha_creacion,
                 fechaModificacion: row!.fecha_modificacion,
-                esActivo: row!.es_activo
             })
         );
     }
@@ -75,7 +82,6 @@ export class MySQLClienteRepository implements ClienteRepository {
             telefono: row!.telefono,
             fechaCreacion: row!.fecha_creacion,
             fechaModificacion: row!.fecha_modificacion,
-            esActivo: row!.es_activo
         }
     }
 

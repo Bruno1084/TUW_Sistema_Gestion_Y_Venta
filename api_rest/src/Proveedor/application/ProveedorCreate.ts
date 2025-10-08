@@ -7,7 +7,6 @@ import { ProveedorFechaModificacion } from "../domain/ProveedorFechaModificacion
 import { ProveedorId } from "../domain/ProveedorId";
 import { ProveedorNombre } from "../domain/ProveedorNombre";
 import { ProveedorTelefono } from "../domain/ProveedorTelefono";
-import { ProveedorEsActivo } from "../domain/ProveedorEsActivo";
 
 export class ProveedorCreate {
     constructor(private repository: ProveedorRepository) { }
@@ -26,7 +25,6 @@ export class ProveedorCreate {
             new ProveedorTelefono(telefono),
             new ProveedorFechaCreacion(fechaCreacion),
             new ProveedorFechaModificacion(fechaModificacion),
-            new ProveedorEsActivo(true)
         );
 
         return await this.repository.create(proveedor);

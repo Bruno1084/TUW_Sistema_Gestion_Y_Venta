@@ -6,7 +6,6 @@ import { ClienteDireccion } from "../domain/ClienteDireccion";
 import { ClienteTelefono } from "../domain/ClienteTelefono";
 import { ClienteId } from "../domain/ClienteId";
 import { ClienteFechaModificacion } from "../domain/ClienteFechaModificacion";
-import { ClienteEsActivo } from "../domain/ClienteEsActivo";
 import { ClienteFechaCreacion } from "../domain/ClienteFechaCreacion";
 
 export class ClienteUpdate {
@@ -29,8 +28,7 @@ export class ClienteUpdate {
             updates.direccion ? new ClienteDireccion(updates.direccion) : new ClienteDireccion(clienteExistente.direccion),
             updates.telefono ? new ClienteTelefono(updates.telefono) : new ClienteTelefono(clienteExistente.telefono),
             new ClienteFechaCreacion(clienteExistente.fechaCreacion),
-            new ClienteFechaModificacion(new Date()),
-            new ClienteEsActivo(clienteExistente.esActivo),
+            new ClienteFechaModificacion(new Date())
         );
 
         return await this.repository.update(clienteActualizado);

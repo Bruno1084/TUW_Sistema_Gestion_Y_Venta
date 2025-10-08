@@ -5,7 +5,6 @@ import { MarcaFechaCreacion } from "../domain/MarcaFechaCreacion";
 import { MarcaFechaModificacion } from "../domain/MarcaFechaModificacion";
 import { MarcaId } from "../domain/MarcaId";
 import { MarcaNombre } from "../domain/MarcaNombre";
-import { MarcaEsActivo } from "../domain/MarcaEsActivo";
 
 export class MarcaCreate {
     constructor(private repository: MarcaRepository) { }
@@ -18,7 +17,6 @@ export class MarcaCreate {
             new MarcaNombre(nombre),
             new MarcaFechaCreacion(new Date()),
             new MarcaFechaModificacion(new Date()),
-            new MarcaEsActivo(true)
         );
 
         return await this.repository.create(marca);

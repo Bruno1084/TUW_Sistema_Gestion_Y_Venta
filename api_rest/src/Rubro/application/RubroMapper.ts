@@ -8,7 +8,6 @@ export class RubroMapper {
             nombre: rubro.nombre.value,
             fechaCreacion: rubro.fechaCreación.value,
             fechaModificacion: rubro.fechaModificacion.value,
-            esActivo: rubro.esActivo.value
         }
     }
 }

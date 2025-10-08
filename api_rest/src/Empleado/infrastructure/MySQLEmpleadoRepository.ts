@@ -23,8 +23,8 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
 
     async create(empleado: Empleado): Promise<EmpleadoDTO> {
         const query = `
-            INSERT INTO empleados (nombre, direccion, telefono, fecha_creacion, fecha_modificacion, es_activo)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO empleados (nombre, direccion, telefono, fecha_creacion, fecha_modificacion)
+            VALUES (?, ?, ?, ?, ?)
         `;
 
         const [result] = await this.pool.query<ResultSetHeader>(query, [
@@ -33,7 +33,6 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
             empleado.telefono.value,
             empleado.fechaCreacion.value,
             empleado.fechaModificacion.value,
-            empleado.esActivo.value
         ]);
 
         const empleadoId = result.insertId;
@@ -41,7 +40,10 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
     }
 
     async getAll(): Promise<EmpleadoDTO[]> {
-        const query = 'SELECT * FROM empleados WHERE es_activo = true';
+        const query = `
+        SELECT
+        nombre, direccion, telefono, fecha_creacion, fecha_modificacion
+        FROM empleados WHERE es_activo = true`;
 
         const [rows] = await this.pool.query<(MySQLEmpleado & RowDataPacket)[]>(query);
 
@@ -53,13 +55,15 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
                 telefono: row!.telefono,
                 fechaCreacion: row!.fecha_creacion,
                 fechaModificacion: row!.fecha_modificacion,
-                esActivo: row!.es_activo
             })
         );
     }
 
     async getOneById(empleadoId: EmpleadoId): Promise<EmpleadoDTO | null> {
-        const query = 'SELECT * FROM empleados WHERE id = ?';
+        const query = `
+        SELECT
+        nombre, direccion, telefono, fecha_creacion, fecha_modificacion
+        FROM empleados WHERE id = ?`;
 
         const [rows] = await this.pool.query<(MySQLEmpleado & RowDataPacket)[]>(query, [empleadoId.value]);
 
@@ -75,7 +79,6 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
             telefono: row!.telefono,
             fechaCreacion: row!.fecha_creacion,
             fechaModificacion: row!.fecha_modificacion,
-            esActivo: row!.es_activo
         }
     }
 

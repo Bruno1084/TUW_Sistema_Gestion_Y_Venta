@@ -10,7 +10,6 @@ export class EmpleadoMapper {
             telefono: empleado.telefono.value,
             fechaCreacion: empleado.fechaCreacion.value,
             fechaModificacion: empleado.fechaModificacion.value,
-            esActivo: empleado.esActivo.value
         }
     }
 }

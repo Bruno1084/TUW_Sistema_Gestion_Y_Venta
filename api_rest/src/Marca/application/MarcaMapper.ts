@@ -8,7 +8,6 @@ export class MarcaMapper {
             nombre: marca.nombre.value,
             fechaCreacion: marca.fechaCreacion.value,
             fechaModificacion: marca.fechaModificacion.value,
-            esActivo: marca.esActivo.value
         }
     }
 }

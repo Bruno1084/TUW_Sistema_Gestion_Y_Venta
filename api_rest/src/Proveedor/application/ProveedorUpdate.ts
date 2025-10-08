@@ -6,7 +6,6 @@ import { ProveedorFechaModificacion } from "../domain/ProveedorFechaModificacion
 import { ProveedorId } from "../domain/ProveedorId";
 import { ProveedorNombre } from "../domain/ProveedorNombre";
 import { ProveedorTelefono } from "../domain/ProveedorTelefono";
-import { ProveedorEsActivo } from "../domain/ProveedorEsActivo";
 import { ProveedorFechaCreacion } from "../domain/ProveedorFechaCreacion";
 
 export class ProveedorUpdate {
@@ -30,7 +29,6 @@ export class ProveedorUpdate {
             updates.telefono ? new ProveedorTelefono(updates.telefono) : new ProveedorTelefono(proveedorExistente.telefono),
             new ProveedorFechaCreacion(proveedorExistente.fechaCreacion),
             new ProveedorFechaModificacion(new Date()),
-            new ProveedorEsActivo(proveedorExistente.esActivo)
         );
 
         return await this.repository.update(proveedorActualizado);

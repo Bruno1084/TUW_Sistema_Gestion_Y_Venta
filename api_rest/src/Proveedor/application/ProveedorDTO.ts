@@ -5,5 +5,4 @@ export interface ProveedorDTO {
     telefono: string,
     fechaCreacion: Date,
     fechaModificacion: Date,
-    esActivo: boolean
 }

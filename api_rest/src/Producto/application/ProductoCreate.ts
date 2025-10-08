@@ -12,7 +12,6 @@ import { ProductoImgUri } from "../domain/ProductoImgUri";
 import { ProductoPrecioCompra } from "../domain/ProductoPrecioCompra";
 import { ProductoPrecioVenta } from "../domain/ProductoPrecioVenta";
 import { ProductoStock } from "../domain/ProductoStock";
-import { ProductoEsActivo } from "../domain/ProductoEsActivo";
 
 export class ProductoCreate {
     constructor(private repository: ProductoRepository) { }
@@ -42,7 +41,6 @@ export class ProductoCreate {
             new ProveedorId(proveedorId),
             new MarcaId(marcaId),
             new RubroId(rubroId),
-            new ProductoEsActivo(true)
         );
 
         return await this.repository.create(producto);

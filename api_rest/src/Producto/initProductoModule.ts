@@ -3,6 +3,7 @@ import type { Pool } from "mysql2/promise";
 import { MySQLProductoRepository } from "./infrastructure/MySQLProductoRepository";
 import { ProductoCreate } from "./application/ProductoCreate";
 import { ProductoGetAll } from "./application/ProductoGetAll";
+import { ProductoGetAllWithDetail } from "./application/ProductoGetAllWithDetail";
 import { ProductoGetOneById } from "./application/ProductoGetOneById";
 import { ProductoUpdate } from "./application/ProductoUpdate";
 import { ProductoDelete } from "./application/ProductoDelete";
@@ -13,7 +14,6 @@ import { productoRouter } from "./interfaces/ProductoRouter";
 import type { MySQLProveedorRepository } from "../Proveedor/infrastructure/MySQLProveedorRepository";
 import type { MySQLMarcaRepository } from "../Marca/infrastructure/MySQLMarcaRepository";
 import type { MySQLRubroRepository } from "../Rubro/infrastructure/MySQLRubroRepository";
-import { ProductoGetAllWithDetail } from "./application/ProductoGetAllWithDetail";
 
 
 export function initProductoModule(

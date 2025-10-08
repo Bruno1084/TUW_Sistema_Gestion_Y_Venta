@@ -28,8 +28,8 @@ export class MySQLProductoRepository implements ProductoRepository {
 
     async create(producto: Producto): Promise<ProductoSimpleDTO> {
         const query = `
-            INSERT INTO productos(codigo_barra, descripcion, id_proveedor, id_marca, id_rubro, precio_compra, precio_venta, stock, img_uri, fecha_creacion, fecha_modificacion, es_activo)
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO productos(codigo_barra, descripcion, id_proveedor, id_marca, id_rubro, precio_compra, precio_venta, stock, img_uri, fecha_creacion, fecha_modificacion)
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         await this.pool.query<ResultSetHeader>(query, [
@@ -44,14 +44,26 @@ export class MySQLProductoRepository implements ProductoRepository {
             producto.imgUri.value,
             producto.fechaCreacion.value,
             producto.fechaModificacion.value,
-            producto.esActivo.value
         ]);
 
         return this.getOneById(producto.codigoBarra) as Promise<ProductoSimpleDTO>;
     }
 
     async getAll(): Promise<ProductoSimpleDTO[]> {
-        const query = `SELECT * FROM productos WHERE es_activo = true`;
+        const query = `
+        SELECT
+        codigo_barra,
+        descripcion,
+        precio_compra,
+        precio_venta,
+        stock,
+        img_uri,
+        fecha_creacion,
+        fecha_modificacion,
+        id_proveedor,
+        id_marca,
+        id_rubro
+        FROM productos WHERE es_activo = true`;
 
         const [rows] = await this.pool.query<(RowDataPacket & MySQLProducto)[]>(query);
 
@@ -68,7 +80,6 @@ export class MySQLProductoRepository implements ProductoRepository {
                 proveedorId: row!.id_proveedor,
                 marcaId: row!.id_marca,
                 rubroId: row!.id_rubro,
-                esActivo: row!.es_activo
             })
         );
     }
@@ -135,13 +146,25 @@ export class MySQLProductoRepository implements ProductoRepository {
                     fechaCreacion: row!.rubro_fecha_creacion,
                     fechaModificacion: row!.rubro_fecha_modificacion
                 },
-                esActivo: row!.es_activo
             })
         );
     }
 
     async getOneById(productoCodigoBarra: ProductoCodigoBarra): Promise<ProductoSimpleDTO | null> {
-        const query = 'SELECT * FROM productos WHERE codigo_barra = ?';
+        const query = `
+        SELECT
+        codigo_barra,
+        descripcion,
+        precio_compra,
+        precio_venta,
+        stock,
+        img_uri,
+        fecha_creacion,
+        fecha_modificacion,
+        id_proveedor,
+        id_marca,
+        id_rubro
+        FROM productos WHERE codigo_barra = ?`;
 
         const [rows] = await this.pool.query<(MySQLProducto & RowDataPacket)[]>(query, [productoCodigoBarra.value]);
 
@@ -162,11 +185,11 @@ export class MySQLProductoRepository implements ProductoRepository {
             proveedorId: row!.id_proveedor,
             marcaId: row!.id_marca,
             rubroId: row!.id_rubro,
-            esActivo: row!.es_activo
         }
     }
 
     async update(producto: Producto): Promise<ProductoSimpleDTO> {
+        console.log(producto);
         const query = `
             UPDATE productos SET
             descripcion = ?,
@@ -176,9 +199,9 @@ export class MySQLProductoRepository implements ProductoRepository {
             img_uri = ?,
             fecha_creacion = ?,
             fecha_modificacion = ?,
-            proveedor_id = ?,
-            marca_id = ?,
-            rubro_id = ?
+            id_proveedor = ?,
+            id_marca = ?,
+            id_rubro = ?
             WHERE codigo_barra = ?
         `;
 

@@ -27,7 +27,6 @@ export interface ProductoDetailDTO {
         fechaCreacion: Date;
         fechaModificacion: Date;
     };
-    esActivo: boolean
 }
 
 export interface ProductoSimpleDTO {
@@ -42,5 +41,4 @@ export interface ProductoSimpleDTO {
     proveedorId: number;
     marcaId: number;
     rubroId: number;
-    esActivo: boolean
 }

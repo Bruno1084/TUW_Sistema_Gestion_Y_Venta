@@ -1,5 +1,4 @@
 import type { ClienteDireccion } from "./ClienteDireccion";
-import type { ClienteEsActivo } from "./ClienteEsActivo";
 import type { ClienteFechaCreacion } from "./ClienteFechaCreacion";
 import type { ClienteFechaModificacion } from "./ClienteFechaModificacion";
 import type { ClienteId } from "./ClienteId";
@@ -13,7 +12,6 @@ export class Cliente {
     telefono: ClienteTelefono;
     fechaCreacion: ClienteFechaCreacion;
     fechaModificacion: ClienteFechaModificacion;
-    esActivo: ClienteEsActivo;
 
     constructor(
         id: ClienteId,
@@ -22,7 +20,6 @@ export class Cliente {
         telefono: ClienteTelefono,
         fechaCreacion: ClienteFechaCreacion,
         fechaModificacion: ClienteFechaModificacion,
-        esActivo: ClienteEsActivo
     ) {
         this.id = id;
         this.nombre = nombre;
@@ -30,7 +27,6 @@ export class Cliente {
         this.telefono = telefono;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
-        this.esActivo = esActivo;
     }
 
     toJSON() {
@@ -41,7 +37,6 @@ export class Cliente {
             telefono: this.telefono.value,
             fechaCreacion: this.fechaCreacion.value,
             fechaModificacion: this.fechaModificacion.value,
-            esActivo: this.esActivo.value
         };
     }
 }

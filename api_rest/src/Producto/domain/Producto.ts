@@ -9,7 +9,6 @@ import type { ProductoFechaModificacion } from "./ProductoFechaModificacion";
 import type { ProveedorId } from "../../Proveedor/domain/ProveedorId";
 import type { MarcaId } from "../../Marca/domain/MarcaId";
 import type { RubroId } from "../../Rubro/domain/RubroId";
-import type { ProductoEsActivo } from "./ProductoEsActivo";
 
 export class Producto {
     codigoBarra: ProductoCodigoBarra;
@@ -23,7 +22,6 @@ export class Producto {
     proveedorId: ProveedorId;
     marcaId: MarcaId;
     rubroId: RubroId;
-    esActivo: ProductoEsActivo;
 
     constructor(
         codigoBarra: ProductoCodigoBarra,
@@ -37,7 +35,6 @@ export class Producto {
         proveedorId: ProveedorId,
         marcaId: MarcaId,
         rubroId: RubroId,
-        esActivo: ProductoEsActivo
     ) {
         this.codigoBarra = codigoBarra;
         this.descripcion = descripcion;
@@ -50,7 +47,6 @@ export class Producto {
         this.proveedorId = proveedorId;
         this.marcaId = marcaId;
         this.rubroId = rubroId;
-        this.esActivo = esActivo;
     }
 
     toJSON() {
@@ -66,7 +62,6 @@ export class Producto {
             proveedorId: this.proveedorId.value,
             marcaId: this.marcaId.value,
             rubroId: this.rubroId.value,
-            esActivo: this.esActivo.value
         };
     }
 }

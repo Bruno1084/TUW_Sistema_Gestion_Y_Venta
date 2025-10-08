@@ -23,8 +23,8 @@ export class MySQLProveedorRepository implements ProveedorRepository {
 
     async create(proveedor: Proveedor): Promise<ProveedorDTO> {
         const query = `
-        INSERT INTO proveedores(nombre, direccion, telefono, fecha_creacion, fecha_modificacion, es_activo)
-        VALUES(?, ?, ?, ?, ?, ?)
+        INSERT INTO proveedores(nombre, direccion, telefono, fecha_creacion, fecha_modificacion)
+        VALUES(?, ?, ?, ?, ?)
         `;
 
         const [result] = await this.pool.query<ResultSetHeader>(query, [
@@ -33,7 +33,6 @@ export class MySQLProveedorRepository implements ProveedorRepository {
             proveedor.telefono.value,
             proveedor.fechaCreacion.value,
             proveedor.fechaModificacion.value,
-            proveedor.esActivo.value
         ]);
 
         const proveedorId = result.insertId;
@@ -41,7 +40,10 @@ export class MySQLProveedorRepository implements ProveedorRepository {
     }
 
     async getAll(): Promise<ProveedorDTO[]> {
-        const query = `SELECT * FROM proveedores WHERE es_activo = true`;
+        const query = `
+        SELECT
+        nombre, direccion, telefono, fecha_creacion, fecha_modificacion
+        FROM proveedores WHERE es_activo = true`;
 
         const [rows] = await this.pool.query<(MySQLProveedor & RowDataPacket)[]>(query);
 
@@ -53,13 +55,15 @@ export class MySQLProveedorRepository implements ProveedorRepository {
                 telefono: row!.telefono,
                 fechaCreacion: row!.fecha_creacion,
                 fechaModificacion: row!.fecha_modificacion,
-                esActivo: row!.es_activo
             })
         );
     }
 
     async getOneById(proveedorId: ProveedorId): Promise<ProveedorDTO | null> {
-        const query = `SELECT * FROM proveedores WHERE id = ?`;
+        const query = `
+        SELECT
+        nombre, direccion, telefono, fecha_creacion, fecha_modificacion
+        FROM proveedores WHERE id = ?`;
 
         const [rows] = await this.pool.query<(MySQLProveedor & RowDataPacket)[]>(query, [proveedorId.value]);
 
@@ -75,7 +79,6 @@ export class MySQLProveedorRepository implements ProveedorRepository {
             telefono: row!.telefono,
             fechaCreacion: row!.fecha_creacion,
             fechaModificacion: row!.fecha_modificacion,
-            esActivo: row!.es_activo
         }
     }
 
@@ -87,18 +90,16 @@ export class MySQLProveedorRepository implements ProveedorRepository {
             telefono = ?,
             fecha_creacion = ?,
             fecha_modificacion = ?,
-            es_activo = ?
             WHERE id = ?
         `;
 
         await this.pool.query(query, [
             proveedor.nombre.value,
             proveedor.direccion.value,
-            proveedor.direccion.value,
             proveedor.telefono.value,
             proveedor.fechaCreacion.value,
             proveedor.fechaModificacion.value,
-            proveedor.esActivo.value
+            proveedor.id.value
         ]);
 
         return this.getOneById(proveedor.id) as Promise<ProveedorDTO>;

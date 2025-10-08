@@ -5,7 +5,6 @@ import { RubroFechaCracion } from "../domain/RubroFechaCreacion";
 import { RubroFechaModificacion } from "../domain/RubroFechaModificacion";
 import { RubroId } from "../domain/RubroId";
 import { RubroNombre } from "../domain/RubroNombre";
-import { RubroEsActivo } from "../domain/RubroEsActivo";
 
 export class RubroCreate {
     constructor(private repository: RubroRepository) {}
@@ -18,7 +17,6 @@ export class RubroCreate {
             new RubroNombre(nombre),
             new RubroFechaCracion(new Date()),
             new RubroFechaModificacion(new Date()),
-            new RubroEsActivo(true)
         );
 
         return await this.repository.create(rubro);
