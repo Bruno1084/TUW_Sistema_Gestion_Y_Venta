@@ -42,7 +42,7 @@ export class MySQLProveedorRepository implements ProveedorRepository {
     async getAll(): Promise<ProveedorDTO[]> {
         const query = `
         SELECT
-        nombre, direccion, telefono, fecha_creacion, fecha_modificacion
+        id, nombre, direccion, telefono, fecha_creacion, fecha_modificacion
         FROM proveedores WHERE es_activo = true`;
 
         const [rows] = await this.pool.query<(MySQLProveedor & RowDataPacket)[]>(query);
@@ -62,7 +62,7 @@ export class MySQLProveedorRepository implements ProveedorRepository {
     async getOneById(proveedorId: ProveedorId): Promise<ProveedorDTO | null> {
         const query = `
         SELECT
-        nombre, direccion, telefono, fecha_creacion, fecha_modificacion
+        id, nombre, direccion, telefono, fecha_creacion, fecha_modificacion
         FROM proveedores WHERE id = ?`;
 
         const [rows] = await this.pool.query<(MySQLProveedor & RowDataPacket)[]>(query, [proveedorId.value]);

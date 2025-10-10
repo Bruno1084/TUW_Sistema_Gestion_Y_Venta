@@ -66,7 +66,15 @@ export class MySQLClienteRepository implements ClienteRepository {
     }
 
     async getOneById(clienteId: ClienteId): Promise<ClienteDTO | null> {
-        const query = `SELECT * FROM clientes WHERE id = ?`;
+        const query = `
+        SELECT
+        id,
+        nombre,
+        direccion,
+        telefono,
+        fecha_creacion,
+        fecha_modificacion
+        FROM clientes WHERE id = ?`;
 
         const [rows] = await this.pool.query<(MySQLCliente & RowDataPacket)[]>(query, [clienteId.value]);
 

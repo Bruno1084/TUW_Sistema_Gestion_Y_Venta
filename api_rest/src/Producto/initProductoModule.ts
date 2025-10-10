@@ -5,6 +5,7 @@ import { ProductoCreate } from "./application/ProductoCreate";
 import { ProductoGetAll } from "./application/ProductoGetAll";
 import { ProductoGetAllWithDetail } from "./application/ProductoGetAllWithDetail";
 import { ProductoGetOneById } from "./application/ProductoGetOneById";
+import { ProductoGetOneByIdWithDetail } from "./application/ProductoGetOneByIdWithDetail";
 import { ProductoUpdate } from "./application/ProductoUpdate";
 import { ProductoDelete } from "./application/ProductoDelete";
 import { ProductoController } from "./interfaces/ProductoController";
@@ -29,6 +30,7 @@ export function initProductoModule(
         getAll: new ProductoGetAll(repo),
         getAllWithDetail: new ProductoGetAllWithDetail(repo),
         getOneById: new ProductoGetOneById(repo),
+        getOneByIdWithDetail: new ProductoGetOneByIdWithDetail(repo),
         update: new ProductoUpdate(repo, proveedorRepo, marcaRepo, rubroRepo),
         delete: new ProductoDelete(repo)
     };

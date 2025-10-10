@@ -42,7 +42,7 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
     async getAll(): Promise<EmpleadoDTO[]> {
         const query = `
         SELECT
-        nombre, direccion, telefono, fecha_creacion, fecha_modificacion
+        id, nombre, direccion, telefono, fecha_creacion, fecha_modificacion
         FROM empleados WHERE es_activo = true`;
 
         const [rows] = await this.pool.query<(MySQLEmpleado & RowDataPacket)[]>(query);
@@ -62,7 +62,7 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
     async getOneById(empleadoId: EmpleadoId): Promise<EmpleadoDTO | null> {
         const query = `
         SELECT
-        nombre, direccion, telefono, fecha_creacion, fecha_modificacion
+        id, nombre, direccion, telefono, fecha_creacion, fecha_modificacion
         FROM empleados WHERE id = ?`;
 
         const [rows] = await this.pool.query<(MySQLEmpleado & RowDataPacket)[]>(query, [empleadoId.value]);

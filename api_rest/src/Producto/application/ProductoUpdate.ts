@@ -1,5 +1,5 @@
 import type { ProveedorRepository } from "../../Proveedor/domain/ProveedorRepository";
-import type { ProductoSimpleDTO } from "./ProductoDTO";
+import type { ProductoDetailDTO } from "./ProductoDTO";
 import type { ProductoRepository } from "../domain/ProductoRepository";
 import type { MarcaRepository } from "../../Marca/domain/MarcaRepository";
 import type { RubroRepository } from "../../Rubro/domain/RubroRepository";
@@ -36,7 +36,7 @@ export class ProductoUpdate {
             marcaId?: number,
             rubroId?: number,
         }
-    ): Promise<ProductoSimpleDTO> {
+    ): Promise<ProductoDetailDTO> {
         const productoExistente = await this.productoRepository.getOneById(new ProductoCodigoBarra(codigoBarra));
         if (!productoExistente) throw new Error("Producto no encontrado");
 

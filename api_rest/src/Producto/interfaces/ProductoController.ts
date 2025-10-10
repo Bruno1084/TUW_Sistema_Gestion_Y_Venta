@@ -1,8 +1,9 @@
 import type { Request, Response } from "express";
-import type { ProductoGetAllWithDetail } from "../application/ProductoGetAllWithDetail";
+import { ProductoGetAllWithDetail } from "../application/ProductoGetAllWithDetail";
 import { ProductoCreate } from "../application/ProductoCreate";
 import { ProductoGetAll } from "../application/ProductoGetAll";
 import { ProductoGetOneById } from "../application/ProductoGetOneById";
+import { ProductoGetOneByIdWithDetail } from "../application/ProductoGetOneByIdWithDetail";
 import { ProductoUpdate } from "../application/ProductoUpdate";
 
 type ProductoUseCases = {
@@ -10,6 +11,7 @@ type ProductoUseCases = {
     getAll: ProductoGetAll;
     getAllWithDetail: ProductoGetAllWithDetail;
     getOneById: ProductoGetOneById;
+    getOneByIdWithDetail: ProductoGetOneByIdWithDetail;
     update: ProductoUpdate;
 }
 
@@ -59,7 +61,7 @@ export class ProductoController {
         }
     }
 
-        async getAllProductoWithDetail(req: Request, res: Response): Promise<void> {
+    async getAllProductoWithDetail(req: Request, res: Response): Promise<void> {
         try {
             const productos = await this.useCases.getAllWithDetail.run();
             res.status(200).json(productos);
@@ -72,6 +74,22 @@ export class ProductoController {
         try {
             const { codigo } = req.params;
             const producto = await this.useCases.getOneById.run(codigo!);
+
+            if (!producto) {
+                res.status(404).json({ error: "Producto no encontrado" });
+                return;
+            }
+
+            res.status(200).json(producto);
+        } catch (err: any) {
+            res.status(400).json({ error: err.message });
+        }
+    }
+
+    async getOneByIdWithDetailProducto(req: Request, res: Response): Promise<void> {
+        try {
+            const { codigo } = req.params;
+            const producto = await this.useCases.getOneByIdWithDetail.run(codigo!);
 
             if (!producto) {
                 res.status(404).json({ error: "Producto no encontrado" });

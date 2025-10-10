@@ -26,7 +26,7 @@ export class MySQLProductoRepository implements ProductoRepository {
         this.pool = pool;
     }
 
-    async create(producto: Producto): Promise<ProductoSimpleDTO> {
+    async create(producto: Producto): Promise<ProductoDetailDTO> {
         const query = `
             INSERT INTO productos(codigo_barra, descripcion, id_proveedor, id_marca, id_rubro, precio_compra, precio_venta, stock, img_uri, fecha_creacion, fecha_modificacion)
             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -46,7 +46,7 @@ export class MySQLProductoRepository implements ProductoRepository {
             producto.fechaModificacion.value,
         ]);
 
-        return this.getOneById(producto.codigoBarra) as Promise<ProductoSimpleDTO>;
+        return this.getOneByIdWithDetail(producto.codigoBarra) as Promise<ProductoDetailDTO>;
     }
 
     async getAll(): Promise<ProductoSimpleDTO[]> {
@@ -188,8 +188,72 @@ export class MySQLProductoRepository implements ProductoRepository {
         }
     }
 
-    async update(producto: Producto): Promise<ProductoSimpleDTO> {
-        console.log(producto);
+    async getOneByIdWithDetail(productoCodigoBarra: ProductoCodigoBarra): Promise<ProductoDetailDTO | null> {
+        const query = `
+        SELECT 
+        p.codigo_barra,
+        p.descripcion,
+        p.precio_compra,
+        p.precio_venta,
+        p.stock,
+        p.img_uri,
+        p.fecha_creacion,
+        p.fecha_modificacion,
+        m.id AS marca_id,
+        m.nombre AS marca_nombre,
+        m.fecha_creacion AS marca_fecha_creacion,
+        m.fecha_modificacion AS marca_fecha_modificacion,
+        pr.id AS proveedor_id,
+        pr.nombre AS proveedor_nombre,
+        pr.fecha_creacion AS proveedor_fecha_creacion,
+        pr.fecha_modificacion AS proveedor_fecha_modificacion,
+        r.id AS rubro_id,
+        r.nombre AS rubro_nombre,
+        r.fecha_creacion AS rubro_fecha_creacion,
+        r.fecha_modificacion AS rubro_fecha_modificacion
+        FROM productos p
+        JOIN marcas m ON p.id_marca = m.id
+        JOIN proveedores pr ON p.id_proveedor = pr.id
+        JOIN rubros r ON p.id_rubro = r.id
+        WHERE p.codigo_barra = ?
+        `;
+
+        const [rows] = await this.pool.query<(MySQLProducto & RowDataPacket)[]>(query, [productoCodigoBarra.value]);
+
+        const row = rows[0];
+        return {
+            codigoBarra: row!.codigo_barra,
+            descripcion: row!.descripcion,
+            precioCompra: row!.precio_compra,
+            precioVenta: row!.precio_venta,
+            stock: row!.stock,
+            imgUri: row!.img_uri,
+            fechaCreacion: row!.fecha_creacion,
+            fechaModificacion: row!.fecha_modificacion,
+            proveedor: {
+                id: row!.proveedor_id,
+                nombre: row!.proveedor_nombre,
+                direccion: row!.proveedor_direccion,
+                telefono: row!.proveedor_telefono,
+                fechaCreacion: row!.proveedor_fecha_creacion,
+                fechaModificacion: row!.proveedor_fecha_modificacion
+            },
+            marca: {
+                id: row!.marca_id,
+                nombre: row!.marca_nombre,
+                fechaCreacion: row!.marca_fecha_creacion,
+                fechaModificacion: row!.marca_fecha_modificacion
+            },
+            rubro: {
+                id: row!.rubro_id,
+                nombre: row!.rubro_nombre,
+                fechaCreacion: row!.rubro_fecha_creacion,
+                fechaModificacion: row!.rubro_fecha_modificacion
+            }
+        }
+    }
+
+    async update(producto: Producto): Promise<ProductoDetailDTO> {
         const query = `
             UPDATE productos SET
             descripcion = ?,
@@ -219,7 +283,7 @@ export class MySQLProductoRepository implements ProductoRepository {
             producto.codigoBarra.value
         ]);
 
-        return this.getOneById(producto.codigoBarra) as Promise<ProductoSimpleDTO>;
+        return this.getOneByIdWithDetail(producto.codigoBarra) as Promise<ProductoDetailDTO>;
     }
 
     async delete(productocodigoBarra: ProductoCodigoBarra): Promise<void> {
