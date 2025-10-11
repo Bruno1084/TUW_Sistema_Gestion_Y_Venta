@@ -34,8 +34,8 @@ create table clientes(
 create table proveedores(
 	id int not null auto_increment,
     nombre varchar(80) unique not null,
-    direccion varchar(255) not null,
-    telefono varchar(15) not null,
+    direccion varchar(255),
+    telefono varchar(15),
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	es_activo bool not null default true,

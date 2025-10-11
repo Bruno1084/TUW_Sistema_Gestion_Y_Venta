@@ -54,6 +54,9 @@ public class ProductosController {
     // Helper Methods
     public void agregarProducto(Producto producto) {
         productos.add(producto);
+        tableProductos.getSelectionModel().select(producto);
+        tableProductos.scrollTo(producto);
+        displayProducto(producto);
     }
 
     public void cargarProductos() {
@@ -158,6 +161,7 @@ public class ProductosController {
 
             modalController.setProducto(seleccionado);
             modalController.setTxtTituloProducto("Editar Producto");
+            modalController.disableInputCodigoBarra(true);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
@@ -178,7 +182,6 @@ public class ProductosController {
 
             if (productoSeleccionado != null) {
                 productoService.deleteProducto(productoSeleccionado.getCodigoBarra());
-
                 productos.remove(productoSeleccionado);
 
                 txtCodigoBarraProducto.setText("");

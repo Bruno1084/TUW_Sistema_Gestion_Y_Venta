@@ -2,19 +2,21 @@ package com.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.model.Marca;
+import com.model.Rubro;
 import com.model.SessionManager;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class MarcaService {
-    private static final String BASE_URL = "http://localhost:8080/api/marcas";
+public class RubroService {
+    private static final String BASE_URL = "http://localhost:8080/api/rubros";
     private final HttpClient client = HttpClient.newHttpClient();
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public Marca createMarca(Marca marca) throws Exception {
-        String requestBody = mapper.writeValueAsString(marca);
+    public Rubro createRubro(Rubro rubro) throws Exception {
+        String requestBody = mapper.writeValueAsString(rubro);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/create"))
@@ -26,13 +28,13 @@ public class MarcaService {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() == 201) {
-            return mapper.readValue(response.body(), Marca.class);
+            return mapper.readValue(response.body(), Rubro.class);
         } else {
-            throw new RuntimeException("Error al crear Marca: " + response.body());
+            throw new RuntimeException("Error al crear rubro: " + response.body());
         }
     }
 
-    public Marca[] getAllMarca() throws Exception {
+    public Rubro[] getAllRubro() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/getAll"))
                 .header("Content-Type", "application/json")
@@ -43,13 +45,13 @@ public class MarcaService {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() == 200) {
-            return mapper.readValue(response.body(), Marca[].class);
+            return mapper.readValue(response.body(), Rubro[].class);
         } else {
-            throw new RuntimeException("Error al obtener marcas: " + response.body());
+            throw new RuntimeException("Error al obtener rubros: " + response.body());
         }
     }
 
-    public Marca getOneByIdMarca(int id) throws Exception {
+    public Rubro getOneByIdRubro(int id) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/getOneById/" + id))
                 .header("Content-Type", "application/json")
@@ -60,16 +62,16 @@ public class MarcaService {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() == 200) {
-            return mapper.readValue(response.body(), Marca.class);
+            return mapper.readValue(response.body(), Rubro.class);
         } else if (response.statusCode() == 404){
             return null;
         } else {
-            throw new RuntimeException("Error al obtener marca: " + response.body());
+            throw new RuntimeException("Error al obtener rubro: " + response.body());
         }
     }
 
-    public Marca updateMarca(int id, Marca marca) throws Exception {
-        String requestBody = mapper.writeValueAsString(marca);
+    public Rubro updateRubro(int id, Rubro rubro) throws Exception {
+        String requestBody = mapper.writeValueAsString(rubro);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/update/" + id))
@@ -81,13 +83,13 @@ public class MarcaService {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() == 200) {
-            return mapper.readValue(response.body(), Marca.class);
+            return mapper.readValue(response.body(), Rubro.class);
         } else {
-            throw new RuntimeException("Error al actualizar marca: " + response.body());
+            throw new RuntimeException("Error al actualizar rubro: " + response.body());
         }
     }
 
-    public boolean deleteMarca(int id) throws Exception {
+    public boolean deleteRubro(int id) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/delete/" + id))
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
@@ -101,7 +103,7 @@ public class MarcaService {
         } else if (response.statusCode() == 404) {
             return false;
         } else {
-            throw new RuntimeException("Error al eliminar marca: " + response.body());
+            throw new RuntimeException("Error al eliminar rubro: " + response.body());
         }
     }
 }

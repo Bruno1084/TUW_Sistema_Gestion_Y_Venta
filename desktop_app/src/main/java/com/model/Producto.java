@@ -5,8 +5,8 @@ import java.util.Date;
 public class Producto {
     private String codigoBarra;
     private String descripcion;
-    private float precioVenta;
     private float precioCompra;
+    private float precioVenta;
     private int stock;
     private String imgUri;
     private Date fechaCreacion;
@@ -20,8 +20,8 @@ public class Producto {
     public Producto(
             String codigoBarra,
             String descripcion,
-            float precioVenta,
             float precioCompra,
+            float precioVenta,
             int stock,
             String imgUri,
             Date fechaCreacion,
@@ -32,8 +32,8 @@ public class Producto {
     ) {
         this.codigoBarra = codigoBarra;
         this.descripcion = descripcion;
-        this.precioVenta = precioVenta;
         this.precioCompra = precioCompra;
+        this.precioVenta = precioVenta;
         this.stock = stock;
         this.imgUri = imgUri;
         this.fechaCreacion = fechaCreacion;
