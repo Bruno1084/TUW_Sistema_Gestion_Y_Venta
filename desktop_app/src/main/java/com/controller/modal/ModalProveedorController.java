@@ -5,6 +5,7 @@ import com.model.Proveedor;
 import com.service.ProveedorService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -42,13 +43,27 @@ public class ModalProveedorController {
 
     @FXML private void handleBtnGuardar(ActionEvent event) {
         try {
+            String nombre = inputNombreProveedor.getText().trim();
+            String telefono = inputTelefonoProveedor.getText().trim();
+            String direccion = inputDireccionProveedor.getText().trim();
+
+            // Validación de campo obligatorio
+            if (nombre.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Campo obligatorio");
+                alert.setHeaderText("Nombre requerido");
+                alert.setContentText("Debes ingresar un nombre para el proveedor.");
+                alert.showAndWait();
+                return;
+            }
+
             if (proveedor == null) {
-                // Caso crear Empleado
+                // Caso crear Proveedor
                 Proveedor nuevoProveedor = new Proveedor(
                         0,
-                        inputNombreProveedor.getText(),
-                        inputDireccionProveedor.getText(),
-                        inputTelefonoProveedor.getText(),
+                        nombre,
+                        direccion,
+                        telefono,
                         new Date(),
                         new Date()
                 );
@@ -62,9 +77,9 @@ public class ModalProveedorController {
 
             } else {
                 // Caso editar Empleado
-                proveedor.setNombre(inputNombreProveedor.getText());
-                proveedor.setTelefono(inputTelefonoProveedor.getText());
-                proveedor.setDireccion(inputDireccionProveedor.getText());
+                proveedor.setNombre(nombre);
+                proveedor.setTelefono(direccion);
+                proveedor.setDireccion(telefono);
                 proveedor.setFechaModificacion(new Date());
 
                 Proveedor actualizado = proveedorService.updateProveedor(proveedor.getId(), proveedor);
