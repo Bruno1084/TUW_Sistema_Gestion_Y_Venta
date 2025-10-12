@@ -13,7 +13,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -35,7 +34,7 @@ public class ProveedoresController {
     @FXML private TableColumn<Proveedor, String> columnDireccionProveedor;
     @FXML private TableColumn<Proveedor, String> columnTelefonoProveedor;
     @FXML private TableColumn<Proveedor, Date> columnFechaCreacionProveedor;
-    @FXML private TableColumn<Proveedor, VBox> columnOpcionProveedor;
+    @FXML private TableColumn<Proveedor, Date> columnFechaModificacionProveedor;
 
     // Buttons
     @FXML private MenuButton btnFiltrarProveedor;
@@ -58,12 +57,14 @@ public class ProveedoresController {
     // Helper Methods
     public void agregarProveedor(Proveedor proveedor) {
         proveedores.add(proveedor);
+        tableProveedores.getSelectionModel().select(proveedor);
+        tableProveedores.scrollTo(proveedor);
+        displayProveedor(proveedor);
     }
 
     private void cargarProveedor() {
         try {
             Proveedor[] lista = proveedorService.getAllProveedor();
-
             proveedores.clear();
             proveedores.addAll(Arrays.asList(lista));
         } catch (Exception e) {
@@ -84,7 +85,7 @@ public class ProveedoresController {
         }
     }
 
-    private void displayProveedor(Proveedor proveedor) {
+    public void displayProveedor(Proveedor proveedor) {
         txtIdProveedor.setText(String.valueOf(proveedor.getId()));
         txtNombreProveedor.setText(proveedor.getNombre());
         txtDireccionProveedor.setText(proveedor.getDireccion());
@@ -111,6 +112,7 @@ public class ProveedoresController {
         columnDireccionProveedor.setCellValueFactory(new PropertyValueFactory<>("direccion"));
         columnTelefonoProveedor.setCellValueFactory(new PropertyValueFactory<>("telefono"));
         columnFechaCreacionProveedor.setCellValueFactory(new PropertyValueFactory<>("fechaCreacion"));
+        columnFechaModificacionProveedor.setCellValueFactory(new PropertyValueFactory<>("fechaModificacion"));
 
         tableProveedores.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
@@ -123,7 +125,7 @@ public class ProveedoresController {
 
     @FXML private void handleAniadirProveedor(ActionEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/ModalProveedor.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/modal/ModalProveedor.fxml"));
             Parent root = fxmlLoader.load();
 
             ModalProveedorController modalController = fxmlLoader.getController();
@@ -159,13 +161,14 @@ public class ProveedoresController {
                 return;
             }
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/ModalProveedor.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/modal/ModalProveedor.fxml"));
             Parent root = fxmlLoader.load();
 
             ModalProveedorController modalController = fxmlLoader.getController();
             modalController.setParentController(this);
 
             modalController.setProveedor(seleccionado);
+            modalController.setTxtTituloProveedor("Editar Proveedor");
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));

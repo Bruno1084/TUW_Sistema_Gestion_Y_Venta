@@ -89,7 +89,7 @@ export class MySQLProveedorRepository implements ProveedorRepository {
             direccion = ?,
             telefono = ?,
             fecha_creacion = ?,
-            fecha_modificacion = ?,
+            fecha_modificacion = ?
             WHERE id = ?
         `;
 
@@ -106,7 +106,7 @@ export class MySQLProveedorRepository implements ProveedorRepository {
     }
 
     async delete(proveedorId: ProveedorId): Promise<void> {
-        const query = `UPDATE proveedores es_activo = false WHERE id = ?`;
+        const query = `UPDATE proveedores SET es_activo = false WHERE id = ?`;
 
         await this.pool.query(query, [proveedorId.value]);
     }

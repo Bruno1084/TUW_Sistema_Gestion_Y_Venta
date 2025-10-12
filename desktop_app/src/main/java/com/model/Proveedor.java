@@ -9,7 +9,6 @@ public class Proveedor {
     private String telefono;
     private Date fechaCreacion;
     private Date fechaModificacion;
-    private boolean esActivo;
 
     public Proveedor() {}
 
@@ -19,8 +18,7 @@ public class Proveedor {
             String direccion,
             String telefono,
             Date fechaCreacion,
-            Date fechaModificacion,
-            boolean esActivo
+            Date fechaModificacion
     ) {
         this.id = id;
         this.nombre = nombre;
@@ -28,7 +26,6 @@ public class Proveedor {
         this.telefono = telefono;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
-        this.esActivo = esActivo;
     }
 
     public int getId() {
@@ -77,13 +74,5 @@ public class Proveedor {
 
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
-    }
-
-    public boolean isEsActivo() {
-        return esActivo;
-    }
-
-    public void setEsActivo(boolean esActivo) {
-        this.esActivo = esActivo;
     }
 }

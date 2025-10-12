@@ -25,8 +25,8 @@ export class ProveedorUpdate {
         const proveedorActualizado = new Proveedor(
             new ProveedorId(proveedorExistente.id),
             updates.nombre ? new ProveedorNombre(updates.nombre) : new ProveedorNombre(proveedorExistente.nombre),
-            updates.direccion ? new ProveedorDireccion(updates.direccion) : new ProveedorDireccion(proveedorExistente.direccion),
-            updates.telefono ? new ProveedorTelefono(updates.telefono) : new ProveedorTelefono(proveedorExistente.telefono),
+            new ProveedorDireccion(updates.direccion !== undefined ? updates.direccion : proveedorExistente.direccion),
+            new ProveedorTelefono(updates.telefono !== undefined ? updates.telefono : proveedorExistente.telefono),
             new ProveedorFechaCreacion(proveedorExistente.fechaCreacion),
             new ProveedorFechaModificacion(new Date()),
         );

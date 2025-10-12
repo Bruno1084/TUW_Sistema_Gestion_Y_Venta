@@ -48,19 +48,19 @@ public class ModalClienteController {
             if (cliente == null) {
                 // Caso crear Cliente
                 Cliente nuevoCliente = new Cliente(
-                        null,
+                        0,
                         inputNombreCliente.getText() + " " + inputApellidoCliente.getText(),
                         inputDireccionCliente.getText(),
                         inputTelefonoCliente.getText(),
                         new Date(),
-                        new Date(),
-                        true
+                        new Date()
                 );
 
                 Cliente creado = clienteService.createCliente(nuevoCliente);
 
                 if (parentController != null) {
                     parentController.agregarCliente(creado);
+                    parentController.displayCliente(creado);
                 }
 
             } else {
@@ -70,10 +70,11 @@ public class ModalClienteController {
                 cliente.setTelefono(inputTelefonoCliente.getText());
                 cliente.setFechaModificacion(new Date());
 
-                Cliente actualizado = clienteService.updateCliente(Integer.parseInt(cliente.getId()), cliente);
+                Cliente actualizado = clienteService.updateCliente(cliente.getId(), cliente);
 
                 if (parentController != null) {
                     parentController.actualizarCliente(actualizado);
+                    parentController.displayCliente(actualizado);
                 }
             }
 

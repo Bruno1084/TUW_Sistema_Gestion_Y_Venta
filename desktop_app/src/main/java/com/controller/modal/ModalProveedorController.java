@@ -18,10 +18,9 @@ public class ModalProveedorController {
 
     @FXML
     private Text txtTituloProveedor;
-    @FXML private TextField inputIdProveedor;
     @FXML private TextField inputNombreProveedor;
-    @FXML private TextField inputDireccionProveedor;
     @FXML private TextField inputTelefonoProveedor;
+    @FXML private TextField inputDireccionProveedor;
 
     @FXML private Button btnGuardarProveedor;
     @FXML private Button btnCancelarProveedor;
@@ -32,11 +31,13 @@ public class ModalProveedorController {
 
     public void setProveedor(Proveedor proveedor) {
         this.proveedor = proveedor;
-
-        inputIdProveedor.setText(String.valueOf(proveedor.getId()));
         inputNombreProveedor.setText(proveedor.getNombre());
-        inputDireccionProveedor.setText(proveedor.getDireccion());
         inputTelefonoProveedor.setText(proveedor.getTelefono());
+        inputDireccionProveedor.setText(proveedor.getDireccion());
+    }
+
+    public void setTxtTituloProveedor(String titulo) {
+        this.txtTituloProveedor.setText(titulo);
     }
 
     @FXML private void handleBtnGuardar(ActionEvent event) {
@@ -44,32 +45,33 @@ public class ModalProveedorController {
             if (proveedor == null) {
                 // Caso crear Empleado
                 Proveedor nuevoProveedor = new Proveedor(
-                    0,
-                    inputNombreProveedor.getText(),
-                    inputDireccionProveedor.getText(),
-                    inputDireccionProveedor.getText(),
-                    new Date(),
-                    new Date(),
-                    true
+                        0,
+                        inputNombreProveedor.getText(),
+                        inputDireccionProveedor.getText(),
+                        inputTelefonoProveedor.getText(),
+                        new Date(),
+                        new Date()
                 );
 
                 Proveedor creado = proveedorService.createProveedor(nuevoProveedor);
 
                 if (parentController != null) {
                     parentController.agregarProveedor(creado);
+                    parentController.displayProveedor(creado);
                 }
 
             } else {
                 // Caso editar Empleado
                 proveedor.setNombre(inputNombreProveedor.getText());
-                proveedor.setDireccion(inputDireccionProveedor.getText());
                 proveedor.setTelefono(inputTelefonoProveedor.getText());
+                proveedor.setDireccion(inputDireccionProveedor.getText());
                 proveedor.setFechaModificacion(new Date());
 
-                Proveedor actualizado = proveedorService.updateProveedor(Integer.parseInt(String.valueOf(proveedor.getId())), proveedor);
+                Proveedor actualizado = proveedorService.updateProveedor(proveedor.getId(), proveedor);
 
                 if (parentController != null) {
                     parentController.actualizarProveedor(actualizado);
+                    parentController.displayProveedor(actualizado);
                 }
             }
 

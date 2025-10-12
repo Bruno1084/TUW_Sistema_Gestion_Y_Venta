@@ -3,24 +3,22 @@ package com.model;
 import java.util.Date;
 
 public class Cliente {
-    private String id;
+    private int id;
     private String nombre;
     private String direccion;
     private String telefono;
     private Date fechaCreacion;
     private Date fechaModificacion;
-    private boolean esActivo;
 
     public Cliente() {}
 
     public Cliente(
-            String id,
+            int id,
             String nombre,
             String direccion,
             String telefono,
             Date fechaCreacion,
-            Date fechaModificacion,
-            boolean esActivo
+            Date fechaModificacion
     ) {
         this.id = id;
         this.nombre = nombre;
@@ -28,14 +26,13 @@ public class Cliente {
         this.telefono = telefono;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
-        this.esActivo = esActivo;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -77,13 +74,5 @@ public class Cliente {
 
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
-    }
-
-    public boolean isEsActivo() {
-        return esActivo;
-    }
-
-    public void setEsActivo(boolean esActivo) {
-        this.esActivo = esActivo;
     }
 }

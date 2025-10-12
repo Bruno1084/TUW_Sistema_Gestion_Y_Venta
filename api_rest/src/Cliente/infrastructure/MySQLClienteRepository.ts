@@ -24,7 +24,7 @@ export class MySQLClienteRepository implements ClienteRepository {
     async create(cliente: Cliente): Promise<ClienteDTO> {
         const query = `
             INSERT INTO clientes(nombre, direccion, telefono, fecha_creacion, fecha_modificacion)
-            VALUES (?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?)
         `;
 
         const [result] = await this.pool.query<ResultSetHeader>(query, [

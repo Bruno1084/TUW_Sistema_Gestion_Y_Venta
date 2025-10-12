@@ -56,12 +56,14 @@ public class ClientesController {
     // Helper Methods
     public void agregarCliente(Cliente cliente) {
         clientes.add(cliente);
+        tableClientes.getSelectionModel().select(cliente);
+        tableClientes.scrollTo(cliente);
+        displayCliente(cliente);
     }
 
     private void cargarCliente() {
         try {
             Cliente[] lista = clienteService.getAllCliente();
-
             clientes.clear();
             clientes.addAll(Arrays.asList(lista));
         } catch (Exception e) {
@@ -75,17 +77,17 @@ public class ClientesController {
 
     public void actualizarCliente(Cliente actualizado) {
         for (int i = 0; i < clientes.size(); i++) {
-            if (clientes.get(i).getId().equals(actualizado.getId())) {
+            if (clientes.get(i).getId() == actualizado.getId()) {
                 clientes.set(i, actualizado);
                 break;
             }
         }
     }
 
-    private void displayCliente(Cliente cliente) {
+    public void displayCliente(Cliente cliente) {
         String[] nombre = cliente.getNombre().split(" ");
 
-        txtIdCliente.setText(cliente.getId());
+        txtIdCliente.setText(String.valueOf(cliente.getId()));
         txtNombreCliente.setText(nombre[0]);
         txtApellidoCliente.setText(nombre[1]);
         txtDireccionCliente.setText(cliente.getDireccion());
@@ -170,7 +172,6 @@ public class ClientesController {
             modalController.setCliente(seleccionado);
             modalController.setTxtTituloCliente("Editar Cliente");
 
-
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Editar Cliente");
@@ -189,8 +190,7 @@ public class ClientesController {
             Cliente clienteSeleccionado = tableClientes.getSelectionModel().getSelectedItem();
 
             if (clienteSeleccionado != null) {
-                clienteService.deleteCliente(Integer.parseInt(clienteSeleccionado.getId()));
-
+                clienteService.deleteCliente(clienteSeleccionado.getId());
                 clientes.remove(clienteSeleccionado);
 
                 txtIdCliente.setText("");
