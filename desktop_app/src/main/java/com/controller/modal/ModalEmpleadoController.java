@@ -32,10 +32,13 @@ public class ModalEmpleadoController {
 
     public void setEmpleado(Empleado empleado) {
         this.empleado = empleado;
-        String[] nombre = empleado.getNombre().split(" ");
 
-        inputNombreEmpleado.setText(nombre[0]);
-        inputApellidoEmpleado.setText(nombre[1]);
+        String[] partesNombre = empleado.getNombre() != null ? empleado.getNombre().split(" ", 2) : new String[]{""};
+        String nombre = partesNombre.length > 0 ? partesNombre[0] : "";
+        String apellido = partesNombre.length > 1 ? partesNombre[1] : "";
+
+        inputNombreEmpleado.setText(nombre);
+        inputApellidoEmpleado.setText(apellido);
         inputDireccionEmpleado.setText(empleado.getDireccion());
         inputTelefonoEmpleado.setText(empleado.getTelefono());
     }
@@ -49,19 +52,19 @@ public class ModalEmpleadoController {
             if (empleado == null) {
                 // Caso crear Empleado
                 Empleado nuevoEmpleado = new Empleado(
-                        null,
+                        0,
                         inputNombreEmpleado.getText() + " " + inputApellidoEmpleado.getText(),
                         inputDireccionEmpleado.getText(),
                         inputTelefonoEmpleado.getText(),
                         new Date(),
-                        new Date(),
-                        true
+                        new Date()
                 );
 
                 Empleado creado = empleadoService.createEmpleado(nuevoEmpleado);
 
                 if (parentController != null) {
                     parentController.agregarEmpleado(creado);
+                    parentController.displayEmpleado(creado);
                 }
 
             } else {
@@ -71,10 +74,11 @@ public class ModalEmpleadoController {
                 empleado.setTelefono(inputTelefonoEmpleado.getText());
                 empleado.setFechaModificacion(new Date());
 
-                Empleado actualizado = empleadoService.updateEmpleado(Integer.parseInt(empleado.getId()), empleado);
+                Empleado actualizado = empleadoService.updateEmpleado(empleado.getId(), empleado);
 
                 if (parentController != null) {
                     parentController.actualizarEmpleado(actualizado);
+                    parentController.displayEmpleado(actualizado);
                 }
             }
 

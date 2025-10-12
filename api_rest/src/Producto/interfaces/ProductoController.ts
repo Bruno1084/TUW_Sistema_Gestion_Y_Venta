@@ -5,6 +5,7 @@ import { ProductoGetAll } from "../application/ProductoGetAll";
 import { ProductoGetOneById } from "../application/ProductoGetOneById";
 import { ProductoGetOneByIdWithDetail } from "../application/ProductoGetOneByIdWithDetail";
 import { ProductoUpdate } from "../application/ProductoUpdate";
+import type { ProductoDelete } from "../application/ProductoDelete";
 
 type ProductoUseCases = {
     create: ProductoCreate;
@@ -13,6 +14,7 @@ type ProductoUseCases = {
     getOneById: ProductoGetOneById;
     getOneByIdWithDetail: ProductoGetOneByIdWithDetail;
     update: ProductoUpdate;
+    delete: ProductoDelete;
 }
 
 export class ProductoController {
@@ -131,6 +133,18 @@ export class ProductoController {
             );
 
             res.status(200).json(productoActualizado);
+        } catch (err: any) {
+            res.status(400).json({ error: err.message });
+        }
+    }
+
+    async deleteProducto(req: Request, res: Response): Promise<void> {
+        try {
+            const { codigo } = req.params;
+
+            await this.useCases.delete.run(codigo!);
+
+            res.status(204).json({ message: 'Producto eliminado correctamente' });
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

@@ -10,6 +10,7 @@ export function productoRouter(productoController: ProductoController): Router {
     router.get('/getOneById/:codigo', productoController.getOneByIdProducto.bind(productoController));
     router.get('/getOneByIdWithDetail/:codigo', productoController.getOneByIdWithDetailProducto.bind(productoController));
     router.put('/update/:codigo', productoController.updateProducto.bind(productoController));
+    router.delete('/delete/:codigo', productoController.deleteProducto.bind(productoController));
 
     return router;
 }

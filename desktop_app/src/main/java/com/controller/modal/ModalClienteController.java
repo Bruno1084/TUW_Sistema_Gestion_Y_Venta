@@ -45,13 +45,17 @@ public class ModalClienteController {
 
     @FXML private void handleBtnGuardar(ActionEvent event) {
         try {
+            String nombre = inputNombreCliente.getText().trim() + " " + inputApellidoCliente.getText().trim();
+            String telefono = inputTelefonoCliente.getText().trim();
+            String direccion = inputDireccionCliente.getText().trim();
+
             if (cliente == null) {
                 // Caso crear Cliente
                 Cliente nuevoCliente = new Cliente(
                         0,
-                        inputNombreCliente.getText() + " " + inputApellidoCliente.getText(),
-                        inputDireccionCliente.getText(),
-                        inputTelefonoCliente.getText(),
+                        nombre,
+                        direccion,
+                        telefono,
                         new Date(),
                         new Date()
                 );
@@ -65,9 +69,9 @@ public class ModalClienteController {
 
             } else {
                 // Caso editar Cliente
-                cliente.setNombre(inputNombreCliente.getText() + " " + inputApellidoCliente.getText());
-                cliente.setDireccion(inputDireccionCliente.getText());
-                cliente.setTelefono(inputTelefonoCliente.getText());
+                cliente.setNombre(nombre);
+                cliente.setDireccion(direccion);
+                cliente.setTelefono(telefono);
                 cliente.setFechaModificacion(new Date());
 
                 Cliente actualizado = clienteService.updateCliente(cliente.getId(), cliente);

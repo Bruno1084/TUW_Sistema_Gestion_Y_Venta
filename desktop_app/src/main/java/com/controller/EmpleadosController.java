@@ -56,6 +56,9 @@ public class EmpleadosController {
     // Helper Methods
     public void agregarEmpleado(Empleado empleado) {
         empleados.add(empleado);
+        tableEmpleados.getSelectionModel().select(empleado);
+        tableEmpleados.scrollTo(empleado);
+        displayEmpleado(empleado);
     }
 
     private void cargarEmpleados() {
@@ -75,32 +78,32 @@ public class EmpleadosController {
 
     public void actualizarEmpleado(Empleado actualizado) {
         for (int i = 0; i < empleados.size(); i++) {
-            if (empleados.get(i).getId().equals(actualizado.getId())) {
+            if (empleados.get(i).getId() == actualizado.getId()) {
                 empleados.set(i, actualizado);
                 break;
             }
         }
     }
 
-    private void displayEmpleado(Empleado empleado) {
-        String[] nombre = empleado.getNombre().split(" ");
-        txtIdEmpleado.setText(empleado.getId());
-        txtNombreEmpleado.setText(nombre[0]);
-        txtApellidoEmpleado.setText(nombre[1]);
-        txtDireccionEmpleado.setText(empleado.getDireccion());
-        txtTelefonoEmpleado.setText(empleado.getTelefono());
+    public void displayEmpleado(Empleado empleado) {
+        if (empleado == null) return;
 
-        if (empleado.getFechaCreacion() != null) {
-            txtFechaCreacionEmpleado.setText(DATE_FORMAT.format(empleado.getFechaCreacion()));
-        } else {
-            txtFechaCreacionEmpleado.setText("");
-        }
+        String[] partesNombre = empleado.getNombre() != null ? empleado.getNombre().split(" ", 2) : new String[]{""};
+        String nombre = partesNombre.length > 0 ? partesNombre[0] : "";
+        String apellido = partesNombre.length > 1 ? partesNombre[1] : "";
 
-        if (empleado.getFechaModificacion() != null) {
-            txtFechaModificacionEmpleado.setText(DATE_FORMAT.format(empleado.getFechaModificacion()));
-        } else {
-            txtFechaModificacionEmpleado.setText("");
-        }
+        txtIdEmpleado.setText(String.valueOf(empleado.getId()));
+        txtNombreEmpleado.setText(nombre);
+        txtApellidoEmpleado.setText(apellido);
+        txtDireccionEmpleado.setText(empleado.getDireccion() != null ? empleado.getDireccion() : "");
+        txtTelefonoEmpleado.setText(empleado.getTelefono() != null ? empleado.getTelefono() : "");
+
+        txtFechaCreacionEmpleado.setText(
+                empleado.getFechaCreacion() != null ? DATE_FORMAT.format(empleado.getFechaCreacion()) : ""
+        );
+        txtFechaModificacionEmpleado.setText(
+                empleado.getFechaModificacion() != null ? DATE_FORMAT.format(empleado.getFechaModificacion()) : ""
+        );
     }
 
     // FXML Methods
@@ -187,7 +190,7 @@ public class EmpleadosController {
             Empleado empleadoSeleccionado = tableEmpleados.getSelectionModel().getSelectedItem();
 
             if (empleadoSeleccionado != null) {
-                empleadoService.deleteEmpleado(Integer.parseInt(empleadoSeleccionado.getId()));
+                empleadoService.deleteEmpleado(empleadoSeleccionado.getId());
 
                 empleados.remove(empleadoSeleccionado);
 
