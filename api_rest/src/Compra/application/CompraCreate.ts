@@ -1,7 +1,7 @@
 import type { CompraRepository } from "../domain/CompraRepository";
 import type { CompraSimpleDTO } from "./CompraDTO";
-import type { EmpleadoId } from "../../Empleado/domain/EmpleadoId";
-import type { ProveedorId } from "../../Proveedor/domain/ProveedorId";
+import { EmpleadoId } from "../../Empleado/domain/EmpleadoId";
+import { ProveedorId } from "../../Proveedor/domain/ProveedorId";
 import { Compra } from "../domain/Compra";
 import { CompraFechaCreacion } from "../domain/CompraFechaCreacion";
 import { CompraId } from "../domain/CompraId";
@@ -13,15 +13,15 @@ export class CompraCreate {
     async run(
         precioTotal: number,
         fechaCreacion: Date,
-        proveedorId: ProveedorId,
-        empleadoId: EmpleadoId
+        proveedorId: number,
+        empleadoId: number
     ): Promise<CompraSimpleDTO> {
         const compra = new Compra(
             new CompraId(0),
             new CompraPrecioTotal(precioTotal),
             new CompraFechaCreacion(fechaCreacion),
-            proveedorId,
-            empleadoId
+            new ProveedorId(proveedorId),
+            new EmpleadoId(empleadoId)
         );
 
         return await this.repository.create(compra);

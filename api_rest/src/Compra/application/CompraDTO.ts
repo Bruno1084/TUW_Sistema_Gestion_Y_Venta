@@ -5,10 +5,18 @@ export interface CompraDetailDTO {
     proveedor: {
         id: number;
         nombre: string;
+        direccion: string;
+        telefono: string;
+        fechaCreacion: Date;
+        fechaModificacion: Date;
     };
     empleado: {
         id: number;
         nombre: string;
+        direccion: string;
+        telefono: string;
+        fechaCreacion: Date;
+        fechaModificacion: Date;
     }
 }
 

@@ -8,6 +8,7 @@ export function compraRouter(compraController: CompraController): Router {
     router.get('/getAll', compraController.getAllCompra.bind(compraController));
     router.get('/getAllWithDetail', compraController.getAllWithDetail.bind(compraController));
     router.get('/getOneById/:id', compraController.getOneByIdCompra.bind(compraController));
+    router.get('/getOneByIdWithDetail/:id', compraController.getOneByIdWithDetailCompra.bind(compraController));
 
     return router;
 }
