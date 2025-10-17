@@ -21,14 +21,14 @@ export class CompraController {
             const {
                 precioTotal,
                 proveedorId,
-                empleadoId
+                usuarioId
             } = req.body;
 
             const compraCreada = await this.useCases.create.run(
                 precioTotal,
                 new Date(),
                 proveedorId,
-                empleadoId
+                usuarioId
             );
 
             res.status(201).json(compraCreada);

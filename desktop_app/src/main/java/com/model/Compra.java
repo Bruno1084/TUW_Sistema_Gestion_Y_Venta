@@ -3,33 +3,27 @@ package com.model;
 import java.util.Date;
 
 public class Compra {
-    private String id;
+    private int id;
     private float precioTotal;
     private Date fechaCreacion;
-    private int idProveedor;
-    private int idEmpleado;
+    private Proveedor proveedor;
+    private Usuario usuario;
 
     public Compra() {}
 
-    public Compra(
-            String id,
-            float precioTotal,
-            Date fechaCreacion,
-            int idProveedor,
-            int idEmpleado
-    ) {
+    public Compra(int id, float precioTotal, Date fechaCreacion, Proveedor proveedor, Usuario usuario) {
         this.id = id;
         this.precioTotal = precioTotal;
         this.fechaCreacion = fechaCreacion;
-        this.idProveedor = idProveedor;
-        this.idEmpleado = idEmpleado;
+        this.proveedor = proveedor;
+        this.usuario = usuario;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -49,19 +43,19 @@ public class Compra {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public int getIdProveedor() {
-        return idProveedor;
+    public Proveedor getProveedor() {
+        return proveedor;
     }
 
-    public void setIdProveedor(int idProveedor) {
-        this.idProveedor = idProveedor;
+    public void setProveedor(Proveedor proveedor) {
+        this.proveedor = proveedor;
     }
 
-    public int getIdEmpleado() {
-        return idEmpleado;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setIdEmpleado(int idEmpleado) {
-        this.idEmpleado = idEmpleado;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }

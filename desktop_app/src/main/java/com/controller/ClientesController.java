@@ -85,11 +85,15 @@ public class ClientesController {
     }
 
     public void displayCliente(Cliente cliente) {
-        String[] nombre = cliente.getNombre().split(" ");
+        if(cliente == null) return;
+
+        String[] partesNombre = cliente.getNombre() != null? cliente.getNombre().split(" ", 2): new String[]{""};
+        String nombre = partesNombre.length > 0 ? partesNombre[0] : "";
+        String apellido = partesNombre.length > 1 ? partesNombre[1] : "";
 
         txtIdCliente.setText(String.valueOf(cliente.getId()));
-        txtNombreCliente.setText(nombre[0]);
-        txtApellidoCliente.setText(nombre[1]);
+        txtNombreCliente.setText(nombre);
+        txtApellidoCliente.setText(apellido);
         txtDireccionCliente.setText(cliente.getDireccion());
         txtTelefonoCliente.setText(cliente.getTelefono());
 

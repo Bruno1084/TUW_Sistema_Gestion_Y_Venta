@@ -105,12 +105,12 @@ create table ventas_detalles(
 create table compras(
 	id int not null auto_increment,
     id_proveedor int not null,
-    id_empleado int not null,
+    id_usuario int not null,
     precio_total decimal(10, 2) not null,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     primary key(id),
     foreign key(id_proveedor) references proveedores(id),
-    foreign key(id_empleado) references empleados(id)
+    foreign key(id_usuario) references usuarios(id)
 );
 
 create table compras_detalles(

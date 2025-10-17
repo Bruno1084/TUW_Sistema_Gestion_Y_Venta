@@ -10,13 +10,9 @@ export interface CompraDetailDTO {
         fechaCreacion: Date;
         fechaModificacion: Date;
     };
-    empleado: {
+    usuario: {
         id: number;
         nombre: string;
-        direccion: string;
-        telefono: string;
-        fechaCreacion: Date;
-        fechaModificacion: Date;
     }
 }
 
@@ -25,5 +21,5 @@ export interface CompraSimpleDTO {
     precioTotal: number;
     fechaCreacion: Date;
     proveedorId: number;
-    empleadoId: number;
+    usuarioId: number;
 }

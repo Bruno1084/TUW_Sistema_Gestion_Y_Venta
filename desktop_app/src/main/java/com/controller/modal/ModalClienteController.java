@@ -90,7 +90,6 @@ public class ModalClienteController {
         }
     }
 
-
     @FXML private void handleBtnCancelar(ActionEvent event) {
         Stage currentStage = (Stage) btnCancelarCliente.getScene().getWindow();
         currentStage.close();

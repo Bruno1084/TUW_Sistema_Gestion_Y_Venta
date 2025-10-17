@@ -7,7 +7,7 @@ import { CompraId } from "../domain/CompraId";
 type MySQLCompra = {
     id: number,
     id_proveedor: number,
-    id_empleado: number,
+    id_usuario: number,
     precio_total: number,
     fecha_creacion: Date
 }
@@ -27,7 +27,7 @@ export class MySQLCompraRepository implements CompraRepository {
 
         const [result] = await this.pool.query<ResultSetHeader>(query, [
             compra.proveedorId.value,
-            compra.empleadoId.value,
+            compra.usuarioId.value,
             compra.precioTotal.value,
             compra.fechaCreacion.value
         ]);
@@ -49,7 +49,7 @@ export class MySQLCompraRepository implements CompraRepository {
                 precioTotal: row!.precio_total,
                 fechaCreacion: row!.fecha_creacion,
                 proveedorId: row!.id_proveedor,
-                empleadoId: row!.id_empleado
+                usuarioId: row!.id_usuario
             })
         );
     }
@@ -66,15 +66,11 @@ export class MySQLCompraRepository implements CompraRepository {
             p.telefono AS proveedor_telefono,
             p.fecha_creacion AS proveedor_fecha_creacion,
             p.fecha_modificacion AS proveedor_fecha_modificacion,
-            e.id AS empleado_id,
-            e.nombre AS empleado_nombre,
-            e.direccion AS empleado_direccion,
-            e.telefono AS empleado_telefono,
-            e.fecha_creacion AS empleado_fecha_creacion,
-            e.fecha_modificacion AS empleado_fecha_modificacion
+            u.id AS usuario_id,
+            u.nombre AS usuario_nombre
             FROM compras c
             JOIN proveedores p ON c.id_proveedor = p.id
-            JOIN empleados e ON c.id_empleado = e.id
+            JOIN usuarios u ON c.id_usuario = u.id
         `;
 
         const [rows] = await this.pool.query<(MySQLCompra & RowDataPacket)[]>(query);
@@ -92,13 +88,9 @@ export class MySQLCompraRepository implements CompraRepository {
                     fechaCreacion: row!.proveedor_fecha_creacion,
                     fechaModificacion: row!.proveedor_fecha_modificacion
                 },
-                empleado: {
-                    id: row!.empleado_id,
-                    nombre: row!.empleado_nombre,
-                    direccion: row!.empleado_direccion,
-                    telefono: row!.empleado_telefono,
-                    fechaCreacion: row!.empleado_fecha_creacion,
-                    fechaModificacion: row!.empleado_fecha_modificacion
+                usuario: {
+                    id: row!.usuario_id,
+                    nombre: row!.usuario_nombre,
                 }
             })
         )
@@ -119,7 +111,7 @@ export class MySQLCompraRepository implements CompraRepository {
             precioTotal: row!.precio_total,
             fechaCreacion: row!.fecha_creacion,
             proveedorId: row!.id_proveedor,
-            empleadoId: row!.id_empleado
+            usuarioId: row!.id_usuario
         }
     }
 
@@ -135,15 +127,11 @@ export class MySQLCompraRepository implements CompraRepository {
             p.telefono AS proveedor_telefono,
             p.fecha_creacion AS proveedor_fecha_creacion,
             p.fecha_modificacion AS proveedor_fecha_modificacion,
-            e.id AS empleado_id,
-            e.nombre AS empleado_nombre,
-            e.direccion AS empleado_direccion,
-            e.telefono AS empleado_telefono,
-            e.fecha_creacion AS empleado_fecha_creacion,
-            e.fecha_modificacion AS empleado_fecha_modificacion
+            u.id AS usuario_id,
+            u.nombre AS usuario_nombre,
             FROM compras c
             JOIN proveedores p ON c.id_proveedor = p.id
-            JOIN empleados e ON c.id_empleado = e.id
+            JOIN usuarios u ON c.id_usuario = u.id
             WHERE c.id = ?
         `;
 
@@ -164,13 +152,9 @@ export class MySQLCompraRepository implements CompraRepository {
                 fechaCreacion: row!.proveedor_fecha_creacion,
                 fechaModificacion: row!.proveedor_fecha_modificacion
             },
-            empleado: {
-                id: row!.empleado_id,
-                nombre: row!.empleado_nombre,
-                direccion: row!.empleado_direccion,
-                telefono: row!.empleado_telefono,
-                fechaCreacion: row!.empleado_fecha_creacion,
-                fechaModificacion: row!.empleado_fecha_modificacion
+            usuario: {
+                id: row!.usuario_id,
+                nombre: row!.usuario_nombre,
             }
         };
     }

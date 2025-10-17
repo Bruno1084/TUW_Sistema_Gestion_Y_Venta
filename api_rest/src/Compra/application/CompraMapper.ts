@@ -1,21 +1,25 @@
 import type { CompraDetailDTO, CompraSimpleDTO } from "./CompraDTO";
-import type { EmpleadoNombre } from "../../Empleado/domain/EmpleadoNombre";
-import type { ProveedorNombre } from "../../Proveedor/domain/ProveedorNombre";
 import type { Compra } from "../domain/Compra";
+import type { Proveedor } from "../../Proveedor/domain/Proveedor";
+import type { Usuario } from "../../Usuario/domain/Usuario";
 
 export class CompraMapper {
-    static toDetailDTO(compra: Compra, proveedor: ProveedorNombre, empleado: EmpleadoNombre): CompraDetailDTO {
+    static toDetailDTO(compra: Compra, proveedor: Proveedor, usuario: Usuario): CompraDetailDTO {
         return {
             id: compra.id.value,
             precioTotal: compra.precioTotal.value,
             fechaCreacion: compra.fechaCreacion.value,
             proveedor: {
                 id: compra.proveedorId.value,
-                nombre: proveedor.value
+                nombre: proveedor.nombre.value,
+                direccion: proveedor.direccion.value,
+                telefono: proveedor.telefono.value,
+                fechaCreacion: proveedor.fechaCreacion.value,
+                fechaModificacion: proveedor.fechaModificacion.value
             },
-            empleado: {
-                id: compra.empleadoId.value,
-                nombre: empleado.value
+            usuario: {
+                id: compra.usuarioId.value,
+                nombre: usuario.nombre.value
             }
         }
     }
@@ -26,7 +30,7 @@ export class CompraMapper {
             precioTotal: compra.precioTotal.value,
             fechaCreacion: compra.fechaCreacion.value,
             proveedorId: compra.proveedorId.value,
-            empleadoId: compra.empleadoId.value
+            usuarioId: compra.usuarioId.value
         }
     }
 }

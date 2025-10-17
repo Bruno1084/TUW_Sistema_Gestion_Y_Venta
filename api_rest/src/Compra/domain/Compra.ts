@@ -1,7 +1,7 @@
-import type { EmpleadoId } from "../../Empleado/domain/EmpleadoId";
-import type { ProveedorId } from "../../Proveedor/domain/ProveedorId";
-import type { CompraFechaCreacion } from "./CompraFechaCreacion";
 import type { CompraId } from "./CompraId";
+import type { ProveedorId } from "../../Proveedor/domain/ProveedorId";
+import type { UsuarioId } from "../../Usuario/domain/UsuarioId";
+import type { CompraFechaCreacion } from "./CompraFechaCreacion";
 import type { CompraPrecioTotal } from "./CompraPrecioTotal";
 
 export class Compra {
@@ -9,20 +9,20 @@ export class Compra {
     precioTotal: CompraPrecioTotal;
     fechaCreacion: CompraFechaCreacion;
     proveedorId: ProveedorId;
-    empleadoId: EmpleadoId;
+    usuarioId: UsuarioId;
 
     constructor(
         id: CompraId,
         precioTotal: CompraPrecioTotal,
         fechaCreacion: CompraFechaCreacion,
         proveedorId: ProveedorId,
-        empleadoId: EmpleadoId
+        usuarioId: UsuarioId
     ) {
         this.id = id;
         this.precioTotal = precioTotal;
         this.fechaCreacion = fechaCreacion;
         this.proveedorId = proveedorId;
-        this.empleadoId = empleadoId;
+        this.usuarioId = usuarioId;
     }
 
     toJSON() {
@@ -31,7 +31,7 @@ export class Compra {
             precioTotal: this.precioTotal.value,
             fechaCreacion: this.fechaCreacion.value,
             proveedorId: this.proveedorId.value,
-            empleadoId: this.empleadoId.value
+            usuarioId: this.usuarioId.value
         };
     }
 }
