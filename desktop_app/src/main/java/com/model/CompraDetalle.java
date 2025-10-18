@@ -1,8 +1,8 @@
 package com.model;
 
 public class CompraDetalle {
-    private String idCompra;
-    private String codigoProducto;
+    private Compra compra;
+    private Producto producto;
     private int cantidad;
     private float precioTotal;
     private float precioUnitario;
@@ -10,33 +10,33 @@ public class CompraDetalle {
     public CompraDetalle() {}
 
     public CompraDetalle(
-            String idCompra,
-            String codigoProducto,
+            Compra compra,
+            Producto producto,
             int cantidad,
             float precioTotal,
             float precioUnitario
     ) {
-        this.idCompra = idCompra;
-        this.codigoProducto = codigoProducto;
+        this.compra = compra;
+        this.producto = producto;
         this.cantidad = cantidad;
         this.precioTotal = precioTotal;
         this.precioUnitario = precioUnitario;
     }
 
-    public String getIdCompra() {
-        return idCompra;
+    public Compra getCompra() {
+        return compra;
     }
 
-    public void setIdCompra(String idCompra) {
-        this.idCompra = idCompra;
+    public void setCompra(Compra compra) {
+        this.compra = compra;
     }
 
-    public String getCodigoProducto() {
-        return codigoProducto;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setCodigoProducto(String codigoProducto) {
-        this.codigoProducto = codigoProducto;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
     public int getCantidad() {

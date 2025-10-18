@@ -7,7 +7,6 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -23,21 +22,29 @@
                 </font>
             </Text>
         </AnchorPane>
-        <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="200.0">
+        <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="200.0">
             <HBox layoutX="90.0" layoutY="-20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                <AnchorPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                    <TextField fx:id="inputBuscarProducto" layoutX="14.0" layoutY="16.0" prefHeight="28.0" prefWidth="405.0" promptText="Buscar" AnchorPane.leftAnchor="10.0">
-                        <font>
-                            <Font size="14.0" />
-                        </font>
-                    </TextField>
-                    <MenuButton fx:id="btnFiltrarProducto" layoutX="424.0" layoutY="23.0" mnemonicParsing="false" prefHeight="28.0" text="Descripción" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="424.0">
-                        <items>
-                            <MenuItem mnemonicParsing="false" text="Action 1" />
-                            <MenuItem mnemonicParsing="false" text="Action 2" />
-                        </items>
-                    </MenuButton>
-               <Button fx:id="btnAgregarProducto" layoutX="799.0" layoutY="20.0" mnemonicParsing="false" onAction="#handleAgregarProductos" text="Añadir Productos" AnchorPane.bottomAnchor="2.0" AnchorPane.rightAnchor="10.0" />
+                <AnchorPane HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="8.0" AnchorPane.bottomAnchor="0.0"
+                          AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0">
+                        <TextField fx:id="inputBuscarProducto" prefHeight="28.0" prefWidth="405.0" promptText="Buscar">
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
+                        </TextField>
+                        <MenuButton fx:id="btnFiltrarProducto" mnemonicParsing="false" prefHeight="28.0"
+                                    text="Descripción">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Action 1"/>
+                                <MenuItem mnemonicParsing="false" text="Action 2"/>
+                            </items>
+                        </MenuButton>
+                    </HBox>
+                    <HBox alignment="CENTER_RIGHT" layoutX="531.0" prefHeight="100.0" prefWidth="200.0"
+                          AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+                        <Button fx:id="btnAgregarProducto" mnemonicParsing="false" onAction="#handleAgregarProductos"
+                                text="Añadir Productos"/>
+                    </HBox>
                 </AnchorPane>
             </HBox>
          <VBox.margin>
@@ -64,8 +71,8 @@
                         </columnResizePolicy>
                     </TableView>
                 </AnchorPane>
-                <AnchorPane prefHeight="200.0" prefWidth="320.0" style="-fx-border-color: gray;">
-                    <VBox prefHeight="574.0" prefWidth="340.0" styleClass="anchorPaneStat" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <AnchorPane prefWidth="310.0" style="-fx-border-color: gray;">
+                    <VBox styleClass="anchorPaneStat" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <AnchorPane prefHeight="40.0">
                             <Text layoutX="14.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Detalle de Producto" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="8.0">
                                 <font>
@@ -73,9 +80,7 @@
                                 </font>
                             </Text>
                         </AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: gray;" VBox.vgrow="ALWAYS">
-                            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="48.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="50.0" />
-                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: gray;" VBox.vgrow="ALWAYS" />
                         <VBox>
                             <AnchorPane prefHeight="35.0" prefWidth="200.0" style="-fx-border-color: gray;">
                                 <HBox layoutX="15.0" layoutY="9.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
