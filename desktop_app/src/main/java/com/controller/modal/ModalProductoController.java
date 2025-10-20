@@ -200,7 +200,6 @@ public class ModalProductoController {
 
                 if (parentController != null) {
                     parentController.agregarProducto(creado);
-                    parentController.displayProducto(creado);
                 }
             } else {
                 // Caso editar Producto
@@ -215,7 +214,6 @@ public class ModalProductoController {
 
                 if (parentController != null) {
                     parentController.actualizarProducto(actualizado);
-                    parentController.displayProducto(actualizado);
                 }
             }
 

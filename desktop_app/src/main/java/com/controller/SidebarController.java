@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.util.ParentAware;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,46 +20,56 @@ public class SidebarController {
     @FXML private Button btnSidebarEmpleados;
     @FXML private Button btnSidebarReportes;
 
-    @FXML private void loadCenterView(String fxmlFile) {
+    public BorderPane getMainBorderPane() {
+        return borderPaneMainBoard;
+    }
+
+    @FXML private void loadCenterView(String fxmlPath) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/" + fxmlFile));
-            AnchorPane newView = fxmlLoader.load();
-            borderPaneMainBoard.setCenter(newView);
-        } catch (IOException exception) {
-            exception.printStackTrace();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            AnchorPane view = loader.load();
+
+            Object controller = loader.getController();
+            if (controller instanceof ParentAware aware) {
+                aware.setParentController(this);
+            }
+
+            borderPaneMainBoard.setCenter(view);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     @FXML private void handleBtnSidebarInicio(ActionEvent event) {
-        loadCenterView("Inicio.fxml");
+        loadCenterView("/com/fxml/Inicio.fxml");
     }
 
     @FXML private void handleBtnSidebarProductos (ActionEvent event) {
-        loadCenterView("Productos.fxml");
+        loadCenterView("/com/fxml/Productos.fxml");
     }
 
     @FXML private void handleBtnSidebarOrdenVentas (ActionEvent event) {
-        loadCenterView("Ventas.fxml");
+        loadCenterView("/com/fxml/Ventas.fxml");
     }
 
     @FXML private void handleBtnSidebarOrdenCompras(ActionEvent event) {
-        loadCenterView("Compras.fxml");
+        loadCenterView("/com/fxml/Compras.fxml");
     }
 
     @FXML private void handleBtnSidebarClientes (ActionEvent event) {
-        loadCenterView("Clientes.fxml");
+        loadCenterView("/com/fxml/Clientes.fxml");
     }
 
     @FXML private void handleBtnSidebarProveedores (ActionEvent event) {
-        loadCenterView("Proveedores.fxml");
+        loadCenterView("/com/fxml/Proveedores.fxml");
     }
 
     @FXML private void handleBtnSidebarEmpleados (ActionEvent event) {
-        loadCenterView("Empleados.fxml");
+        loadCenterView("/com/fxml/Empleados.fxml");
     }
 
     @FXML private void handleBtnSidebarReportes (ActionEvent event) {
-        loadCenterView("Reportes.fxml");
+        loadCenterView("/com/fxml/Reportes.fxml");
     }
 
     @FXML private void handleBtnSidebarCategorias (ActionEvent event) { }

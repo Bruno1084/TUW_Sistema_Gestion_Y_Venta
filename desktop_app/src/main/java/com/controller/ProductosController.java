@@ -1,8 +1,10 @@
 package com.controller;
 
+import com.controller.detail.DetailProductoController;
 import com.controller.modal.ModalProductoController;
 import com.model.Producto;
 import com.service.ProductoService;
+import com.util.ParentAware;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,15 +16,19 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.text.Text;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class ProductosController {
+public class ProductosController implements ParentAware {
+    private SidebarController parentController;
     private final ProductoService productoService = new ProductoService();
     private final ObservableList<Producto> productos = FXCollections.observableArrayList();
+
+    // Root AnchorPane
+    @FXML private AnchorPane rootPane;
 
     // Table View Productos
     @FXML private TableView<Producto> tableProductos;
@@ -35,28 +41,25 @@ public class ProductosController {
 
     // Buttons
     @FXML private MenuButton btnFiltrarProducto;
+    @FXML private MenuButton btnConfigProducto;
     @FXML private Button btnAniadirProducto;
-    @FXML private Button btnEditarProducto;
-    @FXML private Button btnEliminarProducto;
+
+    // Menu Items
+    @FXML private MenuItem menuItemImportarProducto;
+    @FXML private MenuItem menuItemExportarProducto;
 
     // Search Bar Producto
     @FXML private TextField inputBuscarProducto;
 
-    // Text
-    @FXML private Text txtCodigoBarraProducto;
-    @FXML private Text txtDescripcionProducto;
-    @FXML private Text txtMarcaProducto;
-    @FXML private Text txtRubroProducto;
-    @FXML private Text txtPrecioVentaProducto;
-    @FXML private Text txtPrecioCompraProducto;
-    @FXML private Text txtStockProducto;
-
     // Helper Methods
+    public void setParentController(SidebarController parentController) {
+        this.parentController = parentController;
+    }
+
     public void agregarProducto(Producto producto) {
         productos.add(producto);
         tableProductos.getSelectionModel().select(producto);
         tableProductos.scrollTo(producto);
-        displayProducto(producto);
     }
 
     public void cargarProductos() {
@@ -82,14 +85,19 @@ public class ProductosController {
         }
     }
 
-    public void displayProducto(Producto producto) {
-        txtCodigoBarraProducto.setText(producto.getCodigoBarra());
-        txtDescripcionProducto.setText(producto.getDescripcion());
-        txtMarcaProducto.setText(String.valueOf(producto.getMarca().getNombre()));
-        txtRubroProducto.setText(String.valueOf(producto.getRubro().getNombre()));
-        txtPrecioCompraProducto.setText(String.valueOf(producto.getPrecioCompra()));
-        txtPrecioVentaProducto.setText(String.valueOf(producto.getPrecioVenta()));
-        txtStockProducto.setText(String.valueOf(producto.getStock()));
+    private void cargarDetalleProducto(Producto producto) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/detail/DetailProducto.fxml"));
+            Parent root = fxmlLoader.load();
+
+            DetailProductoController detailProductoController = fxmlLoader.getController();
+            detailProductoController.setParentController(parentController);
+            detailProductoController.setProducto(producto);
+
+            parentController.getMainBorderPane().setCenter(root);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     // FXML Methods
@@ -108,8 +116,9 @@ public class ProductosController {
 
         tableProductos.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
-                    if (newSelection != null)
-                        displayProducto(newSelection);
+                    if (newSelection != null) {
+                        cargarDetalleProducto(newSelection);
+                    }
                 }
         );
         cargarProductos();
@@ -141,69 +150,4 @@ public class ProductosController {
         }
     }
 
-    @FXML private void handleEditarProducto(ActionEvent event) {
-        try {
-            Producto seleccionado = tableProductos.getSelectionModel().getSelectedItem();
-            if (seleccionado == null) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Aviso");
-                alert.setHeaderText("No hay selección");
-                alert.setContentText("Debes seleccionar un producto para editar.");
-                alert.showAndWait();
-                return;
-            }
-
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/modal/ModalProducto.fxml"));
-            Parent root = fxmlLoader.load();
-
-            ModalProductoController modalController = fxmlLoader.getController();
-            modalController.setParentController(this);
-
-            modalController.setProducto(seleccionado);
-            modalController.setTxtTituloProducto("Editar Producto");
-            modalController.disableInputCodigoBarra(true);
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Editar Producto");
-            stage.setResizable(false);
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(((Node) event.getSource()).getScene().getWindow());
-
-            stage.showAndWait();
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
-    }
-
-    @FXML private void handleEliminarProducto(ActionEvent event) {
-        try {
-            Producto productoSeleccionado = tableProductos.getSelectionModel().getSelectedItem();
-
-            if (productoSeleccionado != null) {
-                productoService.deleteProducto(productoSeleccionado.getCodigoBarra());
-                productos.remove(productoSeleccionado);
-
-                txtCodigoBarraProducto.setText("");
-                txtDescripcionProducto.setText("");
-                txtMarcaProducto.setText("");
-                txtRubroProducto.setText("");
-                txtPrecioCompraProducto.setText("");
-                txtPrecioVentaProducto.setText("");
-                txtStockProducto.setText("");
-            } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Atención");
-                alert.setHeaderText("Ningún producto seleccionado");
-                alert.setContentText("Seleccione un producto de la tabla para eliminarlo.");
-                alert.showAndWait();
-            }
-        } catch (Exception exception) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("No se pudo eliminar el producto");
-            alert.setContentText(exception.getMessage());
-            alert.showAndWait();
-        }
-    }
 }
