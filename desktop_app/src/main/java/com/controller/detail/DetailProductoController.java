@@ -2,23 +2,22 @@ package com.controller.detail;
 
 import com.controller.ProductosController;
 import com.controller.SidebarController;
+import com.controller.add.AddProductoController;
 import com.model.Producto;
 import com.service.ProductoService;
+import com.util.ParentAware;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
-public class DetailProductoController {
+public class DetailProductoController implements ParentAware {
+    private Producto producto;
     private SidebarController parentController;
     private final ProductoService productoService = new ProductoService();
-    private Producto producto;
 
     // Buttons
     @FXML Button btnEditarProducto;
@@ -57,6 +56,7 @@ public class DetailProductoController {
         txtPrecioCompraProducto.setText(String.valueOf(producto.getPrecioCompra()));
         txtProveedorProducto.setText(producto.getProveedor().getNombre());
         txtPrecioCompraProducto.setText(String.valueOf(producto.getPrecioVenta()));
+        this.producto = producto;
     }
 
     // FXML Methods
@@ -65,7 +65,18 @@ public class DetailProductoController {
     }
 
     @FXML private void handleEditarProducto() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/add/AddProducto.fxml"));
+            Parent root = fxmlLoader.load();
 
+            AddProductoController addProductoController = fxmlLoader.getController();
+            addProductoController.setParentController(parentController);
+            addProductoController.setProducto(producto);
+
+            parentController.getMainBorderPane().setCenter(root);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     @FXML private void handleCerrarProducto(ActionEvent event) {

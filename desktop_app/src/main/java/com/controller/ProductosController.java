@@ -1,7 +1,7 @@
 package com.controller;
 
+import com.controller.add.AddProductoController;
 import com.controller.detail.DetailProductoController;
-import com.controller.modal.ModalProductoController;
 import com.model.Producto;
 import com.service.ProductoService;
 import com.util.ParentAware;
@@ -11,15 +11,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import java.io.IOException;
 import java.util.Arrays;
 
 public class ProductosController implements ParentAware {
@@ -126,27 +121,14 @@ public class ProductosController implements ParentAware {
 
     @FXML private void handleAniadirProducto(ActionEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/modal/ModalProducto.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/add/AddProducto.fxml"));
             Parent root = fxmlLoader.load();
 
-            ModalProductoController modalController = fxmlLoader.getController();
-            modalController.setParentController(this);
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Añadir Producto");
-            stage.setResizable(false);
-
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(((Node) event.getSource()).getScene().getWindow());
-
-            stage.showAndWait();
-        } catch (IOException exception) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("No se pudo crear el producto");
-            alert.setContentText(exception.getMessage());
-            alert.showAndWait();
+            AddProductoController addProductoController = fxmlLoader.getController();
+            addProductoController.setParentController(parentController);
+            parentController.getMainBorderPane().setCenter(root);
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 
