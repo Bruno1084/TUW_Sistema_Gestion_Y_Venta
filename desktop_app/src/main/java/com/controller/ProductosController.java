@@ -128,8 +128,11 @@ public class ProductosController implements ParentAware {
             addProductoController.setParentController(parentController);
             parentController.getMainBorderPane().setCenter(root);
         } catch (Exception exception) {
-            exception.printStackTrace();
-        }
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No se pudo crear el producto");
+            alert.setContentText(exception.getMessage());
+            alert.showAndWait();        }
     }
 
 }

@@ -23,7 +23,7 @@
                         <Font name="System Bold" size="20.0" />
                     </font>
                 </Text>
-                <Button fx:id="btnAniadirEmpleado" layoutX="713.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleAniadirEmpleado" text="Añadir Empleado" AnchorPane.rightAnchor="20.0">
+                <Button fx:id="btnAniadirEmpleado" layoutX="713.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleAniadirEmpleado" AnchorPane.rightAnchor="70.0">
                     <graphic>
                         <FontAwesomeIconView glyphName="PLUS" size="15.0" />
                     </graphic>
@@ -31,6 +31,15 @@
                         <Font name="System Bold" size="15.0" />
                     </font>
                 </Button>
+            <MenuButton fx:id="btnConfigEmpleado" layoutX="814.0" layoutY="7.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="39.0" AnchorPane.rightAnchor="20.0">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+                <MenuItem mnemonicParsing="false" text="Action 2" />
+              </items>
+               <graphic>
+                  <FontAwesomeIconView glyphName="ELLIPSIS_V" size="18.0" />
+               </graphic>
+            </MenuButton>
             </AnchorPane>
             <AnchorPane prefHeight="80.0">
                 <AnchorPane layoutX="20.0" layoutY="20.0" styleClass="anchorPaneStat" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
@@ -64,13 +73,6 @@
                 <HBox prefHeight="600.0" prefWidth="870.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
                     <AnchorPane prefHeight="198.0" prefWidth="521.0" HBox.hgrow="ALWAYS">
                         <VBox styleClass="anchorPaneStat" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <AnchorPane prefHeight="40.0">
-                                <Text layoutX="14.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Empleados" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="8.0">
-                                    <font>
-                                        <Font name="System Bold" size="16.0" />
-                                    </font>
-                                </Text>
-                            </AnchorPane>
                             <AnchorPane VBox.vgrow="ALWAYS">
                                 <TableView fx:id="tableEmpleados" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <columns>
@@ -88,244 +90,17 @@
                             </AnchorPane>
                         </VBox>
                     </AnchorPane>
-                    <AnchorPane prefHeight="200.0" prefWidth="300.0">
-                        <VBox styleClass="anchorPaneStat" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <AnchorPane prefHeight="40.0">
-                                <Text layoutX="14.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                                      text="Detalle de Empleado" AnchorPane.bottomAnchor="8.0"
-                                      AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="8.0">
-                                    <font>
-                                        <Font name="System Bold" size="16.0"/>
-                                    </font>
-                                </Text>
-                            </AnchorPane>
-                            <VBox>
-                                <AnchorPane prefHeight="35.0" prefWidth="200.0" style="-fx-border-color: gray;">
-                                    <HBox layoutX="15.0" layoutY="9.0" AnchorPane.bottomAnchor="0.0"
-                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                          AnchorPane.topAnchor="0.0">
-                                        <AnchorPane>
-                                            <Text layoutX="14.0" layoutY="21.0" strokeType="OUTSIDE"
-                                                  strokeWidth="0.0" text="ID:"
-                                                  AnchorPane.bottomAnchor="5.0"
-                                                  AnchorPane.leftAnchor="10.0"
-                                                  AnchorPane.topAnchor="5.0">
-                                                <font>
-                                                    <Font name="System Bold" size="14.0"/>
-                                                </font>
-                                            </Text>
-                                        </AnchorPane>
-                                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                            <Text fx:id="txtIdEmpleado" layoutX="10.0" layoutY="21.0"
-                                                  strokeType="OUTSIDE" strokeWidth="0.0"
-                                                  AnchorPane.bottomAnchor="5.0"
-                                                  AnchorPane.leftAnchor="10.0"
-                                                  AnchorPane.topAnchor="5.0">
-                                                <font>
-                                                    <Font size="14.0"/>
-                                                </font>
-                                            </Text>
-                                        </AnchorPane>
-                                    </HBox>
-                                </AnchorPane>
-                                <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="35.0" prefWidth="200.0"
-                                            style="-fx-border-color: gray;">
-                                    <HBox layoutX="15.0" layoutY="9.0" AnchorPane.bottomAnchor="0.0"
-                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                          AnchorPane.topAnchor="0.0">
-                                        <AnchorPane>
-                                            <Text layoutX="14.0" layoutY="21.0" strokeType="OUTSIDE"
-                                                  strokeWidth="0.0" text="Nombre:"
-                                                  AnchorPane.bottomAnchor="5.0"
-                                                  AnchorPane.leftAnchor="10.0"
-                                                  AnchorPane.topAnchor="5.0">
-                                                <font>
-                                                    <Font name="System Bold" size="14.0"/>
-                                                </font>
-                                            </Text>
-                                        </AnchorPane>
-                                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                            <Text fx:id="txtNombreEmpleado" strokeType="OUTSIDE"
-                                                  strokeWidth="0.0" AnchorPane.bottomAnchor="5.0"
-                                                  AnchorPane.leftAnchor="10.0"
-                                                  AnchorPane.topAnchor="5.0">
-                                                <font>
-                                                    <Font size="14.0"/>
-                                                </font>
-                                            </Text>
-                                        </AnchorPane>
-                                    </HBox>
-                                </AnchorPane>
-                                <AnchorPane layoutX="10.0" layoutY="45.0" prefHeight="35.0" prefWidth="200.0"
-                                            style="-fx-border-color: gray;">
-                                    <HBox prefHeight="202.0" prefWidth="296.0" AnchorPane.bottomAnchor="0.0"
-                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                          AnchorPane.topAnchor="0.0">
-                                        <AnchorPane>
-                                            <Text layoutX="14.0" layoutY="21.0" strokeType="OUTSIDE"
-                                                  strokeWidth="0.0" text="Apellido:"
-                                                  AnchorPane.bottomAnchor="5.0"
-                                                  AnchorPane.leftAnchor="10.0"
-                                                  AnchorPane.topAnchor="5.0">
-                                                <font>
-                                                    <Font name="System Bold" size="14.0"/>
-                                                </font>
-                                            </Text>
-                                        </AnchorPane>
-                                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                            <Text fx:id="txtApellidoEmpleado" strokeType="OUTSIDE"
-                                                  strokeWidth="0.0" AnchorPane.bottomAnchor="5.0"
-                                                  AnchorPane.leftAnchor="10.0"
-                                                  AnchorPane.topAnchor="5.0">
-                                                <font>
-                                                    <Font size="14.0"/>
-                                                </font>
-                                            </Text>
-                                        </AnchorPane>
-                                    </HBox>
-                                </AnchorPane>
-                                <AnchorPane layoutX="10.0" layoutY="80.0" prefHeight="35.0" prefWidth="200.0"
-                                            style="-fx-border-color: gray;">
-                                    <HBox prefHeight="202.0" prefWidth="296.0" AnchorPane.bottomAnchor="0.0"
-                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                          AnchorPane.topAnchor="0.0">
-                                        <AnchorPane>
-                                            <Text layoutX="14.0" layoutY="21.0" strokeType="OUTSIDE"
-                                                  strokeWidth="0.0" text="Dirección:"
-                                                  AnchorPane.bottomAnchor="5.0"
-                                                  AnchorPane.leftAnchor="10.0"
-                                                  AnchorPane.topAnchor="5.0">
-                                                <font>
-                                                    <Font name="System Bold" size="14.0"/>
-                                                </font>
-                                            </Text>
-                                        </AnchorPane>
-                                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                            <Text fx:id="txtDireccionEmpleado" strokeType="OUTSIDE"
-                                                  strokeWidth="0.0" AnchorPane.bottomAnchor="5.0"
-                                                  AnchorPane.leftAnchor="10.0"
-                                                  AnchorPane.topAnchor="5.0">
-                                                <font>
-                                                    <Font size="14.0"/>
-                                                </font>
-                                            </Text>
-                                        </AnchorPane>
-                                    </HBox>
-                                </AnchorPane>
-                                <AnchorPane layoutX="10.0" layoutY="115.0" prefHeight="35.0" prefWidth="200.0"
-                                            style="-fx-border-color: gray;">
-                                    <HBox prefHeight="202.0" prefWidth="296.0" AnchorPane.bottomAnchor="0.0"
-                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                          AnchorPane.topAnchor="0.0">
-                                        <AnchorPane>
-                                            <Text layoutX="14.0" layoutY="21.0" strokeType="OUTSIDE"
-                                                  strokeWidth="0.0" text="Teléfono:"
-                                                  AnchorPane.bottomAnchor="5.0"
-                                                  AnchorPane.leftAnchor="10.0"
-                                                  AnchorPane.topAnchor="5.0">
-                                                <font>
-                                                    <Font name="System Bold" size="14.0"/>
-                                                </font>
-                                            </Text>
-                                        </AnchorPane>
-                                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                            <Text fx:id="txtTelefonoEmpleado" strokeType="OUTSIDE"
-                                                  strokeWidth="0.0" AnchorPane.bottomAnchor="5.0"
-                                                  AnchorPane.leftAnchor="10.0"
-                                                  AnchorPane.topAnchor="5.0">
-                                                <font>
-                                                    <Font size="14.0"/>
-                                                </font>
-                                            </Text>
-                                        </AnchorPane>
-                                    </HBox>
-                                </AnchorPane>
-                                <AnchorPane layoutX="10.0" layoutY="150.0" prefHeight="35.0" prefWidth="200.0"
-                                            style="-fx-border-color: gray;">
-                                    <HBox prefHeight="202.0" prefWidth="333.0" AnchorPane.bottomAnchor="0.0"
-                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                          AnchorPane.topAnchor="0.0">
-                                        <AnchorPane>
-                                            <Text layoutX="14.0" layoutY="21.0" strokeType="OUTSIDE"
-                                                  strokeWidth="0.0" text="Fecha de Creación:"
-                                                  AnchorPane.bottomAnchor="5.0"
-                                                  AnchorPane.leftAnchor="10.0"
-                                                  AnchorPane.topAnchor="5.0">
-                                                <font>
-                                                    <Font name="System Bold" size="14.0"/>
-                                                </font>
-                                            </Text>
-                                        </AnchorPane>
-                                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                            <Text fx:id="txtFechaCreacionEmpleado" strokeType="OUTSIDE"
-                                                  strokeWidth="0.0" AnchorPane.bottomAnchor="5.0"
-                                                  AnchorPane.leftAnchor="10.0"
-                                                  AnchorPane.topAnchor="5.0">
-                                                <font>
-                                                    <Font size="14.0"/>
-                                                </font>
-                                            </Text>
-                                        </AnchorPane>
-                                    </HBox>
-                                </AnchorPane>
-                                <AnchorPane layoutX="10.0" layoutY="185.0" prefHeight="35.0" prefWidth="200.0"
-                                            style="-fx-border-color: gray;">
-                                    <HBox prefHeight="202.0" prefWidth="296.0" AnchorPane.bottomAnchor="0.0"
-                                          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                          AnchorPane.topAnchor="0.0">
-                                        <AnchorPane>
-                                            <Text layoutX="14.0" layoutY="21.0" strokeType="OUTSIDE"
-                                                  strokeWidth="0.0" text="Fecha de Modificación:"
-                                                  AnchorPane.bottomAnchor="5.0"
-                                                  AnchorPane.leftAnchor="10.0"
-                                                  AnchorPane.topAnchor="5.0">
-                                                <font>
-                                                    <Font name="System Bold" size="14.0"/>
-                                                </font>
-                                            </Text>
-                                        </AnchorPane>
-                                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                            <Text fx:id="txtFechaModificacionEmpleado"
-                                                  strokeType="OUTSIDE" strokeWidth="0.0"
-                                                  AnchorPane.bottomAnchor="5.0"
-                                                  AnchorPane.leftAnchor="10.0"
-                                                  AnchorPane.topAnchor="5.0">
-                                                <font>
-                                                    <Font size="14.0"/>
-                                                </font>
-                                            </Text>
-                                        </AnchorPane>
-                                    </HBox>
-                                </AnchorPane>
-                                <AnchorPane layoutX="10.0" layoutY="220.0" prefHeight="35.0" prefWidth="200.0"
-                                            style="-fx-border-color: gray;">
-                                    <HBox layoutX="15.0" layoutY="9.0" prefHeight="35.0" prefWidth="296.0"
-                                          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                        <AnchorPane HBox.hgrow="ALWAYS">
-                                            <Button fx:id="btnEditarEmpleado" mnemonicParsing="false"
-                                                    onAction="#handleEditarEmpleado" text="Editar"
-                                                    AnchorPane.bottomAnchor="0.0"
-                                                    AnchorPane.leftAnchor="0.0"
-                                                    AnchorPane.rightAnchor="0.0"
-                                                    AnchorPane.topAnchor="0.0"/>
-                                        </AnchorPane>
-                                        <AnchorPane HBox.hgrow="ALWAYS">
-                                            <Button fx:id="btnEliminarEmpleado" mnemonicParsing="false"
-                                                    onAction="#handleEliminarEmpleado" text="Eliminar"
-                                                    AnchorPane.bottomAnchor="0.0"
-                                                    AnchorPane.leftAnchor="0.0"
-                                                    AnchorPane.rightAnchor="0.0"
-                                                    AnchorPane.topAnchor="0.0"/>
-                                        </AnchorPane>
-                                    </HBox>
-                                </AnchorPane>
-                            </VBox>
-                        </VBox>
-                    </AnchorPane>
                 </HBox>
             </AnchorPane>
+         <MenuButton fx:id="btnConfigProducto" mnemonicParsing="false" prefHeight="30.0" prefWidth="39.0">
+            <items>
+               <MenuItem fx:id="menuItemImportarProducto" mnemonicParsing="false" text="Importar" />
+               <MenuItem fx:id="menuItemExportarProducto" mnemonicParsing="false" text="Exportar" />
+            </items>
+            <graphic>
+               <FontAwesomeIconView glyphName="ELLIPSIS_V" size="18" />
+            </graphic>
+         </MenuButton>
         </VBox>
     </ScrollPane>
 </AnchorPane>

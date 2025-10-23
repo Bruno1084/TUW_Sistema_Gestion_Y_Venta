@@ -17,7 +17,6 @@ import javafx.scene.text.Text;
 public class DetailProductoController implements ParentAware {
     private Producto producto;
     private SidebarController parentController;
-    private final ProductoService productoService = new ProductoService();
 
     // Buttons
     @FXML Button btnEditarProducto;
@@ -60,10 +59,6 @@ public class DetailProductoController implements ParentAware {
     }
 
     // FXML Methods
-    @FXML public void initialize() {
-
-    }
-
     @FXML private void handleEditarProducto() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/add/AddProducto.fxml"));

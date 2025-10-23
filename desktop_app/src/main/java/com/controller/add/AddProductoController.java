@@ -75,10 +75,6 @@ public class AddProductoController implements ParentAware {
     }
 
     // FXML Methods
-    @FXML public void initialize() {
-
-    }
-
     @FXML private void handleAniadirProducto() {
         try {
             if (producto == null) {
@@ -169,7 +165,6 @@ public class AddProductoController implements ParentAware {
                 detailProductoController.setProducto(producto);
                 parentController.getMainBorderPane().setCenter(root);
             }
-
         } catch (Exception exception) {
             exception.printStackTrace();
         }
