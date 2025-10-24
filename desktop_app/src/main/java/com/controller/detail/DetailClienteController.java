@@ -1,0 +1,77 @@
+package com.controller.detail;
+
+import com.controller.ClientesController;
+import com.controller.SidebarController;
+import com.controller.add.AddClienteController;
+import com.model.Cliente;
+import com.util.ParentAware;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.text.Text;
+
+public class DetailClienteController implements ParentAware {
+    private Cliente cliente;
+    private SidebarController parentController;
+
+    // Buttons
+    @FXML Button btnEditarCliente;
+    @FXML Button btnCerrarCliente;
+
+    // Text
+    @FXML Text txtTituloCliente;
+    @FXML Text txtIdCliente;
+    @FXML Text txtNombreCliente;
+    @FXML Text txtDireccionCliente;
+    @FXML Text txtTelefonoCliente;
+    @FXML Text txtFechaCreacionCliente;
+    @FXML Text txtFechaModificacionCliente;
+
+    // Helper Methods
+    public void setParentController(SidebarController parentController) {
+        this.parentController = parentController;
+    }
+
+    public void setCliente(Cliente cliente) {
+        txtTituloCliente.setText(cliente.getNombre());
+        txtIdCliente.setText(String.valueOf(cliente.getId()));
+        txtNombreCliente.setText(cliente.getNombre());
+        txtDireccionCliente.setText(cliente.getDireccion());
+        txtTelefonoCliente.setText(cliente.getTelefono());
+        txtFechaCreacionCliente.setText(String.valueOf(cliente.getFechaCreacion()));
+        txtFechaModificacionCliente.setText(String.valueOf(cliente.getFechaModificacion()));
+        this.cliente = cliente;
+    }
+
+    // FXML Methods
+    @FXML private void handleEditarCliente(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/add/AddCliente.fxml"));
+            Parent root = fxmlLoader.load();
+
+            AddClienteController addClienteController = fxmlLoader.getController();
+            addClienteController.setParentController(parentController);
+            addClienteController.setCliente(cliente);
+
+            parentController.getMainBorderPane().setCenter(root);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    @FXML private void handleCerrarCliente(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fxml/Clientes.fxml"));
+            Parent root = loader.load();
+
+            ClientesController clientesController = loader.getController();
+            clientesController.setParentController(parentController);
+
+            parentController.getMainBorderPane().setCenter(root);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+}

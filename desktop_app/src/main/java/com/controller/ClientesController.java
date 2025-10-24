@@ -1,30 +1,26 @@
 package com.controller;
 
-import com.controller.modal.ModalClienteController;
+import com.controller.add.AddClienteController;
+import com.controller.detail.DetailClienteController;
 import com.model.Cliente;
 import com.service.ClienteService;
+import com.util.ParentAware;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
-public class ClientesController {
+public class ClientesController implements ParentAware {
+    private SidebarController parentController;
     private final ClienteService clienteService = new ClienteService();
     private final ObservableList<Cliente> clientes = FXCollections.observableArrayList();
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yy HH:mm");
 
     // Table View Clientes
     @FXML private TableView<Cliente> tableClientes;
@@ -38,27 +34,19 @@ public class ClientesController {
     // Buttons
     @FXML private MenuButton btnFiltrarCliente;
     @FXML private Button btnAniadirCliente;
-    @FXML private Button btnEditarCliente;
-    @FXML private Button btnEliminarCliente;
 
     // Search Bar Clientes
     @FXML TextField inputBuscarCliente;
 
-    // Text
-    @FXML private Text txtIdCliente;
-    @FXML private Text txtNombreCliente;
-    @FXML private Text txtApellidoCliente;
-    @FXML private Text txtDireccionCliente;
-    @FXML private Text txtTelefonoCliente;
-    @FXML private Text txtFechaCreacionCliente;
-    @FXML private Text txtFechaModificacionCliente;
-
     // Helper Methods
+    public void setParentController(SidebarController parentController) {
+        this.parentController = parentController;
+    }
+
     public void agregarCliente(Cliente cliente) {
         clientes.add(cliente);
         tableClientes.getSelectionModel().select(cliente);
         tableClientes.scrollTo(cliente);
-        displayCliente(cliente);
     }
 
     private void cargarCliente() {
@@ -84,29 +72,18 @@ public class ClientesController {
         }
     }
 
-    public void displayCliente(Cliente cliente) {
-        if(cliente == null) return;
+    private void cargarDetalleCliente(Cliente cliente) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/detail/DetailCliente.fxml"));
+            Parent root = fxmlLoader.load();
 
-        String[] partesNombre = cliente.getNombre() != null? cliente.getNombre().split(" ", 2): new String[]{""};
-        String nombre = partesNombre.length > 0 ? partesNombre[0] : "";
-        String apellido = partesNombre.length > 1 ? partesNombre[1] : "";
+            DetailClienteController detailClienteController = fxmlLoader.getController();
+            detailClienteController.setParentController(parentController);
+            detailClienteController.setCliente(cliente);
 
-        txtIdCliente.setText(String.valueOf(cliente.getId()));
-        txtNombreCliente.setText(nombre);
-        txtApellidoCliente.setText(apellido);
-        txtDireccionCliente.setText(cliente.getDireccion());
-        txtTelefonoCliente.setText(cliente.getTelefono());
-
-        if (cliente.getFechaCreacion() != null) {
-            txtFechaCreacionCliente.setText(DATE_FORMAT.format(cliente.getFechaCreacion()));
-        } else {
-            txtFechaCreacionCliente.setText("");
-        }
-
-        if (cliente.getFechaModificacion() != null) {
-            txtFechaModificacionCliente.setText(DATE_FORMAT.format(cliente.getFechaModificacion()));
-        } else {
-            txtFechaModificacionCliente.setText("");
+            parentController.getMainBorderPane().setCenter(root);
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -123,7 +100,7 @@ public class ClientesController {
         tableClientes.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
                     if (newSelection != null)
-                        displayCliente(newSelection);
+                        cargarDetalleCliente(newSelection);
                 }
         );
         cargarCliente();
@@ -131,21 +108,12 @@ public class ClientesController {
 
     @FXML private void handleAniadirCliente(ActionEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/modal/ModalCliente.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/add/AddCliente.fxml"));
             Parent root = fxmlLoader.load();
 
-            ModalClienteController modalController = fxmlLoader.getController();
-            modalController.setParentController(this);
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Añadir Cliente");
-            stage.setResizable(false);
-
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(((Node) event.getSource()).getScene().getWindow());
-
-            stage.showAndWait();
+            AddClienteController addClienteController = fxmlLoader.getController();
+            addClienteController.setParentController(parentController);
+            parentController.getMainBorderPane().setCenter(root);
         } catch (IOException exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -155,68 +123,4 @@ public class ClientesController {
         }
     }
 
-    @FXML private void handleEditarCliente(ActionEvent event) {
-        try {
-            Cliente seleccionado = tableClientes.getSelectionModel().getSelectedItem();
-            if (seleccionado == null) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Aviso");
-                alert.setHeaderText("No hay selección");
-                alert.setContentText("Debes seleccionar un cliente para editar.");
-                alert.showAndWait();
-                return;
-            }
-
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/modal/ModalCliente.fxml"));
-            Parent root = fxmlLoader.load();
-
-            ModalClienteController modalController = fxmlLoader.getController();
-            modalController.setParentController(this);
-
-            modalController.setCliente(seleccionado);
-            modalController.setTxtTituloCliente("Editar Cliente");
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Editar Cliente");
-            stage.setResizable(false);
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(((Node) event.getSource()).getScene().getWindow());
-
-            stage.showAndWait();
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
-    }
-
-    @FXML private void handleEliminarCliente(ActionEvent event) {
-        try {
-            Cliente clienteSeleccionado = tableClientes.getSelectionModel().getSelectedItem();
-
-            if (clienteSeleccionado != null) {
-                clienteService.deleteCliente(clienteSeleccionado.getId());
-                clientes.remove(clienteSeleccionado);
-
-                txtIdCliente.setText("");
-                txtNombreCliente.setText("");
-                txtApellidoCliente.setText("");
-                txtDireccionCliente.setText("");
-                txtTelefonoCliente.setText("");
-                txtFechaCreacionCliente.setText("");
-                txtFechaModificacionCliente.setText("");
-            } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Atención");
-                alert.setHeaderText("Ningún cliente seleccionado");
-                alert.setContentText("Seleccione un cliente de la tabla para eliminarlo.");
-                alert.showAndWait();
-            }
-        } catch (Exception exception) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("No se pudo eliminar el cliente");
-            alert.setContentText(exception.getMessage());
-            alert.showAndWait();
-        }
-    }
 }

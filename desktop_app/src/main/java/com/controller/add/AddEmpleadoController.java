@@ -17,7 +17,6 @@ import java.util.Date;
 public class AddEmpleadoController implements ParentAware {
     private SidebarController parentController;
     private final EmpleadoService empleadoService = new EmpleadoService();
-
     private Empleado empleado;
 
     // Buttons
