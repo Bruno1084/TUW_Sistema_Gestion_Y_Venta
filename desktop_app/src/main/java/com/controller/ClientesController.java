@@ -7,7 +7,6 @@ import com.service.ClienteService;
 import com.util.ParentAware;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -106,7 +105,7 @@ public class ClientesController implements ParentAware {
         cargarCliente();
     }
 
-    @FXML private void handleAniadirCliente(ActionEvent event) {
+    @FXML private void handleAniadirCliente() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/add/AddCliente.fxml"));
             Parent root = fxmlLoader.load();
@@ -122,5 +121,4 @@ public class ClientesController implements ParentAware {
             alert.showAndWait();
         }
     }
-
 }

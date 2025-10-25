@@ -26,7 +26,7 @@
                         <Font name="System Bold" size="20.0" />
                     </font>
                 </Text>
-                <Button fx:id="btnAniadirCompra" layoutX="713.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleBtnAniadir" text="Añadir Venta" AnchorPane.rightAnchor="20.0">
+                <Button fx:id="btnAniadirCompra" layoutX="713.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleBtnAniadir" AnchorPane.rightAnchor="70.0">
                     <graphic>
                         <FontAwesomeIconView glyphName="PLUS" size="15.0" />
                     </graphic>
@@ -34,6 +34,15 @@
                         <Font name="System Bold" size="15.0" />
                     </font>
                 </Button>
+            <MenuButton fx:id="btnConfigCompra" layoutX="809.0" layoutY="8.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="39.0" AnchorPane.rightAnchor="20.0">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Action 1" />
+                  <MenuItem mnemonicParsing="false" text="Action 2" />
+               </items>
+               <graphic>
+                  <FontAwesomeIconView glyphName="ELLIPSIS_V" size="18.0" />
+               </graphic>
+            </MenuButton>
             </AnchorPane>
             <AnchorPane prefHeight="150.0" prefWidth="200.0">
                 <GridPane hgap="15.0" layoutX="24.0" layoutY="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">

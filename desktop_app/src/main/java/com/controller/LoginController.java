@@ -40,6 +40,7 @@ public class LoginController {
                             inputContrasenia.getText()
                     );
                     SessionManager.getInstance().setToken(authResponse.getToken());
+                    SessionManager.getInstance().setCurrentUsuario(authResponse.getUsuario());
                     redirectToMain();
 
                 } else {

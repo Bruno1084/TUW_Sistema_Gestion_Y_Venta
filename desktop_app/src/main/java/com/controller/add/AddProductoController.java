@@ -111,7 +111,6 @@ public class AddProductoController implements ParentAware {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     // FXML Methods

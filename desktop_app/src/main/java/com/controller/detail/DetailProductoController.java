@@ -4,7 +4,6 @@ import com.controller.ProductosController;
 import com.controller.SidebarController;
 import com.controller.add.AddProductoController;
 import com.model.Producto;
-import com.service.ProductoService;
 import com.util.ParentAware;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
