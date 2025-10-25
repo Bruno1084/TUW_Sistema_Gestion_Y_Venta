@@ -19,7 +19,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.TextFields;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class AddProductoController implements ParentAware {
     private SidebarController parentController;
@@ -71,10 +78,84 @@ public class AddProductoController implements ParentAware {
         inputPrecioCompraProducto.setText(String.valueOf(producto.getPrecioCompra()));
         inputProveedorProducto.setText(producto.getProveedor().getNombre());
         inputPrecioVentaProducto.setText(String.valueOf(producto.getPrecioVenta()));
+    }
+
+    private <T> void setAutocompleteField(TextField inputField, Supplier<List<T>> dataSupplier, Function<T, String> nombreExtractor, Consumer<T> onSeleccionado) {
+        try {
+            List<T> lista = dataSupplier.get();
+
+            AutoCompletionBinding<T> binding = TextFields.bindAutoCompletion(
+                    inputField,
+                    param -> {
+                        String texto = param.getUserText().toLowerCase();
+                        return lista.stream()
+                                .filter(item -> nombreExtractor.apply(item).toLowerCase().contains(texto))
+                                .toList();
+                    },
+                    new javafx.util.StringConverter<>() {
+                        @Override
+                        public String toString(T item) {
+                            return item != null ? nombreExtractor.apply(item) : "";
+                        }
+
+                        @Override
+                        public T fromString(String string) {
+                            return lista.stream()
+                                    .filter(i -> nombreExtractor.apply(i).equalsIgnoreCase(string))
+                                    .findFirst()
+                                    .orElse(null);
+                        }
+                    }
+            );
+            binding.setOnAutoCompleted(event -> onSeleccionado.accept(event.getCompletion()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
     // FXML Methods
+    @FXML private void initialize() {
+        setAutocompleteField(
+                inputProveedorProducto,
+                () -> {
+                    try {
+                        return Arrays.asList(proveedorService.getAllProveedor());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                },
+                Proveedor::getNombre,
+                p -> { proveedorSeleccionado = p; if (producto != null) producto.setProveedor(p); }
+        );
+
+        setAutocompleteField(
+                inputMarcaProducto,
+                () -> {
+                    try {
+                        return Arrays.asList(marcaService.getAllMarca());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                },
+                Marca::getNombre,
+                m -> { marcaSeleccionada = m; if (producto != null) producto.setMarca(m); }
+        );
+
+        setAutocompleteField(
+                inputRubroProducto,
+                () -> {
+                    try {
+                        return Arrays.asList(rubroService.getAllRubro());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                },
+                Rubro::getNombre,
+                r -> { rubroSeleccionado = r; if (producto != null) producto.setRubro(r); }
+        );
+    }
+
     @FXML private void handleAniadirProducto() {
         try {
             if (producto == null) {
