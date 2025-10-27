@@ -1,5 +1,5 @@
 import type { CompraRepository } from "../domain/CompraRepository";
-import type { CompraSimpleDTO } from "./CompraDTO";
+import type { CompraDetailDTO, CompraSimpleDTO } from "./CompraDTO";
 import { ProveedorId } from "../../Proveedor/domain/ProveedorId";
 import { UsuarioId } from "../../Usuario/domain/UsuarioId";
 import { Compra } from "../domain/Compra";
@@ -16,7 +16,7 @@ export class CompraCreate {
         fechaCreacion: Date,
         proveedorId: number,
         usuarioId: number
-    ): Promise<CompraSimpleDTO> {
+    ): Promise<CompraDetailDTO> {
         const compra = new Compra(
             new CompraId(0),
             new CompraPrecioTotal(precioTotal),

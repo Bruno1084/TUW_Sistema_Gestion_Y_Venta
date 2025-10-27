@@ -1,6 +1,6 @@
 import type { CompraDetailDTO, CompraSimpleDTO } from "../application/CompraDTO";
 import type { Compra } from "./Compra";
-import { CompraId } from "./CompraId";
+import type { CompraId } from "./CompraId";
 
 export interface CompraRepository {
     create(compra: Compra): Promise<CompraDetailDTO>;

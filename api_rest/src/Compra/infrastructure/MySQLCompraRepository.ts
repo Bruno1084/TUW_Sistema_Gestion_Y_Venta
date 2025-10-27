@@ -21,7 +21,7 @@ export class MySQLCompraRepository implements CompraRepository {
 
     async create(compra: Compra): Promise<CompraDetailDTO> {
         const query = `
-            INSERT INTO compras(id_proveedor, id_empleado, precio_total, fecha_creacion)
+            INSERT INTO compras(id_proveedor, id_usuario, precio_total, fecha_creacion)
             VALUES (?, ?, ?, ?)
         `;
 
@@ -128,7 +128,7 @@ export class MySQLCompraRepository implements CompraRepository {
             p.fecha_creacion AS proveedor_fecha_creacion,
             p.fecha_modificacion AS proveedor_fecha_modificacion,
             u.id AS usuario_id,
-            u.nombre AS usuario_nombre,
+            u.nombre AS usuario_nombre
             FROM compras c
             JOIN proveedores p ON c.id_proveedor = p.id
             JOIN usuarios u ON c.id_usuario = u.id
