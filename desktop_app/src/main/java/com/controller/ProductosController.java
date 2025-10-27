@@ -51,12 +51,6 @@ public class ProductosController implements ParentAware {
         this.parentController = parentController;
     }
 
-    public void agregarProducto(Producto producto) {
-        productos.add(producto);
-        tableProductos.getSelectionModel().select(producto);
-        tableProductos.scrollTo(producto);
-    }
-
     public void cargarProductos() {
         try {
             Producto[] lista = productoService.getAllWithDetailProducto();

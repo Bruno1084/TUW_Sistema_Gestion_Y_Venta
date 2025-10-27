@@ -50,14 +50,6 @@
                                     </font>
                                 </Text>
                             </HBox>
-                            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="40.0" spacing="10.0">
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID">
-                                    <font>
-                                        <Font size="13.0" />
-                                    </font>
-                                </Text>
-                                <TextField fx:id="inputIdCompra" />
-                            </HBox>
                             <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="90.0" prefHeight="40.0" spacing="10.0">
                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Proveedor">
                                     <font>
@@ -80,15 +72,15 @@
                                     </font>
                                 </Text>
                             </AnchorPane>
-                            <AnchorPane VBox.vgrow="ALWAYS">
-                                <HBox alignment="CENTER_LEFT" spacing="5.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <AnchorPane>
+                                <HBox alignment="CENTER_LEFT" fillHeight="false" spacing="5.0" AnchorPane.leftAnchor="0.0">
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Código: ">
                                         <font>
                                             <Font name="System Bold" size="12.0" />
                                         </font>
                                     </Text>
                                     <TextField fx:id="inputCodigoCompra" prefHeight="25.0" prefWidth="166.0" />
-                                    <Button fx:id="btnBuscarCompra" mnemonicParsing="false" onAction="#handleBuscarCompra">
+                                    <Button fx:id="btnBuscarCompra" mnemonicParsing="false" onAction="#handleBtnBuscarProducto">
                                         <font>
                                             <Font name="System Bold" size="15.0" />
                                         </font>
@@ -97,7 +89,7 @@
                                         </graphic>
                                     </Button>
                                 </HBox>
-                                <HBox alignment="CENTER_RIGHT" layoutX="540.0" layoutY="-37.0" prefHeight="100.0" prefWidth="200.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <HBox alignment="CENTER_RIGHT" fillHeight="false" layoutX="643.0" layoutY="2.0" spacing="5.0" AnchorPane.rightAnchor="0.0">
                                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Total:">
                                         <font>
                                             <Font name="System Bold" size="12.0" />

@@ -109,7 +109,7 @@ public class ComprasController implements ParentAware {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/add/AddCompra.fxml"));
             Parent root = fxmlLoader.load();
 
-            AddCompraController addCompraController = fxmlLoader.load();
+            AddCompraController addCompraController = fxmlLoader.getController();
             addCompraController.setParentController(parentController);
             parentController.getMainBorderPane().setCenter(root);
         } catch (Exception exception) {

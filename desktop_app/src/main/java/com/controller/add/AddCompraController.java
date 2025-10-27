@@ -2,20 +2,30 @@ package com.controller.add;
 
 import com.controller.ComprasController;
 import com.controller.SidebarController;
-import com.model.Compra;
-import com.model.CompraDetalle;
-import com.model.Proveedor;
-import com.model.SessionManager;
+import com.controller.modal.ModalBuscarProducto;
+import com.model.*;
 import com.service.CompraService;
 import com.service.ProveedorService;
 import com.util.ParentAware;
+import javafx.beans.property.SimpleFloatProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.util.converter.IntegerStringConverter;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 import java.util.Arrays;
@@ -30,6 +40,7 @@ public class AddCompraController implements ParentAware {
     private final CompraService compraService = new CompraService();
     private final ProveedorService proveedorService = new ProveedorService();
 
+    private final ObservableList<CompraDetalle> detalles = FXCollections.observableArrayList();
     private Compra compra;
     private Proveedor proveedorSeleccionado = new Proveedor();
 
@@ -39,7 +50,6 @@ public class AddCompraController implements ParentAware {
     @FXML Button btnBuscarCompra;
 
     // Text
-    @FXML TextField inputIdCompra;
     @FXML TextField inputTotalCompra;
     @FXML TextField inputProveedorCompra;
     @FXML TextField inputCodigoCompra;
@@ -64,7 +74,6 @@ public class AddCompraController implements ParentAware {
         this.compra = compra;
         this.proveedorSeleccionado = compra.getProveedor();
 
-        inputIdCompra.setText(String.valueOf(compra.getId()));
         inputTotalCompra.setText(String.valueOf(compra.getPrecioTotal()));
         inputProveedorCompra.setText(compra.getProveedor().getNombre());
     }
@@ -102,6 +111,27 @@ public class AddCompraController implements ParentAware {
         }
     }
 
+    public void recibirProductosSeleccionados(ObservableList<Producto> productos) {
+        for (Producto producto : productos) {
+            CompraDetalle detalle = new CompraDetalle();
+            detalle.setProducto(producto);
+            detalle.setCantidad(1);
+            detalle.setPrecioUnitario(producto.getPrecioCompra());
+            detalle.setPrecioTotal(producto.getPrecioCompra());
+            detalles.add(detalle);
+        }
+
+        actualizarTotal();
+    }
+
+    private void actualizarTotal() {
+        double total = detalles.stream()
+                .mapToDouble(CompraDetalle::getPrecioTotal)
+                .sum();
+
+        inputTotalCompra.setText(String.format("$ %.2f", total));
+    }
+
     // FXML Methods
     @FXML private void initialize() {
         setAutocompleteField(
@@ -116,10 +146,72 @@ public class AddCompraController implements ParentAware {
                 Proveedor::getNombre,
                 p -> { proveedorSeleccionado = p; if (compra != null) compra.setProveedor(p); }
         );
+
+        tableProductos.setItems(detalles);
+
+        columnCodigoProducto.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getProducto().getCodigoBarra())
+        );
+
+        columnDescripcionProducto.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getProducto().getDescripcion())
+        );
+
+        columnPrecioCompraProducto.setCellValueFactory(cellData ->
+                new SimpleFloatProperty(cellData.getValue().getProducto().getPrecioCompra()).asObject().asString()
+        );
+
+        columnStockProducto.setCellValueFactory(cellData ->
+                new SimpleIntegerProperty(cellData.getValue().getProducto().getStock()).asObject()
+        );
+
+        columnRubroProducto.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getProducto().getRubro().getNombre())
+        );
+
+        columnMarcaProducto.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getProducto().getMarca().getNombre())
+        );
+
+        columnCantidadProducto.setCellValueFactory(cellData ->
+                new SimpleIntegerProperty(cellData.getValue().getCantidad()).asObject()
+        );
+        columnCantidadProducto.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+        columnCantidadProducto.setOnEditCommit(event -> {
+            CompraDetalle detalle = event.getRowValue();
+            detalle.setCantidad(event.getNewValue());
+            detalle.setPrecioTotal(detalle.getCantidad() * detalle.getPrecioUnitario());
+            tableProductos.refresh();
+            actualizarTotal();
+        });
+
+        columnImporteProducto.setCellValueFactory(cellData ->
+                new SimpleFloatProperty(cellData.getValue().getPrecioTotal()).asObject()
+        );
+
+        tableProductos.setEditable(true);
     }
 
-    @FXML private void handleBuscarCompra() {
+    @FXML private void handleBtnBuscarProducto(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/modal/ModalBuscarProducto.fxml"));
+            Parent root = fxmlLoader.load();
 
+            ModalBuscarProducto modalController = fxmlLoader.getController();
+            modalController.setParentController(this);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Buscar Producto");
+            stage.setResizable(false);
+
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(((Node) event.getSource()).getScene().getWindow());
+
+            stage.showAndWait();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     @FXML private void handleAniadirCompra() {
@@ -134,25 +226,22 @@ public class AddCompraController implements ParentAware {
                 return;
             }
 
-            System.out.println("Usuario: " + SessionManager.getInstance().getCurrentUsuario().getNombre());
-            System.out.println("ID: " + SessionManager.getInstance().getCurrentUsuario().getId());
-
+            float total = Float.parseFloat(inputTotalCompra.getText().replace("$", "").replace(",", "."));
             Compra nuevaCompra = new Compra(
-                    Integer.parseInt(inputIdCompra.getText()),
-                    Float.parseFloat(inputTotalCompra.getText()),
+                    0,
+                    total,
                     new Date(),
                     proveedorSeleccionado,
                     SessionManager.getInstance().getCurrentUsuario()
             );
 
-            Compra creado = compraService.createCompra(nuevaCompra);
+            compraService.createCompra(nuevaCompra);
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/Compras.fxml"));
             Parent root = fxmlLoader.load();
 
             ComprasController comprasController = fxmlLoader.getController();
             comprasController.setParentController(parentController);
-            comprasController.agregarCompra(creado);
 
             parentController.getMainBorderPane().setCenter(root);
         } catch (Exception exception) {

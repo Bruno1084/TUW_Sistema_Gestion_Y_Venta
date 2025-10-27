@@ -193,14 +193,13 @@ public class AddProductoController implements ParentAware {
                         rubroSeleccionado
                 );
 
-                Producto creado = productoService.createProducto(nuevoProducto);
+                productoService.createProducto(nuevoProducto);
 
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/Productos.fxml"));
                 Parent root = fxmlLoader.load();
 
                 ProductosController productosController = fxmlLoader.getController();
                 productosController.setParentController(parentController);
-                productosController.agregarProducto(creado);
 
                 parentController.getMainBorderPane().setCenter(root);
             } else {

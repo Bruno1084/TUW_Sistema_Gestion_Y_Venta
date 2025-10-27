@@ -1,5 +1,6 @@
 package com.controller.modal;
 
+import com.controller.add.AddCompraController;
 import com.model.Producto;
 import com.service.ProductoService;
 import javafx.beans.property.SimpleStringProperty;
@@ -14,7 +15,7 @@ import java.util.Arrays;
 
 public class ModalBuscarProducto {
     private final ProductoService productoService = new ProductoService();
-    private ModalCompraController parentController;
+    private AddCompraController parentController;
     private final ObservableList<Producto> productos = FXCollections.observableArrayList();
 
     // TableView
@@ -43,7 +44,7 @@ public class ModalBuscarProducto {
     @FXML private MenuButton btnFiltrarProducto;
 
     // Helper Methods
-    public void setParentController(ModalCompraController parentController) {
+    public void setParentController(AddCompraController parentController) {
         this.parentController = parentController;
     }
 

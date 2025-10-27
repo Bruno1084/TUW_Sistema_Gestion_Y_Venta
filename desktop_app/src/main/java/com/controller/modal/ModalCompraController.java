@@ -143,9 +143,6 @@ public class ModalCompraController {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/modal/ModalBuscarProducto.fxml"));
             Parent root = fxmlLoader.load();
 
-            ModalBuscarProducto modalController = fxmlLoader.getController();
-            modalController.setParentController(this);
-
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Buscar Producto");
