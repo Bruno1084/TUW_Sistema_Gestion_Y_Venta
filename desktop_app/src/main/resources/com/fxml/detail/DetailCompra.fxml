@@ -42,6 +42,22 @@
                                     </font>
                                 </Text>
                             </HBox>
+                            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="54.0" prefHeight="40.0" spacing="10.0">
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID">
+                                    <font>
+                                        <Font size="13.0" />
+                                    </font>
+                                </Text>
+                                <Text fx:id="txtIdCompra" strokeType="OUTSIDE" strokeWidth="0.0" />
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="54.0" prefHeight="40.0" spacing="10.0">
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fecha Creación">
+                                    <font>
+                                        <Font size="13.0" />
+                                    </font>
+                                </Text>
+                                <Text fx:id="txtFechaCreacionCompra" strokeType="OUTSIDE" strokeWidth="0.0" />
+                            </HBox>
                             <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="90.0" prefHeight="40.0" spacing="10.0">
                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Proveedor">
                                     <font>
@@ -49,6 +65,15 @@
                                     </font>
                                 </Text>
                         <Hyperlink fx:id="linkProveedorCompra" />
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="142.0" prefHeight="40.0"
+                                  spacing="10.0">
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Usuario">
+                                    <font>
+                                        <Font size="13.0"/>
+                                    </font>
+                                </Text>
+                                <Text fx:id="txtUsuarioCompra" strokeType="OUTSIDE" strokeWidth="0.0"/>
                             </HBox>
                             <padding>
                                 <Insets bottom="8.0" />

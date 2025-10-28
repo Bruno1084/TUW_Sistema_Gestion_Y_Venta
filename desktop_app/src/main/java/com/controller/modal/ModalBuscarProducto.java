@@ -11,7 +11,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ModalBuscarProducto {
     private final ProductoService productoService = new ProductoService();
@@ -108,6 +111,10 @@ public class ModalBuscarProducto {
             alert.showAndWait();
             return;
         }
+
+        List<Producto> productosSeleccionados = new ArrayList<>(tableProductos.getSelectionModel().getSelectedItems());
+        parentController.recibirProductosSeleccionados(productosSeleccionados);
+
 
         parentController.recibirProductosSeleccionados(seleccionados);
 

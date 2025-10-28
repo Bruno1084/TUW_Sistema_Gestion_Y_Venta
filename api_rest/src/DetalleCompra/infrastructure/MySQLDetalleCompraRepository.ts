@@ -59,7 +59,7 @@ export class MySQLDetalleCompraRepository implements DetalleCompraRepository {
         `;
 
         const [rows] = await this.pool.query<(RowDataPacket & MySQLDetalleCompra)[]>(query, [
-            compraId,
+            compraId.value,
         ]);
 
         return rows.map(

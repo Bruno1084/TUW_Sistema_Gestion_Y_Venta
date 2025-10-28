@@ -111,16 +111,20 @@ public class AddCompraController implements ParentAware {
         }
     }
 
-    public void recibirProductosSeleccionados(ObservableList<Producto> productos) {
+    public void recibirProductosSeleccionados(List<Producto> productos) {
         for (Producto producto : productos) {
-            CompraDetalle detalle = new CompraDetalle();
-            detalle.setProducto(producto);
-            detalle.setCantidad(1);
-            detalle.setPrecioUnitario(producto.getPrecioCompra());
-            detalle.setPrecioTotal(producto.getPrecioCompra());
-            detalles.add(detalle);
-        }
+            boolean yaExiste = detalles.stream()
+                    .anyMatch(detalle -> detalle.getProducto().getCodigoBarra().equals(producto.getCodigoBarra()));
 
+            if (!yaExiste) {
+                CompraDetalle detalle = new CompraDetalle();
+                detalle.setProducto(producto);
+                detalle.setCantidad(1);
+                detalle.setPrecioUnitario(producto.getPrecioCompra());
+                detalle.setPrecioTotal(producto.getPrecioCompra());
+                detalles.add(detalle);
+            }
+        }
         actualizarTotal();
     }
 

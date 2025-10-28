@@ -47,12 +47,6 @@ public class ComprasController implements ParentAware {
         this.parentController = parentController;
     }
 
-    public void agregarCompra(Compra compra) {
-        compras.add(compra);
-        tableCompras.getSelectionModel().select(compra);
-        tableCompras.scrollTo(compra);
-    }
-
     private void cargarCompras() {
         try {
             Compra[] lista = compraService.getAllWithDetailCompra();
