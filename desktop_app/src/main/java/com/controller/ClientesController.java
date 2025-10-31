@@ -42,12 +42,6 @@ public class ClientesController implements ParentAware {
         this.parentController = parentController;
     }
 
-    public void agregarCliente(Cliente cliente) {
-        clientes.add(cliente);
-        tableClientes.getSelectionModel().select(cliente);
-        tableClientes.scrollTo(cliente);
-    }
-
     private void cargarCliente() {
         try {
             Cliente[] lista = clienteService.getAllCliente();
@@ -59,15 +53,6 @@ public class ClientesController implements ParentAware {
             alert.setHeaderText(null);
             alert.setContentText(e.getMessage());
             alert.showAndWait();
-        }
-    }
-
-    public void actualizarCliente(Cliente actualizado) {
-        for (int i = 0; i < clientes.size(); i++) {
-            if (clientes.get(i).getId() == actualizado.getId()) {
-                clientes.set(i, actualizado);
-                break;
-            }
         }
     }
 

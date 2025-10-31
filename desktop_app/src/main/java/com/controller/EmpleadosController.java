@@ -7,7 +7,6 @@ import com.service.EmpleadoService;
 import com.util.ParentAware;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -43,13 +42,6 @@ public class EmpleadosController implements ParentAware {
         this.parentController = parentController;
     }
 
-
-    public void agregarEmpleado(Empleado empleado) {
-        empleados.add(empleado);
-        tableEmpleados.getSelectionModel().select(empleado);
-        tableEmpleados.scrollTo(empleado);
-    }
-
     private void cargarEmpleados() {
         try {
             Empleado[] lista = empleadoService.getAllEmpleado();
@@ -62,15 +54,6 @@ public class EmpleadosController implements ParentAware {
             alert.setHeaderText(null);
             alert.setContentText(e.getMessage());
             alert.showAndWait();
-        }
-    }
-
-    public void actualizarEmpleado(Empleado actualizado) {
-        for (int i = 0; i < empleados.size(); i++) {
-            if (empleados.get(i).getId() == actualizado.getId()) {
-                empleados.set(i, actualizado);
-                break;
-            }
         }
     }
 
@@ -108,7 +91,7 @@ public class EmpleadosController implements ParentAware {
         cargarEmpleados();
     }
 
-    @FXML private void handleAniadirEmpleado(ActionEvent event) {
+    @FXML private void handleAniadirEmpleado() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/add/AddEmpleado.fxml"));
             Parent root = fxmlLoader.load();

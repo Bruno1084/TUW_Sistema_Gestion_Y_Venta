@@ -58,14 +58,13 @@ public class AddClienteController implements ParentAware {
                         new Date()
                 );
 
-                Cliente creado = clienteService.createCliente(nuevoCliente);
+                clienteService.createCliente(nuevoCliente);
 
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/Clientes.fxml"));
                 Parent root = fxmlLoader.load();
 
                 ClientesController clientesController = fxmlLoader.getController();
                 clientesController.setParentController(parentController);
-                clientesController.agregarCliente(creado);
 
                 parentController.getMainBorderPane().setCenter(root);
             } else {

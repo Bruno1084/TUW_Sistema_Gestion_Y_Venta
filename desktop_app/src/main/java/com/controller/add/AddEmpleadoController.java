@@ -20,8 +20,8 @@ public class AddEmpleadoController implements ParentAware {
     private Empleado empleado;
 
     // Buttons
-    @FXML Button btnAniadirEmpleado;
-    @FXML Button btnCancelarEmpleado;
+    @FXML private Button btnAniadirEmpleado;
+    @FXML private Button btnCancelarEmpleado;
 
     // Text
     @FXML private Text txtTituloEmpleado;
@@ -58,14 +58,13 @@ public class AddEmpleadoController implements ParentAware {
                         new Date()
                 );
 
-                Empleado creado = empleadoService.createEmpleado(nuevoEmpleado);
+                empleadoService.createEmpleado(nuevoEmpleado);
 
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/Empleados.fxml"));
                 Parent root = fxmlLoader.load();
 
                 EmpleadosController empleadosController = fxmlLoader.getController();
                 empleadosController.setParentController(parentController);
-                empleadosController.agregarEmpleado(creado);
 
                 parentController.getMainBorderPane().setCenter(root);
             } else {

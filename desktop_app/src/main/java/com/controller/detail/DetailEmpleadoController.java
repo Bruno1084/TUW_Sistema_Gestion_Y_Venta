@@ -5,7 +5,6 @@ import com.controller.SidebarController;
 import com.controller.add.AddEmpleadoController;
 import com.model.Empleado;
 import com.util.ParentAware;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -46,7 +45,7 @@ public class DetailEmpleadoController implements ParentAware {
     }
 
     // FXML Methods
-    @FXML private void handleEditarEmpleado(ActionEvent event) {
+    @FXML private void handleEditarEmpleado() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/add/AddEmpleado.fxml"));
             Parent root = fxmlLoader.load();
@@ -61,7 +60,7 @@ public class DetailEmpleadoController implements ParentAware {
         }
     }
 
-    @FXML private void handleCerrarEmpleado(ActionEvent event) {
+    @FXML private void handleCerrarEmpleado() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fxml/Empleados.fxml"));
             Parent empleadosView = loader.load();

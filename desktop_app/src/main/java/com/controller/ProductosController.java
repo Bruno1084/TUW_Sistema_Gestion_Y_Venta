@@ -65,15 +65,6 @@ public class ProductosController implements ParentAware {
         }
     }
 
-    public void actualizarProducto(Producto actualizado) {
-        for (int i = 0; i < productos.size(); i++) {
-            if (productos.get(i).getCodigoBarra().equals(actualizado.getCodigoBarra())) {
-                productos.set(i, actualizado);
-                break;
-            }
-        }
-    }
-
     private void cargarDetalleProducto(Producto producto) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/detail/DetailProducto.fxml"));

@@ -1,34 +1,29 @@
 package com.controller;
 
-import com.controller.modal.ModalProveedorController;
+import com.controller.add.AddProveedorController;
+import com.controller.detail.DetailProveedorController;
 import com.model.Proveedor;
 import com.service.ProveedorService;
+import com.util.ParentAware;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
-public class ProveedoresController {
+public class ProveedoresController implements ParentAware {
+    private SidebarController parentController;
     private final ProveedorService proveedorService = new ProveedorService();
     private final ObservableList<Proveedor> proveedores = FXCollections.observableArrayList();
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yy HH:mm");
 
     // Table View Proveedores
-    @FXML
-    private TableView<Proveedor> tableProveedores;
+    @FXML private TableView<Proveedor> tableProveedores;
     @FXML private TableColumn<Proveedor, String> columnIdProveedor;
     @FXML private TableColumn<Proveedor, String> columnNombreProveedor;
     @FXML private TableColumn<Proveedor, String> columnDireccionProveedor;
@@ -39,12 +34,9 @@ public class ProveedoresController {
     // Buttons
     @FXML private MenuButton btnFiltrarProveedor;
     @FXML private Button btnAniadirProveedor;
-    @FXML private Button btnEditarProveedor;
-    @FXML private Button btnEliminarProveedor;
 
     // Search Bar Proveedores
-    @FXML
-    TextField inputBuscarProveedor;
+    @FXML TextField inputBuscarProveedor;
 
     // Text
     @FXML private Text txtIdProveedor;
@@ -55,11 +47,8 @@ public class ProveedoresController {
     @FXML private Text txtFechaModificacionProveedor;
 
     // Helper Methods
-    public void agregarProveedor(Proveedor proveedor) {
-        proveedores.add(proveedor);
-        tableProveedores.getSelectionModel().select(proveedor);
-        tableProveedores.scrollTo(proveedor);
-        displayProveedor(proveedor);
+    public void setParentController(SidebarController parentController) {
+        this.parentController = parentController;
     }
 
     private void cargarProveedor() {
@@ -76,31 +65,18 @@ public class ProveedoresController {
         }
     }
 
-    public void actualizarProveedor(Proveedor actualizado) {
-        for (int i = 0; i < proveedores.size(); i++) {
-            if (proveedores.get(i).getId() == actualizado.getId()) {
-                proveedores.set(i, actualizado);
-                break;
-            }
-        }
-    }
+    private void cargarDetalleProveedor(Proveedor proveedor) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/detail/DetailProveedor.fxml"));
+            Parent root = fxmlLoader.load();
 
-    public void displayProveedor(Proveedor proveedor) {
-        txtIdProveedor.setText(String.valueOf(proveedor.getId()));
-        txtNombreProveedor.setText(proveedor.getNombre());
-        txtDireccionProveedor.setText(proveedor.getDireccion());
-        txtTelefonoProveedor.setText(proveedor.getTelefono());
+            DetailProveedorController detailProveedorController = fxmlLoader.getController();
+            detailProveedorController.setParentController(parentController);
+            detailProveedorController.setProveedor(proveedor);
 
-        if (proveedor.getFechaCreacion() != null) {
-            txtFechaCreacionProveedor.setText(DATE_FORMAT.format(proveedor.getFechaCreacion()));
-        } else {
-            txtFechaCreacionProveedor.setText("");
-        }
-
-        if (proveedor.getFechaModificacion() != null) {
-            txtFechaModificacionProveedor.setText(DATE_FORMAT.format(proveedor.getFechaModificacion()));
-        } else {
-            txtFechaModificacionProveedor.setText("");
+            parentController.getMainBorderPane().setCenter(root);
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -117,91 +93,24 @@ public class ProveedoresController {
         tableProveedores.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
                     if (newSelection != null)
-                        displayProveedor(newSelection);
+                        cargarDetalleProveedor(newSelection);
                 }
         );
         cargarProveedor();
     }
 
-    @FXML private void handleAniadirProveedor(ActionEvent event) {
+    @FXML private void handleAniadirProveedor() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/modal/ModalProveedor.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/add/AddProveedor.fxml"));
             Parent root = fxmlLoader.load();
 
-            ModalProveedorController modalController = fxmlLoader.getController();
-            modalController.setParentController(this);
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Añadir Proveedor");
-            stage.setResizable(false);
-
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(((Node) event.getSource()).getScene().getWindow());
-
-            stage.showAndWait();
+            AddProveedorController addProveedorController = fxmlLoader.getController();
+            addProveedorController.setParentController(parentController);
+            parentController.getMainBorderPane().setCenter(root);
         } catch (IOException exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("No se pudo crear el proveedor");
-            alert.setContentText(exception.getMessage());
-            alert.showAndWait();
-        }
-    }
-
-    @FXML private void handleEditarProveedor(ActionEvent event) {
-        try {
-            Proveedor seleccionado = tableProveedores.getSelectionModel().getSelectedItem();
-            if (seleccionado == null) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Aviso");
-                alert.setHeaderText("No hay selección");
-                alert.setContentText("Debes seleccionar un proveedor para editar.");
-                alert.showAndWait();
-                return;
-            }
-
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/modal/ModalProveedor.fxml"));
-            Parent root = fxmlLoader.load();
-
-            ModalProveedorController modalController = fxmlLoader.getController();
-            modalController.setParentController(this);
-
-            modalController.setProveedor(seleccionado);
-            modalController.setTxtTituloProveedor("Editar Proveedor");
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Editar Proveedor");
-            stage.setResizable(false);
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(((Node) event.getSource()).getScene().getWindow());
-
-            stage.showAndWait();
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
-    }
-
-    @FXML private void handleEliminarProveedor(ActionEvent event) {
-        try {
-            Proveedor proveedorSeleccionado = tableProveedores.getSelectionModel().getSelectedItem();
-
-            if (proveedorSeleccionado != null) {
-                proveedorService.deleteProveedor(proveedorSeleccionado.getId());
-
-                proveedores.remove(proveedorSeleccionado);
-            } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Atención");
-                alert.setHeaderText("Ningún proveedor seleccionado");
-                alert.setContentText("Seleccione un proveedor de la tabla para eliminarlo.");
-                alert.showAndWait();
-            }
-        } catch (Exception exception) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("No se pudo eliminar el proveedor");
             alert.setContentText(exception.getMessage());
             alert.showAndWait();
         }

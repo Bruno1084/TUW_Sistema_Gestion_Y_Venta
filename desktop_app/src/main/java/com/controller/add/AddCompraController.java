@@ -4,6 +4,7 @@ import com.controller.ComprasController;
 import com.controller.SidebarController;
 import com.controller.modal.ModalBuscarProducto;
 import com.model.*;
+import com.service.CompraDetalleService;
 import com.service.CompraService;
 import com.service.ProveedorService;
 import com.util.ParentAware;
@@ -39,6 +40,7 @@ public class AddCompraController implements ParentAware {
     private SidebarController parentController;
     private final CompraService compraService = new CompraService();
     private final ProveedorService proveedorService = new ProveedorService();
+    private final CompraDetalleService compraDetalleService = new CompraDetalleService();
 
     private final ObservableList<CompraDetalle> detalles = FXCollections.observableArrayList();
     private Compra compra;
@@ -239,7 +241,11 @@ public class AddCompraController implements ParentAware {
                     SessionManager.getInstance().getCurrentUsuario()
             );
 
+            // TODO: Modificar el endppoint para que reciba una lista
             compraService.createCompra(nuevaCompra);
+            for (CompraDetalle detalle : detalles) {
+                compraDetalleService.createCompraDetalle(detalle);
+            }
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/Compras.fxml"));
             Parent root = fxmlLoader.load();
