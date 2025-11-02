@@ -5,6 +5,7 @@ import type { DetalleVenta } from "./DetalleVenta";
 
 export interface DetalleVentaRepository {
     create(detalleVenta: DetalleVenta): Promise<DetalleVentaDTO>;
+    createMany(detalles: DetalleVenta[]): Promise<DetalleVentaDTO[]>;
     getAll(): Promise<DetalleVentaDTO[]>;
     getAllFromVentaById(ventaId: VentaId): Promise<DetalleVentaDTO[]>;
     getOneById(ventaId: VentaId, productoCodigoBarra: ProductoCodigoBarra): Promise<DetalleVentaDTO | null>;

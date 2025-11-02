@@ -7,12 +7,14 @@ import { DetalleVentaGetAllFromVentaById } from "./application/DetalleVentaGetAl
 import { DetalleVentaGetOneById } from "./application/DetalleVentaGetOneById";
 import { DetalleVentaController } from "./interfaces/DetalleVentaController";
 import { detalleVentaRouter } from "./interfaces/DetalleVentaRouter";
+import { DetalleVentaCreateMany } from "./application/DetalleVentaCreateMany";
 
 export function initDetalleVentaModule(pool: Pool): Router {
     const repo = new MySQLDetalleVentaRepository(pool);
 
     const useCases = {
         create: new DetalleVentaCreate(repo),
+        createMany: new DetalleVentaCreateMany(repo),
         getAll: new DetalleVentaGetAll(repo),
         getAllFromVentaById: new DetalleVentaGetAllFromVentaById(repo),
         getOneById: new DetalleVentaGetOneById(repo),

@@ -37,6 +37,35 @@ export class MySQLDetalleVentaRepository implements DetalleVentaRepository {
         return this.getOneById(detalleVenta.ventaId, detalleVenta.productoCodigoBarra) as Promise<DetalleVentaDTO>;
     }
 
+    async createMany(detalles: DetalleVenta[]): Promise<DetalleVentaDTO[]> {
+        const connection = await this.pool.getConnection();
+        try {
+            const query = `
+                INSERT INTO ventas_detalles (id_venta, codigo_producto, cantidad, precio_total, precio_unitario)
+                VALUES ?
+            `;
+
+            const values = detalles.map(d => [
+                d.ventaId.value,
+                d.productoCodigoBarra.value,
+                d.cantidad.value,
+                d.precioTotal.value,
+                d.precioUnitario.value,
+            ]);
+
+            await connection.beginTransaction();
+            await connection.query(query, [values]);
+            await connection.commit();
+        } catch (err) {
+            await connection.rollback();
+            throw err;
+        } finally {
+            connection.release();
+        }
+
+        return this.getAllFromVentaById(detalles[0]!.ventaId);
+    }
+
     async getAll(): Promise<DetalleVentaDTO[]> {
         const query = `SELECT * FROM ventas_detalles`;
 
