@@ -5,6 +5,7 @@ export function detalleCompraRouter(detalleCompraController: DetalleCompraContro
     const router = Router();
 
     router.post('/create', detalleCompraController.createDetalleCompra.bind(detalleCompraController));
+    router.post('/createMany', detalleCompraController.createManyDetalleCompra.bind(detalleCompraController));
     router.get('/getAll', detalleCompraController.getAllDetalleCompra.bind(detalleCompraController));
     router.get('/getAllFromCompraById/:compraId', detalleCompraController.getAllFromCompraByIdDetalleCompra.bind(detalleCompraController));
     router.get('/getOneById/:compraId/:productoCodigoBarra', detalleCompraController.getOneByIdDetalleCompra.bind(detalleCompraController));

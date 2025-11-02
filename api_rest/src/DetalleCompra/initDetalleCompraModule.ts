@@ -7,12 +7,14 @@ import { DetalleCompraGetAllFromCompraById } from "./application/DetalleCompraGe
 import { DetalleCompraGetOneById } from "./application/DetalleCompraGetOneById";
 import { DetalleCompraController } from "./interfaces/DetalleCompraController";
 import { detalleCompraRouter } from "./interfaces/DetalleCompraRouter";
+import { DetalleCompraCreateMany } from "./application/DetalleCompraCreateMany";
 
 export function initDetalleCompraModule(pool: Pool): Router {
     const repo = new MySQLDetalleCompraRepository(pool);
 
     const useCases = {
         create: new DetalleCompraCreate(repo),
+        createMany: new DetalleCompraCreateMany(repo),
         getAll: new DetalleCompraGetAll(repo),
         getAllFromCompraById: new DetalleCompraGetAllFromCompraById(repo),
         getOneById: new DetalleCompraGetOneById(repo),

@@ -3,13 +3,14 @@ import type { DetalleCompraCreate } from "../application/DetalleCompraCreate"
 import type { DetalleCompraGetAll } from "../application/DetalleCompraGetAll";
 import type { DetalleCompraGetAllFromCompraById } from "../application/DetalleCompraGetAllFromCompraById";
 import type { DetalleCompraGetOneById } from "../application/DetalleCompraGetOneById";
+import type { DetalleCompraCreateMany } from "../application/DetalleCompraCreateMany";
 
 type DetalleCompraUseCases = {
     create: DetalleCompraCreate;
+    createMany: DetalleCompraCreateMany;
     getAll: DetalleCompraGetAll;
     getAllFromCompraById: DetalleCompraGetAllFromCompraById;
     getOneById: DetalleCompraGetOneById;
-
 }
 
 export class DetalleCompraController {
@@ -34,6 +35,23 @@ export class DetalleCompraController {
             );
 
             res.status(201).json(detalleCompra);
+        } catch (err: any) {
+            res.status(400).json({ error: err.message });
+        }
+    }
+
+    async createManyDetalleCompra(req: Request, res: Response): Promise<void> {
+        try {
+            const { detalles } = req.body;
+
+            if (!detalles || detalles.length === 0) {
+                res.status(400).json({ error: "Datos inválidos" });
+                return;
+            }
+
+            const result = await this.useCases.createMany.run(detalles);
+
+            res.status(201).json(result); 
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
