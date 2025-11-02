@@ -3,7 +3,6 @@ import type { DetalleCompraDTO } from "./DetalleCompraDTO";
 import { CompraId } from "../../Compra/domain/CompraId";
 import { ProductoCodigoBarra } from "../../Producto/domain/ProductoCodigoBarra";
 
-
 export class DetalleCompraGetOneById {
     constructor(private repository: DetalleCompraRepository) { }
 

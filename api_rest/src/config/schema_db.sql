@@ -94,7 +94,6 @@ create table ventas_detalles(
 	id_venta int not null,
     codigo_producto varchar(50) not null,
     cantidad float not null,
-    descuento float not null,
     precio_total decimal(10, 2) not null,
 	precio_unitario decimal(10, 2) not null,
     primary key(id_venta, codigo_producto),

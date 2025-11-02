@@ -53,8 +53,8 @@ export class DetalleCompraController {
             const { compraId } = req.params;
             const detalles = await this.useCases.getAllFromCompraById.run(Number(compraId));
 
-            if(!detalles) {
-                res.status(404).json({ error: "Detalles de compra no encontrados"});
+            if (!detalles) {
+                res.status(404).json({ error: "Detalles de compra no encontrados" });
                 return;
             }
 
@@ -69,8 +69,8 @@ export class DetalleCompraController {
             const { compraId, productoCodigoBarra } = req.params;
             const detalle = await this.useCases.getOneById.run(Number(compraId), productoCodigoBarra!);
 
-            if(!detalle) {
-                res.status(404).json({ error: "Detalle de compra no encontrado"});
+            if (!detalle) {
+                res.status(404).json({ error: "Detalle de compra no encontrado" });
                 return;
             }
 
