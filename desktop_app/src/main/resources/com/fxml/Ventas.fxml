@@ -49,14 +49,14 @@
                     <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="anchorPaneStat">
                         <VBox layoutX="49.0" layoutY="-35.0" prefHeight="169.0" prefWidth="197.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <AnchorPane prefHeight="150.0" prefWidth="193.0">
-                                <Text fx:id="txtIngresosTotales" layoutX="14.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ingresos Totales" AnchorPane.leftAnchor="14.0">
+                                <Text layoutX="14.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ingresos Totales" AnchorPane.leftAnchor="14.0">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Text>
                             </AnchorPane>
                             <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                <Text fx:id="txtIngresosTotalesPrecio" layoutX="38.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\$12345.00">
+                                <Text layoutX="38.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\$12345.00">
                                     <font>
                                         <Font name="System Bold" size="24.0" />
                                     </font>
@@ -67,14 +67,14 @@
                     <AnchorPane layoutX="11.0" layoutY="11.0" prefHeight="200.0" prefWidth="200.0" styleClass="anchorPaneStat" GridPane.columnIndex="1">
                         <VBox layoutX="-4.0" layoutY="-20.0" prefHeight="169.0" prefWidth="197.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <AnchorPane prefHeight="150.0" prefWidth="193.0">
-                                <Text fx:id="txtProductosActivos" layoutX="14.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ventas Diarias" AnchorPane.leftAnchor="14.0">
+                                <Text layoutX="14.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ventas Diarias" AnchorPane.leftAnchor="14.0">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>
                                 </Text>
                             </AnchorPane>
                             <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                                <Text fx:id="txtVentasDiadiasTotal" layoutX="82.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="70">
+                                <Text layoutX="82.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="70">
                                     <font>
                                         <Font name="System Bold" size="24.0" />
                                     </font>
@@ -133,7 +133,6 @@
                                         <TableColumn fx:id="columnUsuarioVenta" prefWidth="75.0" text="Usuario" />
                                         <TableColumn fx:id="columnPrecioTotalVenta" prefWidth="75.0" text="Precio Total" />
                                         <TableColumn fx:id="columnFechaCreacionVenta" prefWidth="75.0" text="Fecha de Creación" />
-                                        <TableColumn fx:id="columnDetalleVenta" prefWidth="75.0" text="Detalle" />
                                     </columns>
                                     <columnResizePolicy>
                                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

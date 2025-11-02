@@ -3,6 +3,7 @@ package com.controller.modal;
 import com.controller.add.AddCompraController;
 import com.model.Producto;
 import com.service.ProductoService;
+import com.util.ProductoSeleccionable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,14 +12,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ModalBuscarProducto {
     private final ProductoService productoService = new ProductoService();
-    private AddCompraController parentController;
+    private ProductoSeleccionable parentController;
     private final ObservableList<Producto> productos = FXCollections.observableArrayList();
 
     // TableView
@@ -47,7 +47,7 @@ public class ModalBuscarProducto {
     @FXML private MenuButton btnFiltrarProducto;
 
     // Helper Methods
-    public void setParentController(AddCompraController parentController) {
+    public void setParentController(ProductoSeleccionable parentController) {
         this.parentController = parentController;
     }
 

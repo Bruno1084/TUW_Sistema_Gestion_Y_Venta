@@ -1,45 +1,36 @@
 package com.model;
 
 public class VentaDetalle {
-    private String id;
-    private String codigoProducto;
+    private Venta venta;
+    private Producto producto;
     private int cantidad;
-    private float descuento;
     private float precioTotal;
     private float precioUnitario;
 
     public VentaDetalle() {}
 
-    public VentaDetalle(
-            String id,
-            String codigoProducto,
-            int cantidad,
-            float descuento,
-            float precioTotal,
-            float precioUnitario
-    ) {
-        this.id = id;
-        this.codigoProducto = codigoProducto;
+    public VentaDetalle(Venta venta, Producto producto, int cantidad, float precioTotal, float precioUnitario) {
+        this.venta = venta;
+        this.producto = producto;
         this.cantidad = cantidad;
-        this.descuento = descuento;
         this.precioTotal = precioTotal;
         this.precioUnitario = precioUnitario;
     }
 
-    public String getId() {
-        return id;
+    public Venta getVenta() {
+        return venta;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setVenta(Venta venta) {
+        this.venta = venta;
     }
 
-    public String getCodigoProducto() {
-        return codigoProducto;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setCodigoProducto(String codigoProducto) {
-        this.codigoProducto = codigoProducto;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
     public int getCantidad() {
@@ -48,14 +39,6 @@ public class VentaDetalle {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
-    }
-
-    public float getDescuento() {
-        return descuento;
-    }
-
-    public void setDescuento(float descuento) {
-        this.descuento = descuento;
     }
 
     public float getPrecioTotal() {

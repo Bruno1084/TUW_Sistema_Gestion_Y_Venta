@@ -2,11 +2,12 @@ package com.controller.add;
 
 import com.controller.ComprasController;
 import com.controller.SidebarController;
+import com.controller.VentasController;
 import com.controller.modal.ModalBuscarProducto;
 import com.model.*;
-import com.service.CompraDetalleService;
-import com.service.CompraService;
-import com.service.ProveedorService;
+import com.service.ClienteService;
+import com.service.VentaDetalleService;
+import com.service.VentaService;
 import com.util.ParentAware;
 import com.util.ProductoSeleccionable;
 import javafx.beans.property.SimpleFloatProperty;
@@ -37,48 +38,48 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class AddCompraController implements ParentAware, ProductoSeleccionable {
+public class AddVentaController implements ParentAware, ProductoSeleccionable {
     private SidebarController parentController;
-    private final CompraService compraService = new CompraService();
-    private final ProveedorService proveedorService = new ProveedorService();
-    private final CompraDetalleService compraDetalleService = new CompraDetalleService();
+    private final VentaService ventaService = new VentaService();
+    private final ClienteService clienteService = new ClienteService();
+    private final VentaDetalleService ventaDetalleService = new VentaDetalleService();
 
-    private final ObservableList<CompraDetalle> detalles = FXCollections.observableArrayList();
-    private Compra compra;
-    private Proveedor proveedorSeleccionado = new Proveedor();
+    private final ObservableList<VentaDetalle> detalles = FXCollections.observableArrayList();
+    private Venta venta;
+    private Cliente clienteSeleccionado;
 
     // Buttons
-    @FXML Button btnAniadirCompra;
-    @FXML Button btnCancelarCompra;
-    @FXML Button btnBuscarCompra;
+    @FXML Button btnAniadirVenta;
+    @FXML Button btnCancelarVenta;
+    @FXML Button btnBuscarVenta;
 
     // Text
     @FXML TextField inputTotalCompra;
-    @FXML TextField inputProveedorCompra;
+    @FXML TextField inputClienteCompra;
     @FXML TextField inputCodigoCompra;
 
-    // TableView
-    @FXML TableView<CompraDetalle> tableProductos;
-    @FXML TableColumn<CompraDetalle, String> columnCodigoProducto;
-    @FXML TableColumn<CompraDetalle, String> columnDescripcionProducto;
-    @FXML TableColumn<CompraDetalle, String> columnPrecioCompraProducto;
-    @FXML TableColumn<CompraDetalle, Integer> columnStockProducto;
-    @FXML TableColumn<CompraDetalle, String> columnRubroProducto;
-    @FXML TableColumn<CompraDetalle, String> columnMarcaProducto;
-    @FXML TableColumn<CompraDetalle, Integer> columnCantidadProducto;
-    @FXML TableColumn<CompraDetalle, Float> columnImporteProducto;
+    // TextView
+    @FXML TableView<VentaDetalle> tableProductos;
+    @FXML TableColumn<VentaDetalle, String> columnCodigoProducto;
+    @FXML TableColumn<VentaDetalle, String> columnDescripcionProducto;
+    @FXML TableColumn<VentaDetalle, String> columnPrecioCompraProducto;
+    @FXML TableColumn<VentaDetalle, Integer> columnStockProducto;
+    @FXML TableColumn<VentaDetalle, String> columnRubroProducto;
+    @FXML TableColumn<VentaDetalle, String> columnMarcaProducto;
+    @FXML TableColumn<VentaDetalle, Integer> columnCantidadProducto;
+    @FXML TableColumn<VentaDetalle, Float> columnImporteProducto;
 
     // Helper Methods
     public void setParentController(SidebarController parentController) {
         this.parentController = parentController;
     }
 
-    public void setCompra(Compra compra) {
-        this.compra = compra;
-        this.proveedorSeleccionado = compra.getProveedor();
+    public void setVenta(Venta venta) {
+        this.venta = venta;
+        this.clienteSeleccionado = venta.getCliente();
 
-        inputTotalCompra.setText(String.valueOf(compra.getPrecioTotal()));
-        inputProveedorCompra.setText(compra.getProveedor().getNombre());
+        inputTotalCompra.setText(String.valueOf(venta.getPrecioTotal()));
+        inputClienteCompra.setText(venta.getCliente().getNombre());
     }
 
     private <T> void setAutocompleteField(TextField inputField, Supplier<List<T>> dataSupplier, Function<T, String> nombreExtractor, Consumer<T> onSeleccionado) {
@@ -120,7 +121,7 @@ public class AddCompraController implements ParentAware, ProductoSeleccionable {
                     .anyMatch(detalle -> detalle.getProducto().getCodigoBarra().equals(producto.getCodigoBarra()));
 
             if (!yaExiste) {
-                CompraDetalle detalle = new CompraDetalle();
+                VentaDetalle detalle = new VentaDetalle();
                 detalle.setProducto(producto);
                 detalle.setCantidad(1);
                 detalle.setPrecioUnitario(producto.getPrecioCompra());
@@ -133,7 +134,7 @@ public class AddCompraController implements ParentAware, ProductoSeleccionable {
 
     private void actualizarTotal() {
         double total = detalles.stream()
-                .mapToDouble(CompraDetalle::getPrecioTotal)
+                .mapToDouble(VentaDetalle::getPrecioTotal)
                 .sum();
 
         inputTotalCompra.setText(String.format("$ %.2f", total));
@@ -142,16 +143,16 @@ public class AddCompraController implements ParentAware, ProductoSeleccionable {
     // FXML Methods
     @FXML private void initialize() {
         setAutocompleteField(
-                inputProveedorCompra,
+                inputClienteCompra,
                 () -> {
                     try {
-                        return Arrays.asList(proveedorService.getAllProveedor());
+                        return Arrays.asList(clienteService.getAllCliente());
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                 },
-                Proveedor::getNombre,
-                p -> { proveedorSeleccionado = p; if (compra != null) compra.setProveedor(p); }
+                Cliente::getNombre,
+                p -> { clienteSeleccionado = p; if (venta != null) venta.setCliente(p); }
         );
 
         tableProductos.setItems(detalles);
@@ -185,7 +186,7 @@ public class AddCompraController implements ParentAware, ProductoSeleccionable {
         );
         columnCantidadProducto.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         columnCantidadProducto.setOnEditCommit(event -> {
-            CompraDetalle detalle = event.getRowValue();
+            VentaDetalle detalle = event.getRowValue();
             detalle.setCantidad(event.getNewValue());
             detalle.setPrecioTotal(detalle.getCantidad() * detalle.getPrecioUnitario());
             tableProductos.refresh();
@@ -223,36 +224,36 @@ public class AddCompraController implements ParentAware, ProductoSeleccionable {
 
     @FXML private void handleAniadirCompra() {
         try {
-            if(!inputProveedorCompra.getText().isEmpty() && !inputProveedorCompra.getText().equals(proveedorSeleccionado.getNombre())) {
-                proveedorSeleccionado.setNombre(inputProveedorCompra.getText());
-                proveedorSeleccionado = proveedorService.createProveedor(proveedorSeleccionado);
+            if(!inputClienteCompra.getText().isEmpty() && !inputClienteCompra.getText().equals(clienteSeleccionado.getNombre())) {
+                clienteSeleccionado.setNombre(inputClienteCompra.getText());
+                clienteSeleccionado = clienteService.createCliente(clienteSeleccionado);
             }
 
-            if (proveedorSeleccionado == null) {
-                System.out.println("Debe seleccionar un proveedor válido");
+            if (clienteSeleccionado == null) {
+                System.out.println("Debe seleccionar un cliente válido");
                 return;
             }
 
             float total = Float.parseFloat(inputTotalCompra.getText().replace("$", "").replace(",", "."));
-            Compra nuevaCompra = new Compra(
+            Venta nuevaVenta = new Venta(
                     0,
                     total,
                     new Date(),
-                    proveedorSeleccionado,
+                    clienteSeleccionado,
                     SessionManager.getInstance().getCurrentUsuario()
             );
 
             // TODO: Modificar el endppoint para que reciba una lista
-            compraService.createCompra(nuevaCompra);
-            for (CompraDetalle detalle : detalles) {
-                compraDetalleService.createCompraDetalle(detalle);
+            ventaService.createVenta(nuevaVenta);
+            for (VentaDetalle detalle : detalles) {
+                ventaDetalleService.createVentaDetalle(detalle);
             }
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/Compras.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/Ventas.fxml"));
             Parent root = fxmlLoader.load();
 
-            ComprasController comprasController = fxmlLoader.getController();
-            comprasController.setParentController(parentController);
+            VentasController ventasController = fxmlLoader.getController();
+            ventasController.setParentController(parentController);
 
             parentController.getMainBorderPane().setCenter(root);
         } catch (Exception exception) {

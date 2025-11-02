@@ -61,7 +61,7 @@ public class ComprasController implements ParentAware {
         }
     }
 
-    private void cargarDetalleCliente(Compra compra) {
+    private void cargarDetalleProveedor(Compra compra) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/detail/DetailCompra.fxml"));
             Parent root = fxmlLoader.load();
@@ -91,7 +91,7 @@ public class ComprasController implements ParentAware {
         tableCompras.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
                     if (newSelection != null)
-                        cargarDetalleCliente(newSelection);
+                        cargarDetalleProveedor(newSelection);
                 }
         );
 

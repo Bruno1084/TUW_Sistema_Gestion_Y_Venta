@@ -3,27 +3,27 @@ package com.model;
 import java.util.Date;
 
 public class Venta {
-    private String id;
+    private int id;
     private float precioTotal;
     private Date fechaCreacion;
-    private int idCliente;
-    private int idEmpleado;
+    private Cliente cliente;
+    private Usuario usuario;
 
     public Venta() {}
 
-    public Venta(String id, float precioTotal, Date fechaCreacion, int idCliente, int idEmpleado) {
+    public Venta(int id, float precioTotal, Date fechaCreacion, Cliente cliente, Usuario usuario) {
         this.id = id;
         this.precioTotal = precioTotal;
         this.fechaCreacion = fechaCreacion;
-        this.idCliente = idCliente;
-        this.idEmpleado = idEmpleado;
+        this.cliente = cliente;
+        this.usuario = usuario;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -43,19 +43,19 @@ public class Venta {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public int getIdCliente() {
-        return idCliente;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
-    public int getIdEmpleado() {
-        return idEmpleado;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setIdEmpleado(int idEmpleado) {
-        this.idEmpleado = idEmpleado;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }
