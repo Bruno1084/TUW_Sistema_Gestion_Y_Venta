@@ -242,11 +242,8 @@ public class AddCompraController implements ParentAware, ProductoSeleccionable {
                     SessionManager.getInstance().getCurrentUsuario()
             );
 
-            // TODO: Modificar el endppoint para que reciba una lista
             compraService.createCompra(nuevaCompra);
-            for (CompraDetalle detalle : detalles) {
-                compraDetalleService.createCompraDetalle(detalle);
-            }
+            compraDetalleService.createManyCompraDetalle(detalles);
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/Compras.fxml"));
             Parent root = fxmlLoader.load();

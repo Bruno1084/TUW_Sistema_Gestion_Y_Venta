@@ -1,11 +1,11 @@
+import type { DetalleVentaRepository } from "../domain/DetalleVentaRepository";
+import type { DetalleVentaDTO } from "./DetalleVentaDTO";
 import { ProductoCodigoBarra } from "../../Producto/domain/ProductoCodigoBarra";
 import { VentaId } from "../../Venta/domain/VentaId";
 import { DetalleVenta } from "../domain/DetalleVenta";
 import { DetalleVentaCantidad } from "../domain/DetalleVentaCantidad";
 import { DetalleVentaPrecioTotal } from "../domain/DetalleVentaPrecioTotal";
-import { DetalleVentaPrecioUnitario } from "../domain/DetalleVentaprecioUnitario";
-import type { DetalleVentaRepository } from "../domain/DetalleVentaRepository";
-import type { DetalleVentaDTO } from "./DetalleVentaDTO";
+import { DetalleVentaPrecioUnitario } from "../domain/DetalleVentaPrecioUnitario";
 
 export class DetalleVentaCreate {
     constructor(private repository: DetalleVentaRepository) { }

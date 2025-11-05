@@ -2,7 +2,7 @@ import type { ProductoCodigoBarra } from "../../Producto/domain/ProductoCodigoBa
 import type { VentaId } from "../../Venta/domain/VentaId";
 import type { DetalleVentaCantidad } from "./DetalleVentaCantidad";
 import type { DetalleVentaPrecioTotal } from "./DetalleVentaPrecioTotal";
-import type { DetalleVentaPrecioUnitario } from "./DetalleVentaprecioUnitario";
+import type { DetalleVentaPrecioUnitario } from "./DetalleVentaPrecioUnitario";
 
 export class DetalleVenta {
     ventaId: VentaId;

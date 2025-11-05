@@ -243,11 +243,8 @@ public class AddVentaController implements ParentAware, ProductoSeleccionable {
                     SessionManager.getInstance().getCurrentUsuario()
             );
 
-            // TODO: Modificar el endppoint para que reciba una lista
             ventaService.createVenta(nuevaVenta);
-            for (VentaDetalle detalle : detalles) {
-                ventaDetalleService.createVentaDetalle(detalle);
-            }
+            ventaDetalleService.createManyVentaDetalle(detalles);
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/Ventas.fxml"));
             Parent root = fxmlLoader.load();

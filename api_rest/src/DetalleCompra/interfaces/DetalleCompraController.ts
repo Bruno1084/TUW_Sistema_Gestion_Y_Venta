@@ -4,6 +4,7 @@ import type { DetalleCompraGetAll } from "../application/DetalleCompraGetAll";
 import type { DetalleCompraGetAllFromCompraById } from "../application/DetalleCompraGetAllFromCompraById";
 import type { DetalleCompraGetOneById } from "../application/DetalleCompraGetOneById";
 import type { DetalleCompraCreateMany } from "../application/DetalleCompraCreateMany";
+import type { DetalleCompraDTO } from "../application/DetalleCompraDTO";
 
 type DetalleCompraUseCases = {
     create: DetalleCompraCreate;
@@ -42,16 +43,16 @@ export class DetalleCompraController {
 
     async createManyDetalleCompra(req: Request, res: Response): Promise<void> {
         try {
-            const { detalles } = req.body;
+            const detalles: DetalleCompraDTO[] = req.body;
 
-            if (!detalles || detalles.length === 0) {
-                res.status(400).json({ error: "Datos inválidos" });
+            if (!Array.isArray(detalles) || detalles.length === 0) {
+                res.status(400).json({ error: "Debe enviar un array de detalles válido" });
                 return;
             }
 
             const result = await this.useCases.createMany.run(detalles);
+            res.status(201).json(result);
 
-            res.status(201).json(result); 
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

@@ -6,6 +6,7 @@ import { VentaGetAll } from "./application/VentaGetAll";
 import { VentaGetOneById } from "./application/VentaGetOneById";
 import { ventaRouter } from "./interfaces/VentaRouter";
 import { VentaController } from "./interfaces/VentaController";
+import { VentaGetAllWithDetail } from "./application/VentaGetAllWithDetail";
 
 export function initVentaModule(pool: Pool): Router {
     const repo = new MySQLVentaRepository(pool);
@@ -13,6 +14,7 @@ export function initVentaModule(pool: Pool): Router {
     const useCases = {
         create: new VentaCreate(repo),
         getAll: new VentaGetAll(repo),
+        getAllWithDetail: new VentaGetAllWithDetail(repo),
         getOneById: new VentaGetOneById(repo),
     };
 

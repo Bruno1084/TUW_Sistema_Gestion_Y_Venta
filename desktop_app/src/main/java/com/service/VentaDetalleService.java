@@ -7,6 +7,9 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class VentaDetalleService {
     private static final String BASE_URL = "http://localhost:8080/api/detalleVentas";
@@ -29,6 +32,28 @@ public class VentaDetalleService {
             return mapper.readValue(response.body(), VentaDetalle.class);
         } else {
             throw new RuntimeException("Error al crear detalle de venta: " + response.body());
+        }
+    }
+
+    public VentaDetalle[] createManyVentaDetalle(List<VentaDetalle> detalles) throws Exception {
+        Map<String, Object> body = new HashMap<>();
+        body.put("detalles", detalles);
+
+        String requestBody = mapper.writeValueAsString(body);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/createMany"))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() == 201) {
+            return mapper.readValue(response.body(), VentaDetalle[].class);
+        } else {
+            throw new RuntimeException("Error al crear detalles de venta: " + response.body());
         }
     }
 

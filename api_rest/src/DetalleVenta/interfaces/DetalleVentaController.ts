@@ -4,6 +4,8 @@ import type { DetalleVentaGetAll } from "../application/DetalleVentaGetAll";
 import type { DetalleVentaGetAllFromVentaById } from "../application/DetalleVentaGetAllFromVentaId";
 import type { DetalleVentaGetOneById } from "../application/DetalleVentaGetOneById";
 import type { DetalleVentaCreateMany } from "../application/DetalleVentaCreateMany";
+import type { DetalleVentaDTO } from "../application/DetalleVentaDTO";
+import { DetalleVentaMapper } from "../application/DetalleVentaMapper";
 
 type DetalleVentaUseCases = {
     create: DetalleVentaCreate;
@@ -42,16 +44,16 @@ export class DetalleVentaController {
 
     async createManyDetalleVenta(req: Request, res: Response): Promise<void> {
         try {
-            const { detalles } = req.body;
+            const detalles: DetalleVentaDTO[] = req.body;
 
-            if (!detalles || detalles.length === 0) {
-                res.status(400).json({ error: "Datos inválidos" });
+            if (!Array.isArray(detalles) || detalles.length === 0) {
+                res.status(400).json({ error: "Debe enviar un array de detalles válido" });
                 return;
             }
 
             const result = await this.useCases.createMany.run(detalles);
-
             res.status(201).json(result);
+
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

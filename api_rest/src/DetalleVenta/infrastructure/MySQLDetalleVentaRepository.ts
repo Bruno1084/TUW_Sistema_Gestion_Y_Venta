@@ -41,7 +41,7 @@ export class MySQLDetalleVentaRepository implements DetalleVentaRepository {
         const connection = await this.pool.getConnection();
         try {
             const query = `
-                INSERT INTO ventas_detalles (id_venta, codigo_producto, cantidad, precio_total, precio_unitario)
+                INSERT INTO ventas_detalles(id_venta, codigo_producto, cantidad, precio_total, precio_unitario)
                 VALUES ?
             `;
 
@@ -73,7 +73,7 @@ export class MySQLDetalleVentaRepository implements DetalleVentaRepository {
 
         return rows.map(
             (row) => ({
-                ventaId: row!.id_compra,
+                ventaId: row!.id_venta,
                 productoCodigoBarra: row!.codigo_producto,
                 cantidad: row!.cantidad,
                 precioTotal: row!.precio_total,
@@ -94,7 +94,7 @@ export class MySQLDetalleVentaRepository implements DetalleVentaRepository {
 
         return rows.map(
             (row) => ({
-                ventaId: row!.id_compra,
+                ventaId: row!.id_venta,
                 productoCodigoBarra: row!.codigo_producto,
                 cantidad: row!.cantidad,
                 precioTotal: row!.precio_total,
@@ -117,7 +117,7 @@ export class MySQLDetalleVentaRepository implements DetalleVentaRepository {
 
         const row = rows[0];
         return {
-            ventaId: row!.id_compra,
+            ventaId: row!.id_venta,
             productoCodigoBarra: row!.codigo_producto,
             cantidad: row!.cantidad,
             precioTotal: row!.precio_total,
