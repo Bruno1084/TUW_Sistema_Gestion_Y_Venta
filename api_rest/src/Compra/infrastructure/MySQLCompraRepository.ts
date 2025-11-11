@@ -1,6 +1,7 @@
 import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise"
 import type { CompraRepository } from "../domain/CompraRepository"
-import type { CompraDetailDTO, CompraSimpleDTO } from "../application/CompraDTO";
+import type { CompraDetailDTO, CompraDTO } from "../application/CompraDTO";
+import type { DetalleCompra } from "../../DetalleCompra/domain/DetalleCompra";
 import { Compra } from "../domain/Compra";
 import { CompraId } from "../domain/CompraId";
 
@@ -19,58 +20,63 @@ export class MySQLCompraRepository implements CompraRepository {
         this.pool = pool;
     }
 
-    async create(compra: Compra): Promise<CompraDetailDTO> {
-        const query = `
+    async create(compra: Compra, detalles: DetalleCompra[]): Promise<CompraDetailDTO> {
+        const connection = await this.pool.getConnection();
+        let compraId = 0;
+        try {
+
+            const queryCompra = `
             INSERT INTO compras(id_proveedor, id_usuario, precio_total, fecha_creacion)
             VALUES (?, ?, ?, ?)
-        `;
+            `;
 
-        const [result] = await this.pool.query<ResultSetHeader>(query, [
-            compra.proveedorId.value,
-            compra.usuarioId.value,
-            compra.precioTotal.value,
-            compra.fechaCreacion.value
-        ]);
+            const queryDetalle = `
+            INSERT INTO compras_detalles (id_compra, codigo_producto, cantidad, precio_total, precio_unitario)
+            VALUES ?
+            `;
 
-        const compraId = result.insertId;
+            await connection.beginTransaction();
+            const [result] = await connection.query<ResultSetHeader>(queryCompra, [
+                compra.proveedorId.value,
+                compra.usuarioId.value,
+                compra.precioTotal.value,
+                compra.fechaCreacion.value
+            ]);
+
+            compraId = result.insertId;
+            const values = detalles.map(d => [
+                compraId,
+                d.productoCodigoBarra.value,
+                d.cantidad.value,
+                d.precioTotal.value,
+                d.precioUnitario.value,
+            ]);
+
+            await connection.query<ResultSetHeader>(queryDetalle, [values]);
+            await connection.commit();
+        } catch (err: any) {
+            await connection.rollback();
+            throw err;
+        } finally {
+            connection.release();
+        }
+
         return this.getOneByIdWithDetail(new CompraId(compraId)) as Promise<CompraDetailDTO>;
     }
 
-    async getAll(): Promise<CompraSimpleDTO[]> {
-        const query = `
-            SELECT * FROM compras
-        `;
-
-        const [rows] = await this.pool.query<(MySQLCompra & RowDataPacket)[]>(query);
-
-        return rows.map(
-            (row) => ({
-                id: row!.id,
-                precioTotal: row!.precio_total,
-                fechaCreacion: row!.fecha_creacion,
-                proveedorId: row!.id_proveedor,
-                usuarioId: row!.id_usuario
-            })
-        );
-    }
-
-    async getAllWithDetail(): Promise<CompraDetailDTO[]> {
+    async getAll(): Promise<CompraDTO[]> {
         const query = `
             SELECT
             c.id,
             c.precio_total,
             c.fecha_creacion,
-            p.id AS proveedor_id,
+            c.id_proveedor,
+            c.id_usuario,
             p.nombre AS proveedor_nombre,
-            p.direccion AS proveedor_direccion,
-            p.telefono AS proveedor_telefono,
-            p.fecha_creacion AS proveedor_fecha_creacion,
-            p.fecha_modificacion AS proveedor_fecha_modificacion,
-            u.id AS usuario_id,
             u.nombre AS usuario_nombre
             FROM compras c
-            JOIN proveedores p ON c.id_proveedor = p.id
-            JOIN usuarios u ON c.id_usuario = u.id
+            JOIN proveedores p ON p.id = c.id_proveedor
+            JOIN usuarios u ON u.id = c.id_usuario
         `;
 
         const [rows] = await this.pool.query<(MySQLCompra & RowDataPacket)[]>(query);
@@ -81,81 +87,83 @@ export class MySQLCompraRepository implements CompraRepository {
                 precioTotal: row!.precio_total,
                 fechaCreacion: row!.fecha_creacion,
                 proveedor: {
-                    id: row!.proveedor_id,
-                    nombre: row!.proveedor_nombre,
-                    direccion: row!.proveedor_direccion,
-                    telefono: row!.proveedor_telefono,
-                    fechaCreacion: row!.proveedor_fecha_creacion,
-                    fechaModificacion: row!.proveedor_fecha_modificacion
+                    id: row!.id_proveedor,
+                    nombre: row!.proveedor_nombre
                 },
                 usuario: {
-                    id: row!.usuario_id,
-                    nombre: row!.usuario_nombre,
+                    id: row!.id_usuario,
+                    nombre: row!.usuario_nombre
                 }
             })
-        )
-    }
-
-    async getOneById(compraId: CompraId): Promise<CompraSimpleDTO | null> {
-        const query = `SELECT * FROM compras WHERE id = ?`;
-
-        const [rows] = await this.pool.query<(MySQLCompra & RowDataPacket)[]>(query, [compraId.value]);
-
-        if (rows.length === 0) {
-            return null;
-        }
-
-        const row = rows[0];
-        return {
-            id: row!.id,
-            precioTotal: row!.precio_total,
-            fechaCreacion: row!.fecha_creacion,
-            proveedorId: row!.id_proveedor,
-            usuarioId: row!.id_usuario
-        }
+        );
     }
 
     async getOneByIdWithDetail(compraId: CompraId): Promise<CompraDetailDTO | null> {
         const query = `
-            SELECT
-            c.id,
-            c.precio_total,
-            c.fecha_creacion,
+        SELECT
+            c.id AS compra_id,
+            c.precio_total AS compra_precio_total,
+            c.fecha_creacion AS compra_fecha_creacion,
+            
             p.id AS proveedor_id,
             p.nombre AS proveedor_nombre,
-            p.direccion AS proveedor_direccion,
-            p.telefono AS proveedor_telefono,
-            p.fecha_creacion AS proveedor_fecha_creacion,
-            p.fecha_modificacion AS proveedor_fecha_modificacion,
+            
             u.id AS usuario_id,
-            u.nombre AS usuario_nombre
-            FROM compras c
-            JOIN proveedores p ON c.id_proveedor = p.id
-            JOIN usuarios u ON c.id_usuario = u.id
-            WHERE c.id = ?
-        `;
+            u.nombre AS usuario_nombre,
 
-        const [rows] = await this.pool.query<(MySQLCompra & RowDataPacket)[]>(query, [compraId.value]);
+            d.cantidad AS detalle_cantidad,
+            d.precio_unitario AS detalle_precio_unitario,
+            d.precio_total AS detalle_precio_total,
+
+            pr.codigo_barra AS producto_codigo_barra,
+            pr.descripcion AS producto_descripcion,
+            pr.precio_compra AS producto_precio_compra,
+            pr.precio_venta AS producto_precio_venta,
+            pr.stock AS producto_stock,
+            pr.img_uri AS producto_img_uri
+
+        FROM compras c
+        JOIN proveedores p ON c.id_proveedor = p.id
+        JOIN usuarios u ON c.id_usuario = u.id
+        JOIN compras_detalles d ON c.id = d.id_compra
+        JOIN productos pr ON d.codigo_producto = pr.codigo_barra
+        WHERE c.id = ?
+    `;
+
+        const [rows] = await this.pool.query<RowDataPacket[]>(query, [compraId.value]);
 
         if (rows.length === 0) return null;
 
-        const row = rows[0];
-        return {
-            id: row!.id,
-            precioTotal: row!.precio_total,
-            fechaCreacion: row!.fecha_creacion,
+        const first = rows[0];
+        const compra: CompraDetailDTO = {
+            id: first!.compra_id,
+            precioTotal: first!.compra_precio_total,
+            fechaCreacion: first!.compra_fecha_creacion,
             proveedor: {
-                id: row!.proveedor_id,
-                nombre: row!.proveedor_nombre,
-                direccion: row!.proveedor_direccion,
-                telefono: row!.proveedor_telefono,
-                fechaCreacion: row!.proveedor_fecha_creacion,
-                fechaModificacion: row!.proveedor_fecha_modificacion
+                id: first!.proveedor_id,
+                nombre: first!.proveedor_nombre,
             },
             usuario: {
-                id: row!.usuario_id,
-                nombre: row!.usuario_nombre,
-            }
+                id: first!.usuario_id,
+                nombre: first!.usuario_nombre,
+            },
+            detalles: rows.map((r) => ({
+                cantidad: r.detalle_cantidad,
+                precioUnitario: r.detalle_precio_unitario,
+                precioTotal: r.detalle_precio_total,
+                producto: {
+                    codigoBarra: r.producto_codigo_barra,
+                    descripcion: r.producto_descripcion,
+                    precioCompra: r.producto_precio_compra,
+                    precioVenta: r.producto_precio_venta,
+                    stock: r.producto_stock,
+                    imgUri: r.producto_img_uri,
+                },
+            })),
         };
+
+        return compra;
     }
+
+
 }

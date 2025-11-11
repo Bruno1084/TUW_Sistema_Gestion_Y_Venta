@@ -1,14 +1,25 @@
+import type { Pool } from "mysql2/promise";
 import { Router } from "express";
 import { CompraController } from "./CompraController";
+import { MySQLCompraRepository } from "../infrastructure/MySQLCompraRepository";
+import { CompraCreate } from "../application/CompraCreate";
+import { CompraGetAll } from "../application/CompraGetAll";
+import { CompraGetOneByIdWithDetail } from "../application/CompraGetOneByIdWithDetail";
 
-export function compraRouter(compraController: CompraController): Router {
+export function compraRouter(pool: Pool): Router {
+    const repo = new MySQLCompraRepository(pool);
+    const useCases = {
+        create: new CompraCreate(repo),
+        getAll: new CompraGetAll(repo),
+        getOneByIdWithDetail: new CompraGetOneByIdWithDetail(repo)
+    };
+
+    const controller = new CompraController(useCases);
     const router = Router();
 
-    router.post('/create', compraController.createCompra.bind(compraController));
-    router.get('/getAll', compraController.getAllCompra.bind(compraController));
-    router.get('/getAllWithDetail', compraController.getAllWithDetail.bind(compraController));
-    router.get('/getOneById/:id', compraController.getOneByIdCompra.bind(compraController));
-    router.get('/getOneByIdWithDetail/:id', compraController.getOneByIdWithDetailCompra.bind(compraController));
+    router.post('/compras', controller.create.bind(controller));
+    router.get('/compras', controller.getAll.bind(controller));
+    router.get('/compras/:id', controller.getOneByIdWithDetail.bind(controller));
 
     return router;
 }

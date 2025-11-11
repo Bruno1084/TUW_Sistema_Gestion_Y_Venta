@@ -5,7 +5,6 @@ import { initEmpleadoModule } from "./Empleado/initEmpleadoModule";
 import { initMarcaModule } from "./Marca/initMarcaModule";
 import { initProductoModule } from "./Producto/initProductoModule";
 import { initProveedorModule } from "./Proveedor/initProveedorModule";
-import { initCompraModule } from "./Compra/initCompraModule";
 import { initRubroModule } from "./Rubro/initRubroModule";
 import { MySQLProveedorRepository } from "./Proveedor/infrastructure/MySQLProveedorRepository";
 import { MySQLMarcaRepository } from "./Marca/infrastructure/MySQLMarcaRepository";
@@ -13,8 +12,7 @@ import { MySQLRubroRepository } from "./Rubro/infrastructure/MySQLRubroRepositor
 import { initVentaModule } from "./Venta/initVentaModule";
 import { initUsuarioModule } from "./Usuario/initUsuarioModule";
 import { authMiddleware } from "./middlewares/authMiddleware";
-import { initDetalleCompraModule } from "./DetalleCompra/initDetalleCompraModule";
-import { initDetalleVentaModule } from "./DetalleVenta/initDetalleVentaModule";
+import { compraRouter } from "./Compra/interfaces/CompraRouter";
 
 const app = express();
 const pool = createPoolMySQL();
@@ -37,10 +35,8 @@ app.use('/api/marcas', initMarcaModule(pool));
 app.use('/api/proveedores', initProveedorModule(pool));
 app.use('/api/rubros', initRubroModule(pool));
 app.use('/api/productos', initProductoModule(pool, proveedorRepo, marcaRepo, rubroRepo));
-app.use('/api/compras', initCompraModule(pool));
+app.use('/api', compraRouter(pool));
 app.use('/api/ventas', initVentaModule(pool));
-app.use('/api/detalleCompras', initDetalleCompraModule(pool));
-app.use('/api/detalleVentas', initDetalleVentaModule(pool));
 
 // Ping test
 app.get("/api/ping", (req: Request, res: Response) => {

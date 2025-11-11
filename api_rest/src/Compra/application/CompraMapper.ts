@@ -1,36 +1,51 @@
-import type { CompraDetailDTO, CompraSimpleDTO } from "./CompraDTO";
+import type { ProveedorNombre } from "../../Proveedor/domain/ProveedorNombre";
+import type { UsuarioNombre } from "../../Usuario/domain/UsuarioNombre";
 import type { Compra } from "../domain/Compra";
-import type { Proveedor } from "../../Proveedor/domain/Proveedor";
-import type { Usuario } from "../../Usuario/domain/Usuario";
+import type { CompraDetailDTO, CompraDetalleDTO, CompraDTO } from "./CompraDTO";
 
 export class CompraMapper {
-    static toDetailDTO(compra: Compra, proveedor: Proveedor, usuario: Usuario): CompraDetailDTO {
+    static toDTO(compra:Compra, proveedor: ProveedorNombre, usuario: UsuarioNombre): CompraDTO {
         return {
             id: compra.id.value,
             precioTotal: compra.precioTotal.value,
             fechaCreacion: compra.fechaCreacion.value,
             proveedor: {
                 id: compra.proveedorId.value,
-                nombre: proveedor.nombre.value,
-                direccion: proveedor.direccion.value,
-                telefono: proveedor.telefono.value,
-                fechaCreacion: proveedor.fechaCreacion.value,
-                fechaModificacion: proveedor.fechaModificacion.value
+                nombre: proveedor.value
             },
             usuario: {
                 id: compra.usuarioId.value,
-                nombre: usuario.nombre.value
+                nombre: usuario.value
             }
-        }
+        };
     }
 
-    static toSimpleDTO(compra: Compra): CompraSimpleDTO {
+    static toDetailDTO(compra: Compra, proveedor: ProveedorNombre, usuario: UsuarioNombre, detalles: CompraDetalleDTO[]): CompraDetailDTO {
         return {
             id: compra.id.value,
             precioTotal: compra.precioTotal.value,
             fechaCreacion: compra.fechaCreacion.value,
-            proveedorId: compra.proveedorId.value,
-            usuarioId: compra.usuarioId.value
-        }
+            proveedor: {
+                id: compra.proveedorId.value,
+                nombre: proveedor.value,
+            },
+            usuario: {
+                id: compra.usuarioId.value,
+                nombre: usuario.value
+            },
+            detalles: detalles.map(detalle => ({
+                cantidad: detalle.cantidad,
+                precioUnitario: detalle.precioUnitario,
+                precioTotal: detalle.precioTotal,
+                producto: {
+                    codigoBarra: detalle.producto.codigoBarra,
+                    descripcion: detalle.producto.descripcion,
+                    precioCompra: detalle.producto.precioCompra,
+                    precioVenta: detalle.producto.precioVenta,
+                    stock: detalle.producto.stock,
+                    imgUri: detalle.producto.imgUri
+                }
+            }))
+        };
     }
 }

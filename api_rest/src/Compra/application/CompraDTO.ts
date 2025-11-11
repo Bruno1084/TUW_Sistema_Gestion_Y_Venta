@@ -5,21 +5,38 @@ export interface CompraDetailDTO {
     proveedor: {
         id: number;
         nombre: string;
-        direccion: string;
-        telefono: string;
-        fechaCreacion: Date;
-        fechaModificacion: Date;
     };
     usuario: {
         id: number;
         nombre: string;
-    }
+    },
+    detalles: CompraDetalleDTO[];
 }
 
-export interface CompraSimpleDTO {
+export interface CompraDTO {
     id: number;
     precioTotal: number;
     fechaCreacion: Date;
-    proveedorId: number;
-    usuarioId: number;
+    proveedor: {
+        id: number;
+        nombre: string;
+    };
+    usuario: {
+        id: number;
+        nombre: string;
+    };
+}
+
+export interface CompraDetalleDTO {
+    cantidad: number;
+    precioUnitario: number;
+    precioTotal: number;
+    producto: {
+        codigoBarra: string;
+        descripcion: string;
+        precioCompra: number;
+        precioVenta: number;
+        stock: number;
+        imgUri: string;
+    };
 }
