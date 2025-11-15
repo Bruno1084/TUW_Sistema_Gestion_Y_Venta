@@ -37,8 +37,18 @@ export interface VentaDetalleDTO {
         precioCompra: number;
         precioVenta: number;
         stock: number;
-        rubro: string;
-        marca: string;
+        rubro: {
+            id: number;
+            nombre: string;
+            fechaCreacion: Date;
+            fechaModificacion: Date;
+        };
+        marca: {
+            id: number;
+            nombre: string;
+            fechaCreacion: Date;
+            fechaModificacion: Date;
+        };
         imgUri: string;
     };
 }

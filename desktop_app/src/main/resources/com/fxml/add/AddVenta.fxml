@@ -17,7 +17,7 @@
     <ScrollPane fitToWidth="true" prefHeight="560.0" prefWidth="885.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <VBox id="vBoxMainContainer">
             <AnchorPane prefHeight="60.0">
-                <Text layoutX="14.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Compra detalle" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="10.0">
+                <Text layoutX="14.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Venta detalle" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="10.0">
                     <font>
                         <Font name="System Bold" size="22.0" />
                     </font>
@@ -51,12 +51,12 @@
                                 </Text>
                             </HBox>
                             <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="90.0" prefHeight="40.0" spacing="10.0">
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Proveedor">
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cliente">
                                     <font>
                                         <Font size="13.0" />
                                     </font>
                                 </Text>
-                                <TextField fx:id="inputClienteCompra" />
+                                <TextField fx:id="inputClienteVenta" />
                             </HBox>
                             <padding>
                                 <Insets bottom="8.0" />
@@ -79,7 +79,7 @@
                                             <Font name="System Bold" size="12.0" />
                                         </font>
                                     </Text>
-                                    <TextField fx:id="inputCodigoCompra" prefHeight="25.0" prefWidth="166.0" />
+                                    <TextField fx:id="inputCodigoVenta" prefHeight="25.0" prefWidth="166.0" />
                                     <Button fx:id="btnBuscarVenta" mnemonicParsing="false" onAction="#handleBtnBuscarProducto">
                                         <font>
                                             <Font name="System Bold" size="15.0" />
@@ -95,7 +95,7 @@
                                             <Font name="System Bold" size="12.0" />
                                         </font>
                                     </Text>
-                                    <TextField fx:id="inputTotalCompra" />
+                                    <TextField fx:id="inputTotalVenta" />
                                 </HBox>
                             </AnchorPane>
                             <AnchorPane VBox.vgrow="ALWAYS">

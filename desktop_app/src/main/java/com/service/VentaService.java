@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.model.*;
 import com.model.dto.VentaDetailResponseDTO;
+import com.model.dto.VentaDetalleDTO;
 import com.model.dto.VentaDetalleResponseDTO;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -30,8 +31,10 @@ public class VentaService {
         return  requestMap;
     }
 
-    public Venta create(Venta venta) throws Exception {
+    public VentaDetailResponseDTO create(Venta venta, List<VentaDetalleDTO> detalles) throws Exception {
         Map<String, Object> requestMap = writePlaneMap(venta);
+        requestMap.put("detalles", detalles);
+
         String requestBody = mapper.writeValueAsString(requestMap);
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -44,7 +47,7 @@ public class VentaService {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() == 201) {
-            return mapper.readValue(response.body(), Venta.class);
+            return mapper.readValue(response.body(), VentaDetailResponseDTO.class);
         } else {
             throw new RuntimeException("Error al crear venta: " + response.body());
         }

@@ -24,7 +24,7 @@ create table clientes(
 	id int not null auto_increment,
     nombre varchar(80) not null,
     direccion varchar(255),
-	telefono varchar(15) not null,
+	telefono varchar(15),
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	es_activo bool not null default true,
