@@ -1,45 +1,19 @@
-package com.model;
+package com.model.dto;
 
-public class CompraDetalle {
-    private Compra compra;
-    private Producto producto;
+import com.model.Producto;
+
+public class CompraDetalleResponseDTO {
     private int cantidad;
     private float precioTotal;
     private float precioUnitario;
+    private Producto producto;
 
-    public CompraDetalle() {}
+    public CompraDetalleResponseDTO() { }
 
-    public CompraDetalle(
-            Compra compra,
-            Producto producto,
-            int cantidad,
-            float precioTotal,
-            float precioUnitario
-    ) {
-        this.compra = compra;
-        this.producto = producto;
+    public CompraDetalleResponseDTO(int cantidad, float precioTotal, float precioUnitario, Producto producto) {
         this.cantidad = cantidad;
         this.precioTotal = precioTotal;
         this.precioUnitario = precioUnitario;
-    }
-
-    public void recalcularTotal() {
-        this.precioTotal = this.cantidad * this.precioUnitario;
-    }
-
-    public Compra getCompra() {
-        return compra;
-    }
-
-    public void setCompra(Compra compra) {
-        this.compra = compra;
-    }
-
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public void setProducto(Producto producto) {
         this.producto = producto;
     }
 
@@ -65,5 +39,13 @@ public class CompraDetalle {
 
     public void setPrecioUnitario(float precioUnitario) {
         this.precioUnitario = precioUnitario;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 }

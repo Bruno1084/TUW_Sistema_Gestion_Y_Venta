@@ -1,6 +1,5 @@
 package com.controller.modal;
 
-import com.controller.add.AddCompraController;
 import com.model.Producto;
 import com.service.ProductoService;
 import com.util.ProductoSeleccionable;

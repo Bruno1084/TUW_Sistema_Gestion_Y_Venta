@@ -49,7 +49,7 @@ public class ComprasController implements ParentAware {
 
     private void cargarCompras() {
         try {
-            Compra[] lista = compraService.getAllWithDetailCompra();
+            Compra[] lista = compraService.getAll();
             compras.clear();
             compras.addAll(Arrays.asList(lista));
         } catch (Exception e) {
@@ -61,7 +61,7 @@ public class ComprasController implements ParentAware {
         }
     }
 
-    private void cargarDetalleProveedor(Compra compra) {
+    private void cargarDetalleCompra(Compra compra) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/detail/DetailCompra.fxml"));
             Parent root = fxmlLoader.load();
@@ -91,7 +91,7 @@ public class ComprasController implements ParentAware {
         tableCompras.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
                     if (newSelection != null)
-                        cargarDetalleProveedor(newSelection);
+                        cargarDetalleCompra(newSelection);
                 }
         );
 

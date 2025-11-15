@@ -7,9 +7,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class VentaDetalleService {
     private static final String BASE_URL = "http://localhost:8080/api/detalleVentas";
@@ -36,10 +34,7 @@ public class VentaDetalleService {
     }
 
     public VentaDetalle[] createManyVentaDetalle(List<VentaDetalle> detalles) throws Exception {
-        Map<String, Object> body = new HashMap<>();
-        body.put("detalles", detalles);
-
-        String requestBody = mapper.writeValueAsString(body);
+        String requestBody = mapper.writeValueAsString(detalles);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/createMany"))

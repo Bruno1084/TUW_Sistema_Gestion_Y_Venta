@@ -4,6 +4,7 @@ import com.controller.ComprasController;
 import com.controller.SidebarController;
 import com.controller.modal.ModalBuscarProducto;
 import com.model.*;
+import com.model.dto.CompraDetalleDTO;
 import com.service.CompraDetalleService;
 import com.service.CompraService;
 import com.service.ProveedorService;
@@ -30,6 +31,7 @@ import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -187,7 +189,7 @@ public class AddCompraController implements ParentAware, ProductoSeleccionable {
         columnCantidadProducto.setOnEditCommit(event -> {
             CompraDetalle detalle = event.getRowValue();
             detalle.setCantidad(event.getNewValue());
-            detalle.setPrecioTotal(detalle.getCantidad() * detalle.getPrecioUnitario());
+            detalle.recalcularTotal();
             tableProductos.refresh();
             actualizarTotal();
         });
@@ -242,8 +244,22 @@ public class AddCompraController implements ParentAware, ProductoSeleccionable {
                     SessionManager.getInstance().getCurrentUsuario()
             );
 
-            compraService.createCompra(nuevaCompra);
-            compraDetalleService.createManyCompraDetalle(detalles);
+            Compra compraCreada = compraService.create(nuevaCompra);
+
+            List<CompraDetalleDTO> detallesDTO = new ArrayList<>();
+            detalles.forEach(detalle -> {
+                CompraDetalleDTO compraDTO = new CompraDetalleDTO(
+                        compraCreada.getId(),
+                        detalle.getProducto().getCodigoBarra(),
+                        detalle.getCantidad(),
+                        detalle.getPrecioTotal(),
+                        detalle.getPrecioUnitario()
+                );
+
+                detallesDTO.add(compraDTO);
+            });
+
+            compraDetalleService.createManyCompraDetalle(detallesDTO);
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/Compras.fxml"));
             Parent root = fxmlLoader.load();

@@ -3,13 +3,12 @@ package com.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.model.CompraDetalle;
 import com.model.SessionManager;
+import com.model.dto.CompraDetalleDTO;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CompraDetalleService {
     private static final String BASE_URL = "http://localhost:8080/api/detalleCompras";
@@ -35,11 +34,8 @@ public class CompraDetalleService {
         }
     }
 
-    public CompraDetalle[] createManyCompraDetalle(List<CompraDetalle> detalles) throws Exception {
-        Map<String, Object> body = new HashMap<>();
-        body.put("detalles", detalles);
-
-        String requestBody = mapper.writeValueAsString(body);
+    public CompraDetalleDTO[] createManyCompraDetalle(List<CompraDetalleDTO> detalles) throws Exception {
+        String requestBody = mapper.writeValueAsString(detalles);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/createMany"))
@@ -51,7 +47,7 @@ public class CompraDetalleService {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() == 201) {
-            return mapper.readValue(response.body(), CompraDetalle[].class);
+            return mapper.readValue(response.body(), CompraDetalleDTO[].class);
         } else {
             throw new RuntimeException("Error al crear detalles de compra: " + response.body());
         }

@@ -14,5 +14,7 @@ module com.sistema_gestion_y_venta {
     opens com.controller.detail to javafx.fxml;
     opens com.controller.add to javafx.fxml;
     opens com.model to com.fasterxml.jackson.databind, javafx.base;
+    opens com.model.dto to com.fasterxml.jackson.databind, javafx.base;
+
     exports com;
 }

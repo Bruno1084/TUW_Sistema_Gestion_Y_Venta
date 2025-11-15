@@ -37,6 +37,8 @@ export interface CompraDetalleDTO {
         precioCompra: number;
         precioVenta: number;
         stock: number;
+        rubro: string;
+        marca: string;
         imgUri: string;
     };
 }

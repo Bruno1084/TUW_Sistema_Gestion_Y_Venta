@@ -4,7 +4,9 @@ import com.controller.ComprasController;
 import com.controller.SidebarController;
 import com.model.Compra;
 import com.model.CompraDetalle;
+import com.model.dto.CompraDetailResponseDTO;
 import com.service.CompraDetalleService;
+import com.service.CompraService;
 import com.util.ParentAware;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -16,11 +18,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
-import java.util.Arrays;
+import java.util.List;
 
 public class DetailCompraController implements ParentAware {
     private Compra compra;
     private SidebarController parentController;
+    private final CompraService compraService = new CompraService();
     private final CompraDetalleService compraDetalleService = new CompraDetalleService();
     private final ObservableList<CompraDetalle> detalles = FXCollections.observableArrayList();
 
@@ -62,15 +65,29 @@ public class DetailCompraController implements ParentAware {
 
     private void cargarDetalles(int compraId) {
         try {
-            CompraDetalle[] lista = compraDetalleService.getAllFromCompraByIdCompraDetalle(compraId);
+            CompraDetailResponseDTO lista = compraService.getOneById(compraId);
+
             detalles.clear();
-            detalles.addAll(Arrays.asList(lista));
+            List<CompraDetalle> detallesConvertidos = lista.getDetalles().stream()
+                    .map(dto -> {
+                        CompraDetalle d = new CompraDetalle();
+                        d.setProducto(dto.getProducto());
+                        d.setCantidad(dto.getCantidad());
+                        d.setPrecioUnitario(dto.getPrecioUnitario());
+                        d.setPrecioTotal(dto.getPrecioTotal());
+                        return d;
+                    })
+                    .toList();
+
+            detalles.addAll(detallesConvertidos);
         } catch (Exception exception) {
+            exception.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error al cargar detalles de compra");
             alert.setHeaderText(null);
             alert.setContentText(exception.getMessage());
-            alert.showAndWait();        }
+            alert.showAndWait();
+        }
     }
 
     // FXML Methods
@@ -108,7 +125,6 @@ public class DetailCompraController implements ParentAware {
         columnImporteProducto.setCellValueFactory(cellData ->
                 new SimpleFloatProperty(cellData.getValue().getPrecioTotal()).asObject()
         );
-
     }
 
     @FXML private void handleCerrarCompra() {

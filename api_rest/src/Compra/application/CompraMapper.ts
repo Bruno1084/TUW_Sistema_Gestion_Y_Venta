@@ -43,6 +43,8 @@ export class CompraMapper {
                     precioCompra: detalle.producto.precioCompra,
                     precioVenta: detalle.producto.precioVenta,
                     stock: detalle.producto.stock,
+                    rubro: detalle.producto.rubro,
+                    marca: detalle.producto.marca,
                     imgUri: detalle.producto.imgUri
                 }
             }))
