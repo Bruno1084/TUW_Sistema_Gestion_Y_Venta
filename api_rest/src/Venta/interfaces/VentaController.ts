@@ -1,33 +1,32 @@
 import type { Request, Response } from "express"
 import type { VentaCreate } from "../application/VentaCreate"
 import type { VentaGetAll } from "../application/VentaGetAll"
-import type { VentaGetOneById } from "../application/VentaGetOneById"
-import type { VentaGetAllWithDetail } from "../application/VentaGetAllWithDetail"
+import type { VentaGetOneByIdWithDetail } from "../application/VentaGetOneByIdWithDetail";
 
 type VentaUseCases = {
-    create: VentaCreate,
-    getAll: VentaGetAll,
-    getAllWithDetail: VentaGetAllWithDetail,
-    getOneById: VentaGetOneById
+    create: VentaCreate;
+    getAll: VentaGetAll;
+    getOneByIdWithDetail: VentaGetOneByIdWithDetail;
 }
 
 export class VentaController {
     constructor(private useCases: VentaUseCases) { }
 
-    async createVenta(req: Request, res: Response): Promise<void> {
+    async create(req: Request, res: Response): Promise<void> {
         try {
             const {
-                clienteId,
-                empleadoId,
                 precioTotal,
-                fechaCreacion
+                proveedorId,
+                usuarioId,
+                detalles
             } = req.body;
 
             const ventaCreada = await this.useCases.create.run(
-                clienteId,
-                empleadoId,
                 precioTotal,
-                fechaCreacion
+                new Date(),
+                proveedorId,
+                usuarioId,
+                detalles
             );
 
             res.status(201).json(ventaCreada);
@@ -36,7 +35,7 @@ export class VentaController {
         }
     }
 
-    async getAllVenta(req: Request, res: Response): Promise<void> {
+    async getAll(req: Request, res: Response): Promise<void> {
         try {
             const ventas = await this.useCases.getAll.run();
             res.status(200).json(ventas);
@@ -45,19 +44,10 @@ export class VentaController {
         }
     }
 
-    async getAllWithDetailVenta(req: Request, res: Response): Promise<void> {
-        try {
-            const ventas = await this.useCases.getAllWithDetail.run();
-            res.status(200).json(ventas);
-        } catch (err: any) {
-            res.status(500).json({ error: err.message });
-        }
-    }
-
-    async getOneByIdVenta(req: Request, res: Response): Promise<void> {
+    async getOneByIdWithDetail(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
-            const venta = await this.useCases.getOneById.run(Number(id));
+            const venta = await this.useCases.getOneByIdWithDetail.run(Number(id));
 
             if (!venta) {
                 res.status(404).json({ error: "Venta no encontrada" });

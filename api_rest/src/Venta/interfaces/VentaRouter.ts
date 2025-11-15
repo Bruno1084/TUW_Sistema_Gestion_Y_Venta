@@ -1,13 +1,25 @@
+import type { Pool } from "mysql2/promise";
 import { Router } from "express";
-import type { VentaController } from "./VentaController";
+import { MySQLVentaRepository } from "../infrastructure/MySQLVentaRepository";
+import { VentaCreate } from "../application/VentaCreate";
+import { VentaGetAll } from "../application/VentaGetAll";
+import { VentaGetOneByIdWithDetail } from "../application/VentaGetOneByIdWithDetail";
+import { VentaController } from "./VentaController";
 
-export function ventaRouter(ventaController: VentaController): Router{
+export function ventaRouter(pool: Pool): Router {
+    const repo = new MySQLVentaRepository(pool);
+    const useCases = {
+        create: new VentaCreate(repo),
+        getAll: new VentaGetAll(repo),
+        getOneByIdWithDetail: new VentaGetOneByIdWithDetail(repo)
+    };
+
+    const controller = new VentaController(useCases);
     const router = Router();
 
-    router.post('/create', ventaController.createVenta.bind(ventaController));
-    router.get('/getAll', ventaController.getAllVenta.bind(ventaController));
-    router.get('/getAllWithDetail', ventaController.getAllWithDetailVenta.bind(ventaController));
-    router.get('/getOneById/:id', ventaController.getOneByIdVenta.bind(ventaController));
+    router.post('/ventas', controller.create.bind(controller));
+    router.get('/ventas', controller.getAll.bind(controller));
+    router.get('/ventas/:id', controller.getOneByIdWithDetail.bind(controller));
 
     return router;
 }

@@ -1,10 +1,10 @@
 import type { VentaRepository } from "../domain/VentaRepository";
-import type { VentaSimpleDTO } from "./VentaDTO";
+import type { VentaDTO } from "./VentaDTO";
 
 export class VentaGetAll {
     constructor(private repository: VentaRepository) {}
 
-    async run(): Promise<VentaSimpleDTO[]> {
+    async run(): Promise<VentaDTO[]> {
         return await this.repository.getAll();
     }
 }

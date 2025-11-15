@@ -29,8 +29,6 @@ export class CompraController {
                 detalles
             );
 
-
-
             res.status(201).json(compraCreada);
         } catch (err: any) {
             res.status(400).json({ error: err.message });

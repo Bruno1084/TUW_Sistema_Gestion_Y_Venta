@@ -9,10 +9,10 @@ import { initRubroModule } from "./Rubro/initRubroModule";
 import { MySQLProveedorRepository } from "./Proveedor/infrastructure/MySQLProveedorRepository";
 import { MySQLMarcaRepository } from "./Marca/infrastructure/MySQLMarcaRepository";
 import { MySQLRubroRepository } from "./Rubro/infrastructure/MySQLRubroRepository";
-import { initVentaModule } from "./Venta/initVentaModule";
 import { initUsuarioModule } from "./Usuario/initUsuarioModule";
 import { authMiddleware } from "./middlewares/authMiddleware";
 import { compraRouter } from "./Compra/interfaces/CompraRouter";
+import { ventaRouter } from "./Venta/interfaces/VentaRouter";
 
 const app = express();
 const pool = createPoolMySQL();
@@ -36,7 +36,7 @@ app.use('/api/proveedores', initProveedorModule(pool));
 app.use('/api/rubros', initRubroModule(pool));
 app.use('/api/productos', initProductoModule(pool, proveedorRepo, marcaRepo, rubroRepo));
 app.use('/api', compraRouter(pool));
-app.use('/api/ventas', initVentaModule(pool));
+app.use('/api', ventaRouter(pool));
 
 // Ping test
 app.get("/api/ping", (req: Request, res: Response) => {

@@ -1,32 +1,53 @@
-import type { VentaDetailDTO, VentaSimpleDTO } from "./VentaDTO";
-import type { Venta } from "../domain/Venta";
-import type { EmpleadoNombre } from "../../Empleado/domain/EmpleadoNombre";
 import type { ClienteNombre } from "../../Cliente/domain/ClienteNombre";
+import type { UsuarioNombre } from "../../Usuario/domain/UsuarioNombre";
+import type { Venta } from "../domain/Venta";
+import type { VentaDetailDTO, VentaDetalleDTO, VentaDTO } from "./VentaDTO";
 
-export class VentaMapper {
-    static toDetailDTO(venta: Venta, cliente: ClienteNombre, empleado: EmpleadoNombre): VentaDetailDTO {
+export class CompraMapper {
+    static toDTO(venta:Venta, cliente: ClienteNombre, usuario: UsuarioNombre): VentaDTO {
         return {
             id: venta.id.value,
+            precioTotal: venta.precioTotal.value,
+            fechaCreacion: venta.fechaCreacion.value,
             cliente: {
                 id: venta.clienteId.value,
                 nombre: cliente.value
             },
-            empleado: {
-                id: venta.empleadoId.value,
-                nombre: empleado.value
-            },
-            precioTotal: venta.precioTotal.value,
-            fechaCreacion: venta.fechaCreacion.value
-        }
+            usuario: {
+                id: venta.usuarioId.value,
+                nombre: usuario.value
+            }
+        };
     }
 
-    static toSimpleDTO(venta: Venta): VentaSimpleDTO {
+    static toDetailDTO(venta: Venta, cliente: ClienteNombre, usuario: UsuarioNombre, detalles: VentaDetalleDTO[]): VentaDetailDTO {
         return {
             id: venta.id.value,
-            clienteId: venta.clienteId.value,
-            empleadoId: venta.empleadoId.value,
             precioTotal: venta.precioTotal.value,
-            fechaCreacion: venta.fechaCreacion.value
-        }
+            fechaCreacion: venta.fechaCreacion.value,
+            cliente: {
+                id: venta.clienteId.value,
+                nombre: cliente.value,
+            },
+            usuario: {
+                id: venta.usuarioId.value,
+                nombre: usuario.value
+            },
+            detalles: detalles.map(detalle => ({
+                cantidad: detalle.cantidad,
+                precioUnitario: detalle.precioUnitario,
+                precioTotal: detalle.precioTotal,
+                producto: {
+                    codigoBarra: detalle.producto.codigoBarra,
+                    descripcion: detalle.producto.descripcion,
+                    precioCompra: detalle.producto.precioCompra,
+                    precioVenta: detalle.producto.precioVenta,
+                    stock: detalle.producto.stock,
+                    rubro: detalle.producto.rubro,
+                    marca: detalle.producto.marca,
+                    imgUri: detalle.producto.imgUri
+                }
+            }))
+        };
     }
 }

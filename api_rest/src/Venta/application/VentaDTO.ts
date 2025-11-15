@@ -1,21 +1,44 @@
 export interface VentaDetailDTO {
     id: number;
+    precioTotal: number;
+    fechaCreacion: Date;
     cliente: {
         id: number;
         nombre: string;
-    }
-    empleado: {
+    };
+    usuario: {
         id: number;
         nombre: string;
-    }
-    precioTotal: number;
-    fechaCreacion: Date;
+    },
+    detalles: VentaDetalleDTO[];
 }
 
-export interface VentaSimpleDTO {
+export interface VentaDTO {
     id: number;
-    clienteId: number;
-    empleadoId: number;
     precioTotal: number;
     fechaCreacion: Date;
+    cliente: {
+        id: number;
+        nombre: string;
+    };
+    usuario: {
+        id: number;
+        nombre: string;
+    };
+}
+
+export interface VentaDetalleDTO {
+    cantidad: number;
+    precioUnitario: number;
+    precioTotal: number;
+    producto: {
+        codigoBarra: string;
+        descripcion: string;
+        precioCompra: number;
+        precioVenta: number;
+        stock: number;
+        rubro: string;
+        marca: string;
+        imgUri: string;
+    };
 }

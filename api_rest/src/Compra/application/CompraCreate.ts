@@ -39,7 +39,7 @@ export class CompraCreate {
                 new DetalleCompraPrecioTotal(detalle.precioTotal),
                 new DetalleCompraPrecioUnitario(detalle.precioUnitario)
             )
-        )
+        );
 
         return await this.repository.create(compra, detallesCompra);
     }
