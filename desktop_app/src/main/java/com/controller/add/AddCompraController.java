@@ -5,7 +5,6 @@ import com.controller.SidebarController;
 import com.controller.modal.ModalBuscarProducto;
 import com.model.*;
 import com.model.dto.CompraDetalleDTO;
-import com.service.CompraDetalleService;
 import com.service.CompraService;
 import com.service.ProveedorService;
 import com.util.ParentAware;
@@ -43,7 +42,6 @@ public class AddCompraController implements ParentAware, ProductoSeleccionable {
     private SidebarController parentController;
     private final CompraService compraService = new CompraService();
     private final ProveedorService proveedorService = new ProveedorService();
-    private final CompraDetalleService compraDetalleService = new CompraDetalleService();
 
     private final ObservableList<CompraDetalle> detalles = FXCollections.observableArrayList();
     private Compra compra;
@@ -244,12 +242,11 @@ public class AddCompraController implements ParentAware, ProductoSeleccionable {
                     SessionManager.getInstance().getCurrentUsuario()
             );
 
-            Compra compraCreada = compraService.create(nuevaCompra);
-
             List<CompraDetalleDTO> detallesDTO = new ArrayList<>();
+            // El ID de compra no se necesario aca. Se proporciona un 0.
             detalles.forEach(detalle -> {
                 CompraDetalleDTO compraDTO = new CompraDetalleDTO(
-                        compraCreada.getId(),
+                        0,
                         detalle.getProducto().getCodigoBarra(),
                         detalle.getCantidad(),
                         detalle.getPrecioTotal(),
@@ -259,7 +256,7 @@ public class AddCompraController implements ParentAware, ProductoSeleccionable {
                 detallesDTO.add(compraDTO);
             });
 
-            compraDetalleService.createManyCompraDetalle(detallesDTO);
+            compraService.create(nuevaCompra, detallesDTO);
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/Compras.fxml"));
             Parent root = fxmlLoader.load();

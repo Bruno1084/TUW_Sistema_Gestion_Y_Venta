@@ -5,6 +5,8 @@ import com.controller.SidebarController;
 import com.controller.VentasController;
 import com.controller.modal.ModalBuscarProducto;
 import com.model.*;
+import com.model.dto.CompraDetalleDTO;
+import com.model.dto.VentaDetalleDTO;
 import com.service.ClienteService;
 import com.service.VentaDetalleService;
 import com.service.VentaService;
@@ -31,6 +33,8 @@ import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -243,8 +247,20 @@ public class AddVentaController implements ParentAware, ProductoSeleccionable {
                     SessionManager.getInstance().getCurrentUsuario()
             );
 
-            ventaService.createVenta(nuevaVenta);
-            ventaDetalleService.createManyVentaDetalle(detalles);
+            Venta ventaCreada = ventaService.create(nuevaVenta);
+
+            List<VentaDetalleDTO> detallesDTO = new ArrayList<>();
+            detalles.forEach(detalle -> {
+                VentaDetalleDTO ventaDTO = new VentaDetalleDTO(
+                        ventaCreada.getId(),
+                        detalle.getProducto().getCodigoBarra(),
+                        detalle.getCantidad(),
+                        detalle.getPrecioTotal(),
+                        detalle.getPrecioUnitario()
+                );
+
+                detallesDTO.add(ventaDTO);
+            });
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/Ventas.fxml"));
             Parent root = fxmlLoader.load();

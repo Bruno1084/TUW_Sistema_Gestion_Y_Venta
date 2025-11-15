@@ -13,13 +13,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import java.util.Arrays;
 import java.util.Date;
 
 public class VentasController implements ParentAware {
     private SidebarController parentController;
     private final VentaService ventasService = new VentaService();
-    private ObservableList<Venta> ventas = FXCollections.observableArrayList();
+    private final ObservableList<Venta> ventas = FXCollections.observableArrayList();
 
     // Table View Ventas
     @FXML private TableView<Venta> tableVentas;
@@ -38,7 +39,8 @@ public class VentasController implements ParentAware {
     @FXML private TextField inputBuscarVenta;
 
     // Text
-
+    @FXML private Text txtGastosTotalesPrecio;
+    @FXML private Text txtComprasMensualesTotal;
 
     // Helper Methods
     public void setParentController(SidebarController parentController) {
@@ -47,7 +49,7 @@ public class VentasController implements ParentAware {
 
     private void cargarVentas() {
         try {
-            Venta[] lista = ventasService.getAllWithDetailVenta();
+            Venta[] lista = ventasService.getAll();
             ventas.clear();
             ventas.addAll(Arrays.asList(lista));
         } catch (Exception e) {

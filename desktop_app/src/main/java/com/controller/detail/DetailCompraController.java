@@ -5,7 +5,6 @@ import com.controller.SidebarController;
 import com.model.Compra;
 import com.model.CompraDetalle;
 import com.model.dto.CompraDetailResponseDTO;
-import com.service.CompraDetalleService;
 import com.service.CompraService;
 import com.util.ParentAware;
 import javafx.beans.property.SimpleFloatProperty;
@@ -21,10 +20,8 @@ import javafx.scene.text.Text;
 import java.util.List;
 
 public class DetailCompraController implements ParentAware {
-    private Compra compra;
     private SidebarController parentController;
     private final CompraService compraService = new CompraService();
-    private final CompraDetalleService compraDetalleService = new CompraDetalleService();
     private final ObservableList<CompraDetalle> detalles = FXCollections.observableArrayList();
 
     // Buttons
@@ -54,7 +51,6 @@ public class DetailCompraController implements ParentAware {
     }
 
     public void setCompra(Compra compra) {
-        this.compra = compra;
         txtIdCompra.setText(String.valueOf(compra.getId()));
         txtTotalCompra.setText(String.valueOf(compra.getPrecioTotal()));
         txtFechaCreacionCompra.setText(String.valueOf(compra.getFechaCreacion()));

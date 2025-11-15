@@ -4,7 +4,8 @@ import com.controller.SidebarController;
 import com.controller.VentasController;
 import com.model.Venta;
 import com.model.VentaDetalle;
-import com.service.VentaDetalleService;
+import com.model.dto.VentaDetailResponseDTO;
+import com.service.VentaService;
 import com.util.ParentAware;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -16,12 +17,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
-import java.util.Arrays;
+import java.util.List;
 
 public class DetailVentaController implements ParentAware {
     private Venta venta;
     private SidebarController parentController;
-    private final VentaDetalleService ventaDetalleService = new VentaDetalleService();
+    private final VentaService ventaService = new VentaService();
     private final ObservableList<VentaDetalle> detalles = FXCollections.observableArrayList();
 
     // Buttons
@@ -62,10 +63,23 @@ public class DetailVentaController implements ParentAware {
 
     private void cargarDetalles(int ventaId) {
         try {
-            VentaDetalle[] lista = ventaDetalleService.getAllFromVentaByIdVentaDetalle(ventaId);
+            VentaDetailResponseDTO lista = ventaService.getOneById(ventaId);
+
             detalles.clear();
-            detalles.addAll(Arrays.asList(lista));
+            List<VentaDetalle> detallesConvertidos = lista.getDetalles().stream()
+                    .map(dto -> {
+                        VentaDetalle d = new VentaDetalle();
+                        d.setProducto(dto.getProducto());
+                        d.setCantidad(dto.getCantidad());
+                        d.setPrecioUnitario(dto.getPrecioUnitario());
+                        d.setPrecioTotal(dto.getPrecioTotal());
+                        return d;
+                    })
+                    .toList();
+
+            detalles.addAll(detallesConvertidos);
         } catch (Exception exception) {
+            exception.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error al cargar detalles de venta");
             alert.setHeaderText(null);

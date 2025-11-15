@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.model.*;
 import com.model.dto.CompraDetailResponseDTO;
+import com.model.dto.CompraDetalleDTO;
 import com.model.dto.CompraDetalleResponseDTO;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -30,8 +31,10 @@ public class CompraService {
         return  requestMap;
     }
 
-    public Compra create(Compra compra) throws Exception {
+    public CompraDetailResponseDTO create(Compra compra, List<CompraDetalleDTO> detalles) throws Exception {
         Map<String, Object> requestMap = writePlaneMap(compra);
+        requestMap.put("detalles", detalles);
+
         String requestBody = mapper.writeValueAsString(requestMap);
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -44,7 +47,7 @@ public class CompraService {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() == 201) {
-            return mapper.readValue(response.body(), Compra.class);
+            return mapper.readValue(response.body(), CompraDetailResponseDTO.class);
         } else {
             throw new RuntimeException("Error al crear compra: " + response.body());
         }
@@ -142,6 +145,4 @@ public class CompraService {
         dto.setProducto(producto);
         return dto;
     }
-
-
 }

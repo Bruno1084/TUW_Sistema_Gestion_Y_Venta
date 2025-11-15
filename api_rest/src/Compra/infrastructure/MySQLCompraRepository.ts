@@ -122,8 +122,15 @@ export class MySQLCompraRepository implements CompraRepository {
             pr.stock AS producto_stock,
             pr.img_uri AS producto_img_uri,
 
+            r.id AS rubro_id,
             r.nombre AS rubro_nombre,
-            m.nombre AS marca_nombre
+            r.fecha_creacion AS rubro_fecha_creacion,
+            r.fecha_modificacion AS rubro_fecha_modificacion,
+
+            m.id AS marca_id,
+            m.nombre AS marca_nombre,
+            m.fecha_creacion AS marca_fecha_creacion,
+            m.fecha_modificacion AS marca_fecha_modificacion
 
         FROM compras c
         JOIN proveedores p ON c.id_proveedor = p.id
@@ -162,8 +169,18 @@ export class MySQLCompraRepository implements CompraRepository {
                     precioCompra: r.producto_precio_compra,
                     precioVenta: r.producto_precio_venta,
                     stock: r.producto_stock,
-                    rubro: r.rubro_nombre,
-                    marca: r.marca_nombre,
+                    rubro: {
+                        id: r.rubro_id,
+                        nombre: r.rubro_nombre,
+                        fechaCreacion: r.rubro_fecha_creacion,
+                        fechaModificacion: r.rubro_fecha_modificacion
+                    },
+                    marca: {
+                        id: r.marca_id,
+                        nombre: r.marca_nombre,
+                        fechaCreacion: r.fecha_creacion,
+                        fechaModificacion: r.fecha_modificacion
+                    },
                     imgUri: r.producto_img_uri,
                 },
             })),
