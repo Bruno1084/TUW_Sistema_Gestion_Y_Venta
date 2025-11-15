@@ -1,14 +1,17 @@
 package com.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.model.Compra;
-import com.model.SessionManager;
-import com.model.Venta;
+import com.model.*;
+import com.model.dto.VentaDetailResponseDTO;
+import com.model.dto.VentaDetalleResponseDTO;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class VentaService {
@@ -27,12 +30,12 @@ public class VentaService {
         return  requestMap;
     }
 
-    public Venta createVenta(Venta venta) throws Exception {
+    public Venta create(Venta venta) throws Exception {
         Map<String, Object> requestMap = writePlaneMap(venta);
         String requestBody = mapper.writeValueAsString(requestMap);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/create"))
+                .uri(URI.create(BASE_URL))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
@@ -47,9 +50,9 @@ public class VentaService {
         }
     }
 
-    public Venta[] getAllVenta() throws Exception {
+    public Venta[] getAll() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/getAll"))
+                .uri(URI.create(BASE_URL))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .GET()
@@ -64,9 +67,9 @@ public class VentaService {
         }
     }
 
-    public Venta[] getAllWithDetailVenta() throws Exception {
+    public VentaDetailResponseDTO getOneById(int id) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/getAllWithDetail"))
+                .uri(URI.create(BASE_URL + "/" + id))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .GET()
@@ -75,24 +78,8 @@ public class VentaService {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() == 200) {
-            return mapper.readValue(response.body(), Venta[].class);
-        } else {
-            throw new RuntimeException("Error al obtener ventas: " + response.body());
-        }
-    }
-
-    public Venta getOneByIdVenta(int id) throws Exception {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/getOneById/" + id))
-                .header("Content-Type", "application/json")
-                .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
-                .GET()
-                .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        if (response.statusCode() == 200) {
-            return mapper.readValue(response.body(), Venta.class);
+            JsonNode root = mapper.readTree(response.body());
+            return parseVentaDetail(root);
         } else if (response.statusCode() == 404) {
             return null;
         } else {
@@ -100,22 +87,60 @@ public class VentaService {
         }
     }
 
-    public Compra getOneByIdWithDetailCompra(int id) throws Exception {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/getOneByIdWithDetail/" + id))
-                .header("Content-Type", "application/json")
-                .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
-                .GET()
-                .build();
+    private VentaDetailResponseDTO parseVentaDetail(JsonNode root) {
+        VentaDetailResponseDTO venta = new VentaDetailResponseDTO();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        venta.setId(root.get("id").asInt());
+        venta.setPrecioTotal((float) root.get("precioTotal").asDouble());
+        venta.setFechaCreacion(root.get("fechaCreacion").asText());
 
-        if (response.statusCode() == 200) {
-            return mapper.readValue(response.body(), Compra.class);
-        } else if (response.statusCode() == 404) {
-            return null;
-        } else {
-            throw new RuntimeException("Error al obtener venta: " + response.body());
+        JsonNode provNode = root.get("cliente");
+        Cliente cliente = new Cliente();
+        cliente.setId(provNode.get("id").asInt());
+        cliente.setNombre(provNode.get("nombre").asText());
+        venta.setCliente(cliente);
+
+        JsonNode userNode = root.get("usuario");
+        Usuario usuario = new Usuario();
+        usuario.setId(userNode.get("id").asInt());
+        usuario.setNombre(userNode.get("nombre").asText());
+        venta.setUsuario(usuario);
+
+        List<VentaDetalleResponseDTO> detalles = new ArrayList<>();
+        for (JsonNode detNode : root.get("detalles")) {
+            detalles.add(parseDetalle(detNode));
         }
+        venta.setDetalles(detalles);
+
+        return venta;
     }
+
+    private VentaDetalleResponseDTO parseDetalle(JsonNode detNode) {
+        VentaDetalleResponseDTO dto = new VentaDetalleResponseDTO();
+
+        dto.setCantidad(detNode.get("cantidad").asInt());
+        dto.setPrecioUnitario((float) detNode.get("precioUnitario").asDouble());
+        dto.setPrecioTotal((float) detNode.get("precioTotal").asDouble());
+
+        JsonNode prodNode = detNode.get("producto");
+        Producto producto = new Producto();
+        producto.setCodigoBarra(prodNode.get("codigoBarra").asText());
+        producto.setDescripcion(prodNode.get("descripcion").asText());
+        producto.setPrecioCompra((float) prodNode.get("precioCompra").asDouble());
+        producto.setPrecioVenta((float) prodNode.get("precioVenta").asDouble());
+        producto.setStock(prodNode.get("stock").asInt());
+        producto.setImgUri(prodNode.get("imgUri").asText());
+
+        Rubro rubro = new Rubro();
+        rubro.setNombre(prodNode.get("rubro").asText());
+        producto.setRubro(rubro);
+
+        Marca marca = new Marca();
+        marca.setNombre(prodNode.get("marca").asText());
+        producto.setMarca(marca);
+
+        dto.setProducto(producto);
+        return dto;
+    }
+
 }

@@ -7,6 +7,7 @@ module com.sistema_gestion_y_venta {
     requires javafx.base;
     requires org.controlsfx.controls;
     requires java.desktop;
+    requires com.sistema_gestion_y_venta;
 
     opens com to javafx.fxml;
     opens com.controller to javafx.fxml;
