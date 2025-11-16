@@ -23,6 +23,7 @@ public class DetailCompraController implements ParentAware {
     private SidebarController parentController;
     private final CompraService compraService = new CompraService();
     private final ObservableList<CompraDetalle> detalles = FXCollections.observableArrayList();
+    private Compra compra = new Compra();
 
     // Buttons
     @FXML Button btnCerrarCompra;
@@ -51,6 +52,7 @@ public class DetailCompraController implements ParentAware {
     }
 
     public void setCompra(Compra compra) {
+        this.compra = compra;
         txtIdCompra.setText(String.valueOf(compra.getId()));
         txtTotalCompra.setText(String.valueOf(compra.getPrecioTotal()));
         txtFechaCreacionCompra.setText(String.valueOf(compra.getFechaCreacion()));
@@ -130,6 +132,21 @@ public class DetailCompraController implements ParentAware {
 
             ComprasController comprasController = loader.getController();
             comprasController.setParentController(parentController);
+
+            parentController.getMainBorderPane().setCenter(root);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    @FXML private void handleLinkProveedor() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fxml/detail/DetailProveedor.fxml"));
+            Parent root = loader.load();
+
+            DetailProveedorController detailProveedorController = loader.getController();
+            detailProveedorController.setParentController(parentController);
+            detailProveedorController.setProveedor(compra.getProveedor());
 
             parentController.getMainBorderPane().setCenter(root);
         } catch (Exception exception) {

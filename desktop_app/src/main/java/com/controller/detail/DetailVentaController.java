@@ -138,4 +138,19 @@ public class DetailVentaController implements ParentAware {
             exception.printStackTrace();
         }
     }
+
+    @FXML private void handleLinkCliente() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fxml/detail/DetailCliente.fxml"));
+            Parent root = loader.load();
+
+            DetailClienteController detailClienteController = loader.getController();
+            detailClienteController.setParentController(parentController);
+            detailClienteController.setCliente(venta.getCliente());
+
+            parentController.getMainBorderPane().setCenter(root);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
 }
