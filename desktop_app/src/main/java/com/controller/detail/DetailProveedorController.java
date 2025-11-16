@@ -2,7 +2,7 @@ package com.controller.detail;
 
 import com.controller.ProveedoresController;
 import com.controller.SidebarController;
-import com.controller.add.AddProveedorController;
+import com.controller.edit.EditProveedorController;
 import com.model.Proveedor;
 import com.util.ParentAware;
 import javafx.fxml.FXML;
@@ -47,12 +47,12 @@ public class DetailProveedorController implements ParentAware {
     // FXML Methods
     @FXML private void handleEditarProveedor() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/add/AddProveedor.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/edit/EditProveedor.fxml"));
             Parent root = fxmlLoader.load();
 
-            AddProveedorController addProveedorController = fxmlLoader.getController();
-            addProveedorController.setParentController(parentController);
-            addProveedorController.setProveedor(proveedor);
+            EditProveedorController editProveedorController = fxmlLoader.getController();
+            editProveedorController.setParentController(parentController);
+            editProveedorController.setProveedor(proveedor);
 
             parentController.getMainBorderPane().setCenter(root);
         } catch (Exception exception) {

@@ -2,7 +2,7 @@ package com.controller.detail;
 
 import com.controller.ClientesController;
 import com.controller.SidebarController;
-import com.controller.add.AddClienteController;
+import com.controller.edit.EditClienteController;
 import com.model.Cliente;
 import com.util.ParentAware;
 import javafx.event.ActionEvent;
@@ -46,14 +46,14 @@ public class DetailClienteController implements ParentAware {
     }
 
     // FXML Methods
-    @FXML private void handleEditarCliente(ActionEvent event) {
+    @FXML private void handleEditarCliente() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/add/AddCliente.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/edit/EditCliente.fxml"));
             Parent root = fxmlLoader.load();
 
-            AddClienteController addClienteController = fxmlLoader.getController();
-            addClienteController.setParentController(parentController);
-            addClienteController.setCliente(cliente);
+            EditClienteController editClienteController = fxmlLoader.getController();
+            editClienteController.setParentController(parentController);
+            editClienteController.setCliente(cliente);
 
             parentController.getMainBorderPane().setCenter(root);
         } catch (Exception exception) {

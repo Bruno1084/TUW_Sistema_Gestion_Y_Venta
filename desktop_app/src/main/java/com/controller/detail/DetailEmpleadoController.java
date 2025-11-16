@@ -2,7 +2,7 @@ package com.controller.detail;
 
 import com.controller.EmpleadosController;
 import com.controller.SidebarController;
-import com.controller.add.AddEmpleadoController;
+import com.controller.edit.EditEmpleadoController;
 import com.model.Empleado;
 import com.util.ParentAware;
 import javafx.fxml.FXML;
@@ -47,12 +47,12 @@ public class DetailEmpleadoController implements ParentAware {
     // FXML Methods
     @FXML private void handleEditarEmpleado() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/add/AddEmpleado.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/edit/EditEmpleado.fxml"));
             Parent root = fxmlLoader.load();
 
-            AddEmpleadoController addEmpleadoController = fxmlLoader.getController();
-            addEmpleadoController.setParentController(parentController);
-            addEmpleadoController.setEmpleado(empleado);
+            EditEmpleadoController editEmpleadoController = fxmlLoader.getController();
+            editEmpleadoController.setParentController(parentController);
+            editEmpleadoController.setEmpleado(empleado);
 
             parentController.getMainBorderPane().setCenter(root);
         } catch (Exception exception) {
@@ -73,5 +73,4 @@ public class DetailEmpleadoController implements ParentAware {
             exception.printStackTrace();
         }
     }
-
 }

@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="anchorPaneMain" prefHeight="560.0" prefWidth="885.0" stylesheets="@../../css/productos.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.add.AddEmpleadoController">
+<AnchorPane id="anchorPaneMain" prefHeight="560.0" prefWidth="885.0" stylesheets="@../../css/productos.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.edit.EditEmpleadoController">
     <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="560.0" prefWidth="885.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <VBox id="vBoxMainContainer">
             <AnchorPane prefHeight="60.0">
@@ -19,7 +19,7 @@
                         <Font name="System Bold" size="22.0" />
                     </font>
                 </Text>
-                <Button fx:id="btnAniadirEmpleado" layoutX="713.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleAniadirEmpleado" AnchorPane.rightAnchor="62.0" AnchorPane.topAnchor="10.0">
+                <Button fx:id="btnEditarEmpleado" layoutX="713.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleEditarEmpleado" AnchorPane.rightAnchor="62.0" AnchorPane.topAnchor="10.0">
                     <font>
                         <Font name="System Bold" size="15.0" />
                     </font>
@@ -46,6 +46,14 @@
                                         <Font name="System Bold" size="18.0" />
                                     </font>
                                 </Text>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="40.0" spacing="10.0">
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ID">
+                                    <font>
+                                        <Font size="13.0" />
+                                    </font>
+                                </Text>
+                        <Text fx:id="txtIdEmpleado" strokeType="OUTSIDE" strokeWidth="0.0" />
                             </HBox>
                             <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="50.0" prefHeight="40.0" spacing="10.0">
                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre">
