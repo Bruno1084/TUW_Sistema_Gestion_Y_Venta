@@ -12,7 +12,7 @@ type UsuarioUseCases = {
 export class UsuarioController {
     constructor(private useCases: UsuarioUseCases) { }
 
-    async registerUsuario(req: Request, res: Response): Promise<void> {
+    async register(req: Request, res: Response): Promise<void> {
         try {
             const {
                 nombre,
@@ -31,7 +31,7 @@ export class UsuarioController {
         }
     }
 
-    async loginUsuario(req: Request, res: Response): Promise<void> {
+    async login(req: Request, res: Response): Promise<void> {
         try {
             const { nombre, contrasenia } = req.body;
 
@@ -43,7 +43,7 @@ export class UsuarioController {
         }
     }
 
-    async getOneByIdUsuario(req: Request, res: Response): Promise<void> {
+    async getOneById(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
             const usuario = await this.useCases.getOneById.run(Number(id));

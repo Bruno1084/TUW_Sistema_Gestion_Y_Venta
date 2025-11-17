@@ -16,7 +16,7 @@ type MarcaUseCases = {
 export class MarcaController {
     constructor(private useCases: MarcaUseCases) { }
 
-    async createMarca(req: Request, res: Response): Promise<void> {
+    async create(req: Request, res: Response): Promise<void> {
         try {
             const { nombre } = req.body;
 
@@ -29,7 +29,7 @@ export class MarcaController {
         }
     }
 
-    async getAllMarca(req: Request, res: Response): Promise<void> {
+    async getAll(req: Request, res: Response): Promise<void> {
         try {
             const marcas = await this.useCases.getAll.run();
 
@@ -39,7 +39,7 @@ export class MarcaController {
         }
     }
 
-    async getOneByIdMarca(req: Request, res: Response): Promise<void> {
+    async getOneById(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
             const marca = await this.useCases.getOneById.run(Number(id));
@@ -55,7 +55,7 @@ export class MarcaController {
         }
     }
 
-    async updateMarca(req: Request, res: Response): Promise<void> {
+    async update(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
             const { nombre } = req.body;
@@ -68,7 +68,7 @@ export class MarcaController {
         }
     }
 
-    async deleteMarca(req: Request, res: Response): Promise<void> {
+    async delete(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
 
@@ -79,5 +79,4 @@ export class MarcaController {
             res.status(400).json({ error: err.message });
         }
     }
-
 }

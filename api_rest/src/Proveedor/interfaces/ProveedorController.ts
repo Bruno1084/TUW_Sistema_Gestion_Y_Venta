@@ -16,7 +16,7 @@ type ProveedorUseCases = {
 export class ProveedorController {
     constructor(private useCases: ProveedorUseCases) { }
 
-    async createProveedor(req: Request, res: Response): Promise<void> {
+    async create(req: Request, res: Response): Promise<void> {
         try {
             const {
                 nombre,
@@ -38,7 +38,7 @@ export class ProveedorController {
         }
     }
 
-    async getAllProveedor(req: Request, res: Response): Promise<void> {
+    async getAll(req: Request, res: Response): Promise<void> {
         try {
             const proveedores = await this.useCases.getAll.run();
             res.status(200).json(proveedores);
@@ -47,13 +47,13 @@ export class ProveedorController {
         }
     }
 
-    async getOneByIdProveedor(req: Request, res: Response): Promise<void> {
+    async getOneById(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
             const proveedor = await this.useCases.getOneById.run(Number(id));
 
             if (!proveedor) {
-                res.status(404).json({ error: "Producto no encontrado" });
+                res.status(404).json({ error: "Proveedor no encontrado" });
                 return;
             }
 
@@ -63,7 +63,7 @@ export class ProveedorController {
         }
     }
 
-    async updateProveedor(req: Request, res: Response): Promise<void> {
+    async update(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
 
@@ -88,7 +88,7 @@ export class ProveedorController {
         }
     }
 
-    async deleteProveedor(req: Request, res: Response): Promise<void> {
+    async delete(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
 

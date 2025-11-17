@@ -5,7 +5,7 @@ import { ProductoGetAll } from "../application/ProductoGetAll";
 import { ProductoGetOneById } from "../application/ProductoGetOneById";
 import { ProductoGetOneByIdWithDetail } from "../application/ProductoGetOneByIdWithDetail";
 import { ProductoUpdate } from "../application/ProductoUpdate";
-import type { ProductoDelete } from "../application/ProductoDelete";
+import { ProductoDelete } from "../application/ProductoDelete";
 
 type ProductoUseCases = {
     create: ProductoCreate;
@@ -20,7 +20,7 @@ type ProductoUseCases = {
 export class ProductoController {
     constructor(private useCases: ProductoUseCases) { }
 
-    async createProducto(req: Request, res: Response): Promise<void> {
+    async create(req: Request, res: Response): Promise<void> {
         try {
             const {
                 codigoBarra,
@@ -54,7 +54,7 @@ export class ProductoController {
         }
     }
 
-    async getAllProducto(req: Request, res: Response): Promise<void> {
+    async getAll(req: Request, res: Response): Promise<void> {
         try {
             const productos = await this.useCases.getAll.run();
             res.status(200).json(productos);
@@ -72,7 +72,7 @@ export class ProductoController {
         }
     }
 
-    async getOneByIdProducto(req: Request, res: Response): Promise<void> {
+    async getOneById(req: Request, res: Response): Promise<void> {
         try {
             const { codigo } = req.params;
             const producto = await this.useCases.getOneById.run(codigo!);
@@ -88,7 +88,7 @@ export class ProductoController {
         }
     }
 
-    async getOneByIdWithDetailProducto(req: Request, res: Response): Promise<void> {
+    async getOneByIdWithDetail(req: Request, res: Response): Promise<void> {
         try {
             const { codigo } = req.params;
             const producto = await this.useCases.getOneByIdWithDetail.run(codigo!);
@@ -104,7 +104,7 @@ export class ProductoController {
         }
     }
 
-    async updateProducto(req: Request, res: Response): Promise<void> {
+    async update(req: Request, res: Response): Promise<void> {
         try {
             const { codigo } = req.params;
             const {
@@ -138,7 +138,7 @@ export class ProductoController {
         }
     }
 
-    async deleteProducto(req: Request, res: Response): Promise<void> {
+    async delete(req: Request, res: Response): Promise<void> {
         try {
             const { codigo } = req.params;
 

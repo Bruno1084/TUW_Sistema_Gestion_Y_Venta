@@ -16,7 +16,7 @@ type RubroUseCases = {
 export class RubroController {
     constructor(private useCases: RubroUseCases) { }
 
-    async createRubro(req: Request, res: Response): Promise<void> {
+    async create(req: Request, res: Response): Promise<void> {
         try {
             const { nombre } = req.body;
 
@@ -28,7 +28,7 @@ export class RubroController {
         }
     }
 
-    async getAllRubro(req: Request, res: Response): Promise<void> {
+    async getAll(req: Request, res: Response): Promise<void> {
         try {
             const clientes = await this.useCases.getAll.run();
             res.status(200).json(clientes);
@@ -37,7 +37,7 @@ export class RubroController {
         }
     }
 
-    async getOneByIdRubro(req: Request, res: Response): Promise<void> {
+    async getOneById(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
             const rubro = await this.useCases.getOneById.run(Number(id));
@@ -53,7 +53,7 @@ export class RubroController {
         }
     }
 
-    async updateRubro(req: Request, res: Response): Promise<void> {
+    async update(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
             const { nombre } = req.body;
@@ -66,7 +66,7 @@ export class RubroController {
         }
     }
 
-    async deleteRubro(req: Request, res: Response): Promise<void> {
+    async delete(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
 

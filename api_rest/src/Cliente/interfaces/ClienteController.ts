@@ -16,7 +16,7 @@ type ClienteUseCases = {
 export class ClienteController {
     constructor(private useCases: ClienteUseCases) { }
 
-    async createCliente(req: Request, res: Response): Promise<void> {
+    async create(req: Request, res: Response): Promise<void> {
         try {
             const {
                 nombre,
@@ -38,7 +38,7 @@ export class ClienteController {
         }
     }
 
-    async getAllCliente(req: Request, res: Response): Promise<void> {
+    async getAll(req: Request, res: Response): Promise<void> {
         try {
             const clientes = await this.useCases.getAll.run();
             res.status(200).json(clientes);
@@ -47,7 +47,7 @@ export class ClienteController {
         }
     }
 
-    async getOneByIdCliente(req: Request, res: Response): Promise<void> {
+    async getOneById(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
             const cliente = await this.useCases.getOneById.run(Number(id));
@@ -63,7 +63,7 @@ export class ClienteController {
         }
     }
 
-    async updateCliente(req: Request, res: Response): Promise<void> {
+    async update(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
             const {
@@ -84,7 +84,7 @@ export class ClienteController {
         }
     }
 
-    async deleteCliente(req: Request, res: Response): Promise<void> {
+    async delete(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
 

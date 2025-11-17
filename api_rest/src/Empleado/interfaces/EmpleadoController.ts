@@ -16,7 +16,7 @@ type EmpleadoUseCases = {
 export class EmpleadoController {
     constructor(private useCases: EmpleadoUseCases) { }
 
-    async createEmpleado(req: Request, res: Response): Promise<void> {
+    async create(req: Request, res: Response): Promise<void> {
         try {
             const {
                 nombre,
@@ -38,7 +38,7 @@ export class EmpleadoController {
         }
     }
 
-    async getAllEmpleado(req: Request, res: Response): Promise<void> {
+    async getAll(req: Request, res: Response): Promise<void> {
         try {
             const empleados = await this.useCases.getAll.run();
             res.status(200).json(empleados);
@@ -47,7 +47,7 @@ export class EmpleadoController {
         }
     }
 
-    async getOneByIdEmpleado(req: Request, res: Response): Promise<void> {
+    async getOneById(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
             const empleado = await this.useCases.getOneById.run(Number(id));
@@ -63,7 +63,7 @@ export class EmpleadoController {
         }
     }
 
-    async updateEmpleado(req: Request, res: Response): Promise<void> {
+    async update(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
             const {
@@ -84,7 +84,7 @@ export class EmpleadoController {
         }
     }
 
-    async deleteEmpleado(req: Request, res: Response): Promise<void> {
+    async delete(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
 
