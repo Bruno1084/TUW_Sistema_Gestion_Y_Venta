@@ -114,7 +114,6 @@ public class VentasController implements ParentAware {
         // Configurar TableView
         tableVentas.setItems(ventas);
         columnIdVenta.setCellValueFactory(new PropertyValueFactory<>("id"));
-        columnUsuarioVenta.setCellValueFactory(new PropertyValueFactory<>("usuario"));
         columnClienteVenta.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getCliente().getNombre()));
         columnUsuarioVenta.setCellValueFactory(cellData ->

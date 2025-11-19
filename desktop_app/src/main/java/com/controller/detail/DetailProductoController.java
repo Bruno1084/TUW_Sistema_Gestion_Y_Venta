@@ -73,7 +73,7 @@ public class DetailProductoController implements ParentAware {
         }
     }
 
-    @FXML private void handleCerrarProducto(ActionEvent event) {
+    @FXML private void handleCerrarProducto() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fxml/Productos.fxml"));
             Parent productosView = loader.load();

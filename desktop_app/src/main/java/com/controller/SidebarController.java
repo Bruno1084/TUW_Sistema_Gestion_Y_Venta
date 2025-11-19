@@ -1,7 +1,6 @@
 package com.controller;
 
 import com.util.ParentAware;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -40,39 +39,41 @@ public class SidebarController {
         }
     }
 
-    @FXML private void handleBtnSidebarInicio(ActionEvent event) {
+    @FXML private void handleBtnSidebarInicio() {
         loadCenterView("/com/fxml/Inicio.fxml");
     }
 
-    @FXML private void handleBtnSidebarProductos (ActionEvent event) {
+    @FXML private void handleBtnSidebarProductos () {
         loadCenterView("/com/fxml/Productos.fxml");
     }
 
-    @FXML private void handleBtnSidebarOrdenVentas (ActionEvent event) {
+    @FXML private void handleBtnSidebarOrdenVentas () {
         loadCenterView("/com/fxml/Ventas.fxml");
     }
 
-    @FXML private void handleBtnSidebarOrdenCompras(ActionEvent event) {
+    @FXML private void handleBtnSidebarOrdenCompras() {
         loadCenterView("/com/fxml/Compras.fxml");
     }
 
-    @FXML private void handleBtnSidebarClientes (ActionEvent event) {
+    @FXML private void handleBtnSidebarClientes () {
         loadCenterView("/com/fxml/Clientes.fxml");
     }
 
-    @FXML private void handleBtnSidebarProveedores (ActionEvent event) {
+    @FXML private void handleBtnSidebarProveedores () {
         loadCenterView("/com/fxml/Proveedores.fxml");
     }
 
-    @FXML private void handleBtnSidebarEmpleados (ActionEvent event) {
+    @FXML private void handleBtnSidebarEmpleados () {
         loadCenterView("/com/fxml/Empleados.fxml");
     }
 
-    @FXML private void handleBtnSidebarReportes (ActionEvent event) {
+    @FXML private void handleBtnSidebarReportes () {
         loadCenterView("/com/fxml/Reportes.fxml");
     }
 
-    @FXML private void handleBtnSidebarCategorias (ActionEvent event) { }
+    @FXML private void handleBtnSidebarCategorias () { }
 
-    @FXML private void handleBtnSidebarMarcas (ActionEvent event) { }
+    @FXML private void handleBtnSidebarMarcas () {
+        loadCenterView("/com/fxml/Marcas.fxml");
+    }
 }
