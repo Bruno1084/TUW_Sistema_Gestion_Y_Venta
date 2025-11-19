@@ -4,6 +4,7 @@ import com.controller.RubrosController;
 import com.controller.SidebarController;
 import com.controller.edit.EditRubroController;
 import com.model.Rubro;
+import com.service.RubroService;
 import com.util.ParentAware;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,9 +15,11 @@ import javafx.scene.text.Text;
 public class DetailRubroController implements ParentAware {
     private Rubro rubro;
     private SidebarController parentController;
+    private RubroService rubroService = new RubroService();
 
     // Buttons
     @FXML Button btnEditarRubro;
+    @FXML Button btnEliminarRubro;
     @FXML Button btnCerrarRubro;
 
     // Text
@@ -49,6 +52,22 @@ public class DetailRubroController implements ParentAware {
             EditRubroController editRubroController = fxmlLoader.getController();
             editRubroController.setParentController(parentController);
             editRubroController.setRubro(rubro);
+
+            parentController.getMainBorderPane().setCenter(root);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    @FXML private void handleEliminarRubro() {
+        try {
+            rubroService.delete(rubro.getId());
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fxml/Rubros.fxml"));
+            Parent root = loader.load();
+
+            RubrosController rubrosController = loader.getController();
+            rubrosController.setParentController(parentController);
 
             parentController.getMainBorderPane().setCenter(root);
         } catch (Exception exception) {

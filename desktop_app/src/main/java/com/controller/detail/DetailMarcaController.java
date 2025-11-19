@@ -1,9 +1,11 @@
 package com.controller.detail;
 
+import com.controller.ClientesController;
 import com.controller.MarcasController;
 import com.controller.SidebarController;
 import com.controller.edit.EditMarcaController;
 import com.model.Marca;
+import com.service.MarcaService;
 import com.util.ParentAware;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,9 +16,11 @@ import javafx.scene.text.Text;
 public class DetailMarcaController implements ParentAware {
     private Marca marca;
     private SidebarController parentController;
+    private MarcaService marcaService = new MarcaService();
 
     // Buttons
     @FXML Button btnEditarMarca;
+    @FXML Button btnEliminarMarca;
     @FXML Button btnCerrarMarca;
 
     // Text
@@ -38,6 +42,22 @@ public class DetailMarcaController implements ParentAware {
         txtFechaCreacionMarca.setText(String.valueOf(marca.getFechaCreacion()));
         txtFechaModificacionMarca.setText(String.valueOf(marca.getFechaModificacion()));
         this.marca = marca;
+    }
+
+    @FXML private void handleEliminarMarca() {
+        try {
+            marcaService.delete(marca.getId());
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fxml/Marcas.fxml"));
+            Parent root = loader.load();
+
+            MarcasController marcasController = loader.getController();
+            marcasController.setParentController(parentController);
+
+            parentController.getMainBorderPane().setCenter(root);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     // FXML Methods

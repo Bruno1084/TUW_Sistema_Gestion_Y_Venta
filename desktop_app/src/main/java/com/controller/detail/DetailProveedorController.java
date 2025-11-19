@@ -4,6 +4,7 @@ import com.controller.ProveedoresController;
 import com.controller.SidebarController;
 import com.controller.edit.EditProveedorController;
 import com.model.Proveedor;
+import com.service.ProveedorService;
 import com.util.ParentAware;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,9 +15,11 @@ import javafx.scene.text.Text;
 public class DetailProveedorController implements ParentAware {
     private Proveedor proveedor;
     private SidebarController parentController;
+    private ProveedorService proveedorService = new ProveedorService();
 
     // Buttons
     @FXML Button btnEditarProveedor;
+    @FXML Button btnEliminarProveedor;
     @FXML Button btnCerrarProveedor;
 
     // Text
@@ -53,6 +56,22 @@ public class DetailProveedorController implements ParentAware {
             EditProveedorController editProveedorController = fxmlLoader.getController();
             editProveedorController.setParentController(parentController);
             editProveedorController.setProveedor(proveedor);
+
+            parentController.getMainBorderPane().setCenter(root);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    @FXML private void handleEliminarProveedor() {
+        try {
+            proveedorService.delete(proveedor.getId());
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fxml/Proveedores.fxml"));
+            Parent root = loader.load();
+
+            ProveedoresController proveedoresController = loader.getController();
+            proveedoresController.setParentController(parentController);
 
             parentController.getMainBorderPane().setCenter(root);
         } catch (Exception exception) {

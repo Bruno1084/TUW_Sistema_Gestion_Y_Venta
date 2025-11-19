@@ -4,8 +4,8 @@ import com.controller.ProductosController;
 import com.controller.SidebarController;
 import com.controller.add.AddProductoController;
 import com.model.Producto;
+import com.service.ProductoService;
 import com.util.ParentAware;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,9 +16,11 @@ import javafx.scene.text.Text;
 public class DetailProductoController implements ParentAware {
     private Producto producto;
     private SidebarController parentController;
+    private ProductoService productoService = new ProductoService();
 
     // Buttons
     @FXML Button btnEditarProducto;
+    @FXML Button btnEliminarProducto;
     @FXML Button btnCerrarProducto;
 
     // Text
@@ -66,6 +68,22 @@ public class DetailProductoController implements ParentAware {
             AddProductoController addProductoController = fxmlLoader.getController();
             addProductoController.setParentController(parentController);
             addProductoController.setProducto(producto);
+
+            parentController.getMainBorderPane().setCenter(root);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    @FXML private void handleEliminarProducto() {
+        try {
+            productoService.delete(producto.getCodigoBarra());
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fxml/Productos.fxml"));
+            Parent root = loader.load();
+
+            ProductosController productosController = loader.getController();
+            productosController.setParentController(parentController);
 
             parentController.getMainBorderPane().setCenter(root);
         } catch (Exception exception) {

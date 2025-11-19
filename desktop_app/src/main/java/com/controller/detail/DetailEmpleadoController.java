@@ -4,6 +4,7 @@ import com.controller.EmpleadosController;
 import com.controller.SidebarController;
 import com.controller.edit.EditEmpleadoController;
 import com.model.Empleado;
+import com.service.EmpleadoService;
 import com.util.ParentAware;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,9 +15,11 @@ import javafx.scene.text.Text;
 public class DetailEmpleadoController implements ParentAware {
     private Empleado empleado;
     private SidebarController parentController;
+    private EmpleadoService empleadoService = new EmpleadoService();
 
     // Buttons
     @FXML Button btnEditarEmpleado;
+    @FXML Button btnEliminarEmpleado;
     @FXML Button btnCerrarEmpleado;
 
     // Text
@@ -53,6 +56,22 @@ public class DetailEmpleadoController implements ParentAware {
             EditEmpleadoController editEmpleadoController = fxmlLoader.getController();
             editEmpleadoController.setParentController(parentController);
             editEmpleadoController.setEmpleado(empleado);
+
+            parentController.getMainBorderPane().setCenter(root);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    @FXML private void handleEliminarEmpleado() {
+        try {
+            empleadoService.delete(empleado.getId());
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fxml/Empleados.fxml"));
+            Parent root = loader.load();
+
+            EmpleadosController empleadosController = loader.getController();
+            empleadosController.setParentController(parentController);
 
             parentController.getMainBorderPane().setCenter(root);
         } catch (Exception exception) {

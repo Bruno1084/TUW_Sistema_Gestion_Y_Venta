@@ -90,6 +90,6 @@ export class MySQLRubroRepository implements RubroRepository {
     async delete(rubroId: RubroId): Promise<void> {
         const query = `UPDATE rubros SET es_activo = false WHERE id = ?`;
 
-        await this.pool.query(query, [rubroId]);
+        await this.pool.query(query, [rubroId.value]);
     }
 }

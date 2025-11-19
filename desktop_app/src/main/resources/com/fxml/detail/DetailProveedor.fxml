@@ -18,7 +18,7 @@
                         <Font name="System Bold" size="22.0" />
                     </font>
                 </Text>
-                <Button fx:id="btnEditarProveedor" layoutX="713.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleEditarProveedor" AnchorPane.rightAnchor="62.0" AnchorPane.topAnchor="10.0">
+                <Button fx:id="btnEditarProveedor" layoutX="713.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleEditarProveedor" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="10.0">
                     <font>
                         <Font name="System Bold" size="15.0" />
                     </font>
@@ -34,6 +34,14 @@
                         <FontAwesomeIconView glyphName="TIMES" size="18" />
                     </graphic>
                 </Button>
+            <Button fx:id="btnEliminarProveedor" layoutX="783.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleEliminarProveedor" AnchorPane.rightAnchor="60.0">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="TRASH" size="18" />
+               </graphic>
+            </Button>
             </AnchorPane>
             <AnchorPane VBox.vgrow="ALWAYS">
                 <HBox layoutX="342.0" layoutY="176.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
@@ -78,23 +86,21 @@
                                 </Text>
                                 <Text fx:id="txtTelefonoProveedor" strokeType="OUTSIDE" strokeWidth="0.0" />
                             </HBox>
-                            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="186.0" prefHeight="40.0"
-                                  spacing="10.0">
+                            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="186.0" prefHeight="40.0" spacing="10.0">
                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fecha de Creación">
                                     <font>
-                                        <Font size="13.0"/>
+                                        <Font size="13.0" />
                                     </font>
                                 </Text>
-                                <Text fx:id="txtFechaCreacionProveedor" strokeType="OUTSIDE" strokeWidth="0.0"/>
+                                <Text fx:id="txtFechaCreacionProveedor" strokeType="OUTSIDE" strokeWidth="0.0" />
                             </HBox>
-                            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="230.0" prefHeight="40.0"
-                                  spacing="10.0">
+                            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="230.0" prefHeight="40.0" spacing="10.0">
                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fecha de Modificación">
                                     <font>
-                                        <Font size="13.0"/>
+                                        <Font size="13.0" />
                                     </font>
                                 </Text>
-                                <Text fx:id="txtFechaModificacionProveedor" strokeType="OUTSIDE" strokeWidth="0.0"/>
+                                <Text fx:id="txtFechaModificacionProveedor" strokeType="OUTSIDE" strokeWidth="0.0" />
                             </HBox>
                         </VBox>
                     </AnchorPane>

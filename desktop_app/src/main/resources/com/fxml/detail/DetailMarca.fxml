@@ -18,7 +18,7 @@
                         <Font name="System Bold" size="22.0" />
                     </font>
                 </Text>
-                <Button fx:id="btnEditarMarca" layoutX="713.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleEditarMarca" AnchorPane.rightAnchor="62.0" AnchorPane.topAnchor="10.0">
+                <Button fx:id="btnEditarMarca" layoutX="713.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleEditarMarca" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="10.0">
                     <font>
                         <Font name="System Bold" size="15.0" />
                     </font>
@@ -34,6 +34,14 @@
                         <FontAwesomeIconView glyphName="TIMES" size="18" />
                     </graphic>
                 </Button>
+            <Button fx:id="btnEliminarMarca" layoutX="783.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleEliminarMarca" AnchorPane.rightAnchor="60.0">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="TRASH" size="18" />
+               </graphic>
+            </Button>
             </AnchorPane>
             <AnchorPane VBox.vgrow="ALWAYS">
                 <HBox layoutX="342.0" layoutY="176.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">

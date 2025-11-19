@@ -4,6 +4,7 @@ import com.controller.ClientesController;
 import com.controller.SidebarController;
 import com.controller.edit.EditClienteController;
 import com.model.Cliente;
+import com.service.ClienteService;
 import com.util.ParentAware;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,9 +16,11 @@ import javafx.scene.text.Text;
 public class DetailClienteController implements ParentAware {
     private Cliente cliente;
     private SidebarController parentController;
+    private ClienteService clienteService = new ClienteService();
 
     // Buttons
     @FXML Button btnEditarCliente;
+    @FXML Button btnEliminarCliente;
     @FXML Button btnCerrarCliente;
 
     // Text
@@ -54,6 +57,22 @@ public class DetailClienteController implements ParentAware {
             EditClienteController editClienteController = fxmlLoader.getController();
             editClienteController.setParentController(parentController);
             editClienteController.setCliente(cliente);
+
+            parentController.getMainBorderPane().setCenter(root);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    @FXML private void handleEliminarCliente() {
+        try {
+            clienteService.delete(cliente.getId());
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/fxml/Clientes.fxml"));
+            Parent root = loader.load();
+
+            ClientesController clientesController = loader.getController();
+            clientesController.setParentController(parentController);
 
             parentController.getMainBorderPane().setCenter(root);
         } catch (Exception exception) {
