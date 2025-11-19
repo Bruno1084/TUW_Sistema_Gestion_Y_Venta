@@ -28,7 +28,6 @@ public class RubrosController implements ParentAware {
     @FXML private TableView<Rubro> tableRubros;
     @FXML private TableColumn<Rubro, Integer> columnIdRubro;
     @FXML private TableColumn<Rubro, String> columnNombreRubro;
-    @FXML private TableColumn<Rubro, Integer> columnCantidadProductosRubro;
     @FXML private TableColumn<Rubro, Date> columnFechaCreacionRubro;
     @FXML private TableColumn<Rubro, Date> columnFechaModificacionRubro;
 

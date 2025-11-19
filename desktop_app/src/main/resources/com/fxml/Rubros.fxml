@@ -68,7 +68,6 @@
                                     <columns>
                                         <TableColumn fx:id="columnIdRubro" maxWidth="110.0" prefWidth="75.0" text="ID" />
                                         <TableColumn fx:id="columnNombreRubro" prefWidth="75.0" text="Nombre" />
-                                        <TableColumn fx:id="columnCantidadProductosRubro" prefWidth="75.0" text="Cantidad de Productos" />
                                         <TableColumn fx:id="columnFechaCreacionRubro" prefWidth="75.0" text="Fecha de Creación" />
                                         <TableColumn fx:id="columnFechaModificacionRubro" prefWidth="75.0" text="Fecha de Modificación" />
                                     </columns>

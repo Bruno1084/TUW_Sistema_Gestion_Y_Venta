@@ -28,7 +28,6 @@ public class MarcasController implements ParentAware {
     @FXML private TableView<Marca> tableMarcas;
     @FXML private TableColumn<Marca, Integer> columnIdMarca;
     @FXML private TableColumn<Marca, String> columnNombreMarca;
-    @FXML private TableColumn<Marca, Integer> columnCantidadProductosMarca;
     @FXML private TableColumn<Marca, Date> columnFechaCreacionMarca;
     @FXML private TableColumn<Marca, Date> columnFechaModificacionMarca;
 
