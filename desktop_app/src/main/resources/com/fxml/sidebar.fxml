@@ -38,30 +38,7 @@
 
                 <Accordion VBox.vgrow="NEVER">
                     <panes>
-                        <TitledPane expanded="false" text="Compras">
-                            <VBox spacing="6" styleClass="submenu">
-                        <Button fx:id="btnSidebarProveedores" alignment="BASELINE_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnSidebarProveedores" text="Proveedores">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="btnSidebarOrdenCompras" alignment="BASELINE_LEFT" layoutX="20.0" layoutY="20.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnSidebarOrdenCompras" text="Órdenes de compra">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Button>
-                            </VBox>
-                     <graphic>
-                                  <FontAwesomeIconView glyphName="SHOPPING_BAG" size="20" />
-                     </graphic>
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                        </TitledPane>
                         <TitledPane expanded="false" graphicTextGap="3.0" text="Ventas">
-                            <graphic>
-                                <FontAwesomeIconView glyphName="TRUCK" size="20" />
-                            </graphic>
                             <font>
                                 <Font name="System Bold" size="14.0" />
                             </font>
@@ -77,6 +54,29 @@
                                     </font>
                                 </Button>
                             </VBox>
+                     <graphic>
+                                  <FontAwesomeIconView glyphName="SHOPPING_BAG" size="20" />
+                     </graphic>
+                        </TitledPane>
+                        <TitledPane expanded="false" text="Compras">
+                            <VBox spacing="6" styleClass="submenu">
+                        <Button fx:id="btnSidebarProveedores" alignment="BASELINE_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnSidebarProveedores" text="Proveedores">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btnSidebarOrdenCompras" alignment="BASELINE_LEFT" layoutX="20.0" layoutY="20.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleBtnSidebarOrdenCompras" text="Órdenes de compra">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Button>
+                            </VBox>
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <graphic>
+                                <FontAwesomeIconView glyphName="TRUCK" size="20" />
+                     </graphic>
                         </TitledPane>
                         <TitledPane expanded="false" text="Inventario">
                             <VBox spacing="6" styleClass="submenu">
