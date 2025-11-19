@@ -3,6 +3,7 @@ package com.controller;
 import com.controller.add.AddCompraController;
 import com.controller.detail.DetailCompraController;
 import com.model.Compra;
+import com.model.Venta;
 import com.service.CompraService;
 import com.util.ParentAware;
 import javafx.beans.property.SimpleStringProperty;
@@ -14,6 +15,9 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -61,6 +65,8 @@ public class ComprasController implements ParentAware {
 
             compras.clear();
             compras.addAll(lista);
+
+            calcularEstadisticas();
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error al cargar compras");
@@ -107,6 +113,30 @@ public class ComprasController implements ParentAware {
             case "precio total" -> String.valueOf(c.getPrecioTotal()).contains(input);
             default -> false;
         };
+    }
+
+    private void calcularEstadisticas() {
+        float ingresosTotales = 0;
+        int ventasDelMes = 0;
+
+        LocalDate hoy = LocalDate.now();
+        int mesActual = hoy.getMonthValue();
+        int anioActual = hoy.getYear();
+
+        for (Compra c : comprasOriginal) {
+            ingresosTotales += c.getPrecioTotal();
+
+            LocalDate fechaVenta = c.getFechaCreacion().toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+
+            if (fechaVenta.getMonthValue() == mesActual && fechaVenta.getYear() == anioActual) {
+                ventasDelMes++;
+            }
+        }
+
+        txtGastosTotalesPrecio.setText("$ " + ingresosTotales);
+        txtComprasMensualesTotal.setText(String.valueOf(ventasDelMes));
     }
 
     // FXML Methods

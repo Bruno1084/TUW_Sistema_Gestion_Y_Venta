@@ -5,6 +5,7 @@ import com.controller.SidebarController;
 import com.model.Compra;
 import com.model.CompraDetalle;
 import com.model.dto.CompraDetailResponseDTO;
+import com.model.dto.CompraDetalleResponseDTO;
 import com.service.CompraService;
 import com.util.ParentAware;
 import javafx.beans.property.SimpleFloatProperty;
