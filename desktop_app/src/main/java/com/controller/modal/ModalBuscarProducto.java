@@ -52,7 +52,7 @@ public class ModalBuscarProducto {
 
     public void cargarProductos() {
         try {
-            Producto[] lista = productoService.getAllWithDetailProducto();
+            Producto[] lista = productoService.getAllWithDetail();
             productos.clear();
             productos.addAll(Arrays.asList(lista));
         } catch (Exception e) {

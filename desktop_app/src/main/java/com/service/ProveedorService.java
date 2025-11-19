@@ -13,11 +13,11 @@ public class ProveedorService {
     private final HttpClient client = HttpClient.newHttpClient();
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public Proveedor createProveedor(Proveedor proveedor) throws Exception {
+    public Proveedor create(Proveedor proveedor) throws Exception {
         String requestBody = mapper.writeValueAsString(proveedor);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/create"))
+                .uri(URI.create(BASE_URL))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
@@ -32,9 +32,9 @@ public class ProveedorService {
         }
     }
 
-    public Proveedor[] getAllProveedor() throws Exception {
+    public Proveedor[] getAll() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/getAll"))
+                .uri(URI.create(BASE_URL))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .GET()
@@ -49,9 +49,9 @@ public class ProveedorService {
         }
     }
 
-    public Proveedor getProveedorById(int proveedorId) throws Exception {
+    public Proveedor getOneById(int proveedorId) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/getOneById/" + proveedorId))
+                .uri(URI.create(BASE_URL + "/" + proveedorId))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .GET()
@@ -68,11 +68,11 @@ public class ProveedorService {
         }
     }
 
-    public Proveedor updateProveedor(int proveedorId, Proveedor proveedor) throws Exception {
+    public Proveedor update(int proveedorId, Proveedor proveedor) throws Exception {
         String requestBody = mapper.writeValueAsString(proveedor);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/update/" + proveedorId))
+                .uri(URI.create(BASE_URL + "/" + proveedorId))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
@@ -87,9 +87,9 @@ public class ProveedorService {
         }
     }
 
-    public boolean deleteProveedor(int proveedorId) throws Exception {
+    public boolean delete(int proveedorId) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/delete/" + proveedorId))
+                .uri(URI.create(BASE_URL + "/" + proveedorId))
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .DELETE()
                 .build();

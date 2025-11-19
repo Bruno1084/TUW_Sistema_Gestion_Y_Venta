@@ -145,7 +145,7 @@ public class AddCompraController implements ParentAware, ProductoSeleccionable {
                 inputProveedorCompra,
                 () -> {
                     try {
-                        return Arrays.asList(proveedorService.getAllProveedor());
+                        return Arrays.asList(proveedorService.getAll());
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -225,7 +225,7 @@ public class AddCompraController implements ParentAware, ProductoSeleccionable {
         try {
             if(!inputProveedorCompra.getText().isEmpty() && !inputProveedorCompra.getText().equals(proveedorSeleccionado.getNombre())) {
                 proveedorSeleccionado.setNombre(inputProveedorCompra.getText());
-                proveedorSeleccionado = proveedorService.createProveedor(proveedorSeleccionado);
+                proveedorSeleccionado = proveedorService.create(proveedorSeleccionado);
             }
 
             if (proveedorSeleccionado == null) {

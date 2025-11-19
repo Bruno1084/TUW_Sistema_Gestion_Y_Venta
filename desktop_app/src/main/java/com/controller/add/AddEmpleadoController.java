@@ -53,7 +53,7 @@ public class AddEmpleadoController implements ParentAware {
                     new Date()
             );
 
-            empleadoService.createEmpleado(nuevoEmpleado);
+            empleadoService.create(nuevoEmpleado);
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/Empleados.fxml"));
             Parent root = fxmlLoader.load();

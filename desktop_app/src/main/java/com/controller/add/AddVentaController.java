@@ -146,7 +146,7 @@ public class AddVentaController implements ParentAware, ProductoSeleccionable {
                 inputClienteVenta,
                 () -> {
                     try {
-                        return Arrays.asList(clienteService.getAllCliente());
+                        return Arrays.asList(clienteService.getAll());
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -226,7 +226,7 @@ public class AddVentaController implements ParentAware, ProductoSeleccionable {
         try {
             if(!inputClienteVenta.getText().isEmpty() && !inputClienteVenta.getText().equals(clienteSeleccionado.getNombre())) {
                 clienteSeleccionado.setNombre(inputClienteVenta.getText());
-                clienteSeleccionado = clienteService.createCliente(clienteSeleccionado);
+                clienteSeleccionado = clienteService.create(clienteSeleccionado);
             }
 
             if (clienteSeleccionado == null) {

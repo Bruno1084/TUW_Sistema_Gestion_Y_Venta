@@ -13,11 +13,11 @@ public class EmpleadoService {
     private final HttpClient client = HttpClient.newHttpClient();
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public Empleado createEmpleado(Empleado empleado) throws Exception {
+    public Empleado create(Empleado empleado) throws Exception {
         String requestBody = mapper.writeValueAsString(empleado);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/create"))
+                .uri(URI.create(BASE_URL))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
@@ -32,9 +32,9 @@ public class EmpleadoService {
         }
     }
 
-    public Empleado[] getAllEmpleado() throws Exception {
+    public Empleado[] getAll() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/getAll"))
+                .uri(URI.create(BASE_URL))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .GET()
@@ -49,9 +49,9 @@ public class EmpleadoService {
         }
     }
 
-    public Empleado getEmpleadoById(int empleadoId) throws Exception {
+    public Empleado getOneById(int empleadoId) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/getOneById/" + empleadoId))
+                .uri(URI.create(BASE_URL + "/" + empleadoId))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .GET()
@@ -68,11 +68,11 @@ public class EmpleadoService {
         }
     }
 
-    public Empleado updateEmpleado(int empleadoId, Empleado empleado) throws Exception {
+    public Empleado update(int empleadoId, Empleado empleado) throws Exception {
         String requestBody = mapper.writeValueAsString(empleado);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/update/" + empleadoId))
+                .uri(URI.create(BASE_URL + "/" + empleadoId))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
@@ -87,9 +87,9 @@ public class EmpleadoService {
         }
     }
 
-    public boolean deleteEmpleado(int empleadoId) throws Exception {
+    public boolean delete(int empleadoId) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/delete/" + empleadoId))
+                .uri(URI.create(BASE_URL + "/" + empleadoId))
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .DELETE()
                 .build();

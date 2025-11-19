@@ -49,7 +49,7 @@ public class EditProveedorController implements ParentAware {
             proveedor.setDireccion(inputDireccionProveedor.getText());
             proveedor.setTelefono(inputTelefonoProveedor.getText());
 
-            Proveedor actualizado = proveedorService.updateProveedor(proveedor.getId(), proveedor);
+            Proveedor actualizado = proveedorService.update(proveedor.getId(), proveedor);
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/detail/DetailProveedor.fxml"));
             Parent root = fxmlLoader.load();

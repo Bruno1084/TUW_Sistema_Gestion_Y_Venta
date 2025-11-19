@@ -1,7 +1,6 @@
 package com.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.model.Marca;
 import com.model.Rubro;
 import com.model.SessionManager;
 
@@ -15,11 +14,11 @@ public class RubroService {
     private final HttpClient client = HttpClient.newHttpClient();
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public Rubro createRubro(Rubro rubro) throws Exception {
+    public Rubro create(Rubro rubro) throws Exception {
         String requestBody = mapper.writeValueAsString(rubro);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/create"))
+                .uri(URI.create(BASE_URL))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
@@ -34,9 +33,9 @@ public class RubroService {
         }
     }
 
-    public Rubro[] getAllRubro() throws Exception {
+    public Rubro[] getAll() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/getAll"))
+                .uri(URI.create(BASE_URL))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .GET()
@@ -51,9 +50,9 @@ public class RubroService {
         }
     }
 
-    public Rubro getOneByIdRubro(int id) throws Exception {
+    public Rubro getOneById(int id) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/getOneById/" + id))
+                .uri(URI.create(BASE_URL + "/" + id))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .GET()
@@ -70,11 +69,11 @@ public class RubroService {
         }
     }
 
-    public Rubro updateRubro(int id, Rubro rubro) throws Exception {
+    public Rubro update(int id, Rubro rubro) throws Exception {
         String requestBody = mapper.writeValueAsString(rubro);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/update/" + id))
+                .uri(URI.create(BASE_URL + "/" + id))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
@@ -89,9 +88,9 @@ public class RubroService {
         }
     }
 
-    public boolean deleteRubro(int id) throws Exception {
+    public boolean delete(int id) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/delete/" + id))
+                .uri(URI.create(BASE_URL + "/" + id))
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .DELETE()
                 .build();

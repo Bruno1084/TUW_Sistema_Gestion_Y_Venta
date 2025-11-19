@@ -13,7 +13,7 @@ public class ClienteService {
     private final HttpClient client = HttpClient.newHttpClient();
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public Cliente createCliente(Cliente cliente) throws Exception {
+    public Cliente create(Cliente cliente) throws Exception {
         String requestBody = mapper.writeValueAsString(cliente);
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -32,9 +32,9 @@ public class ClienteService {
         }
     }
 
-    public Cliente[] getAllCliente() throws Exception {
+    public Cliente[] getAll() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/getAll"))
+                .uri(URI.create(BASE_URL))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .GET()
@@ -49,9 +49,9 @@ public class ClienteService {
         }
     }
 
-    public Cliente getClienteById(int clienteId) throws Exception {
+    public Cliente getOneById(int clienteId) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/getOneById/" + clienteId))
+                .uri(URI.create(BASE_URL + "/" + clienteId))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .GET()
@@ -68,11 +68,11 @@ public class ClienteService {
         }
     }
 
-    public Cliente updateCliente(int clienteId, Cliente cliente) throws Exception {
+    public Cliente update(int clienteId, Cliente cliente) throws Exception {
         String requestBody = mapper.writeValueAsString(cliente);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/update/" + clienteId))
+                .uri(URI.create(BASE_URL + "/" + clienteId))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
@@ -87,9 +87,9 @@ public class ClienteService {
         }
     }
 
-    public boolean deleteCliente(int clienteId) throws Exception {
+    public boolean delete(int clienteId) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/delete/" + clienteId))
+                .uri(URI.create(BASE_URL + "/" + clienteId))
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .DELETE()
                 .build();

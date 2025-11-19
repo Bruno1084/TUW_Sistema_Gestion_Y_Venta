@@ -53,7 +53,7 @@ public class ProveedoresController implements ParentAware {
 
     private void cargarProveedor() {
         try {
-            Proveedor[] lista = proveedorService.getAllProveedor();
+            Proveedor[] lista = proveedorService.getAll();
             proveedores.clear();
             proveedores.addAll(Arrays.asList(lista));
         } catch (Exception e) {

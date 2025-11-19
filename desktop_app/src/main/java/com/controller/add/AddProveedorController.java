@@ -52,7 +52,7 @@ public class AddProveedorController implements ParentAware {
                     new Date()
             );
 
-            proveedorService.createProveedor(nuevoProveedor);
+            proveedorService.create(nuevoProveedor);
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/Proveedores.fxml"));
             Parent root = fxmlLoader.load();

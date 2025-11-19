@@ -50,7 +50,7 @@ public class EditEmpleadoController implements ParentAware {
             empleado.setDireccion(inputDireccionEmpleado.getText());
             empleado.setTelefono(inputTelefonoEmpleado.getText());
 
-            Empleado actualizado = empleadoService.updateEmpleado(empleado.getId(), empleado);
+            Empleado actualizado = empleadoService.update(empleado.getId(), empleado);
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/detail/DetailEmpleado.fxml"));
             Parent root = fxmlLoader.load();

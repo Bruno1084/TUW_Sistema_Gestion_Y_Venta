@@ -44,7 +44,7 @@ public class ClientesController implements ParentAware {
 
     private void cargarCliente() {
         try {
-            Cliente[] lista = clienteService.getAllCliente();
+            Cliente[] lista = clienteService.getAll();
             clientes.clear();
             clientes.addAll(Arrays.asList(lista));
         } catch (Exception e) {

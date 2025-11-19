@@ -50,7 +50,7 @@ public class EditClienteController implements ParentAware {
             cliente.setDireccion(inputDireccionCliente.getText());
             cliente.setTelefono(inputTelefonoCliente.getText());
 
-            Cliente actualizado = clienteService.updateCliente(cliente.getId(), cliente);
+            Cliente actualizado = clienteService.update(cliente.getId(), cliente);
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/detail/DetailCliente.fxml"));
             Parent root = fxmlLoader.load();

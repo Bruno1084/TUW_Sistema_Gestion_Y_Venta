@@ -44,7 +44,7 @@ public class EmpleadosController implements ParentAware {
 
     private void cargarEmpleados() {
         try {
-            Empleado[] lista = empleadoService.getAllEmpleado();
+            Empleado[] lista = empleadoService.getAll();
 
             empleados.clear();
             empleados.addAll(Arrays.asList(lista));

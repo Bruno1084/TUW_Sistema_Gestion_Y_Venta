@@ -30,12 +30,12 @@ public class ProductoService {
         return  requestMap;
     }
 
-    public Producto createProducto(Producto producto) throws Exception {
+    public Producto create(Producto producto) throws Exception {
         Map<String, Object> requestMap = writePlaneMap(producto);
         String requestBody = mapper.writeValueAsString(requestMap);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/create"))
+                .uri(URI.create(BASE_URL))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
@@ -50,9 +50,9 @@ public class ProductoService {
         }
     }
 
-    public Producto[] getAllProducto() throws Exception {
+    public Producto[] getAll() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/getAll"))
+                .uri(URI.create(BASE_URL))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .GET()
@@ -67,9 +67,9 @@ public class ProductoService {
         }
     }
 
-    public Producto[] getAllWithDetailProducto() throws Exception {
+    public Producto[] getAllWithDetail() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/getAllWithDetail"))
+                .uri(URI.create(BASE_URL + "/detail"))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .GET()
@@ -84,9 +84,9 @@ public class ProductoService {
         }
     }
 
-    public Producto getProductoById(String codigoBarra) throws Exception {
+    public Producto getOneById(String codigoBarra) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/getOneById/" + codigoBarra))
+                .uri(URI.create(BASE_URL + "/" + codigoBarra))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .GET()
@@ -103,9 +103,9 @@ public class ProductoService {
         }
     }
 
-    public Producto getOneByIdWithDetailProducto(String codigoBarra) throws Exception {
+    public Producto getOneByIdWithDetail(String codigoBarra) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/getOneByIdWithDetail/" + codigoBarra))
+                .uri(URI.create(BASE_URL + "/detail/" + codigoBarra))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .GET()
@@ -122,12 +122,12 @@ public class ProductoService {
         }
     }
 
-    public Producto updateProducto(String codigoBarra, Producto producto) throws Exception{
+    public Producto update(String codigoBarra, Producto producto) throws Exception{
         Map<String, Object> requestMap = writePlaneMap(producto);
         String requestBody = mapper.writeValueAsString(requestMap);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/update/" + codigoBarra))
+                .uri(URI.create(BASE_URL + "/" + codigoBarra))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
@@ -142,9 +142,9 @@ public class ProductoService {
         }
     }
 
-    public boolean deleteProducto(String codigoBarra) throws Exception {
+    public boolean delete(String codigoBarra) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/delete/" + codigoBarra))
+                .uri(URI.create(BASE_URL + "/" + codigoBarra))
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .DELETE()
                 .build();

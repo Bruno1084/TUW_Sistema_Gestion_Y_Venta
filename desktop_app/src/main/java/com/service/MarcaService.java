@@ -13,11 +13,11 @@ public class MarcaService {
     private final HttpClient client = HttpClient.newHttpClient();
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public Marca createMarca(Marca marca) throws Exception {
+    public Marca create(Marca marca) throws Exception {
         String requestBody = mapper.writeValueAsString(marca);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/create"))
+                .uri(URI.create(BASE_URL))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
@@ -32,9 +32,9 @@ public class MarcaService {
         }
     }
 
-    public Marca[] getAllMarca() throws Exception {
+    public Marca[] getAll() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/getAll"))
+                .uri(URI.create(BASE_URL))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .GET()
@@ -49,9 +49,9 @@ public class MarcaService {
         }
     }
 
-    public Marca getOneByIdMarca(int id) throws Exception {
+    public Marca getOneById(int id) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/getOneById/" + id))
+                .uri(URI.create(BASE_URL + "/" + id))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .GET()
@@ -68,11 +68,11 @@ public class MarcaService {
         }
     }
 
-    public Marca updateMarca(int id, Marca marca) throws Exception {
+    public Marca update(int id, Marca marca) throws Exception {
         String requestBody = mapper.writeValueAsString(marca);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/update/" + id))
+                .uri(URI.create(BASE_URL + "/" + id))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
@@ -87,9 +87,9 @@ public class MarcaService {
         }
     }
 
-    public boolean deleteMarca(int id) throws Exception {
+    public boolean delete(int id) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/delete/" + id))
+                .uri(URI.create(BASE_URL + "/" + id))
                 .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
                 .DELETE()
                 .build();

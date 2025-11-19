@@ -119,7 +119,7 @@ public class AddProductoController implements ParentAware {
                 inputProveedorProducto,
                 () -> {
                     try {
-                        return Arrays.asList(proveedorService.getAllProveedor());
+                        return Arrays.asList(proveedorService.getAll());
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -132,7 +132,7 @@ public class AddProductoController implements ParentAware {
                 inputMarcaProducto,
                 () -> {
                     try {
-                        return Arrays.asList(marcaService.getAllMarca());
+                        return Arrays.asList(marcaService.getAll());
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -145,7 +145,7 @@ public class AddProductoController implements ParentAware {
                 inputRubroProducto,
                 () -> {
                     try {
-                        return Arrays.asList(rubroService.getAllRubro());
+                        return Arrays.asList(rubroService.getAll());
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -160,17 +160,17 @@ public class AddProductoController implements ParentAware {
             if (producto == null) {
                 if(!inputProveedorProducto.getText().isEmpty() && !inputProveedorProducto.getText().equals(proveedorSeleccionado.getNombre())) {
                     proveedorSeleccionado.setNombre(inputProveedorProducto.getText());
-                    proveedorSeleccionado = proveedorService.createProveedor(proveedorSeleccionado);
+                    proveedorSeleccionado = proveedorService.create(proveedorSeleccionado);
                 }
 
                 if(!inputMarcaProducto.getText().isEmpty() && !inputMarcaProducto.getText().equals(marcaSeleccionada.getNombre())) {
                     marcaSeleccionada.setNombre(inputMarcaProducto.getText());
-                    marcaSeleccionada = marcaService.createMarca(marcaSeleccionada);
+                    marcaSeleccionada = marcaService.create(marcaSeleccionada);
                 }
 
                 if (!inputRubroProducto.getText().isEmpty() && !inputRubroProducto.getText().equals(rubroSeleccionado.getNombre())) {
                     rubroSeleccionado.setNombre(inputRubroProducto.getText());
-                    rubroSeleccionado = rubroService.createRubro(rubroSeleccionado);
+                    rubroSeleccionado = rubroService.create(rubroSeleccionado);
                 }
 
                 // CASO CREAR PRODUCTO
@@ -193,7 +193,7 @@ public class AddProductoController implements ParentAware {
                         rubroSeleccionado
                 );
 
-                productoService.createProducto(nuevoProducto);
+                productoService.create(nuevoProducto);
 
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/Productos.fxml"));
                 Parent root = fxmlLoader.load();
@@ -210,7 +210,7 @@ public class AddProductoController implements ParentAware {
                 producto.setPrecioVenta(Float.parseFloat(inputPrecioVentaProducto.getText()));
                 producto.setStock(Integer.parseInt(inputStockProducto.getText()));
 
-                Producto actualizado = productoService.updateProducto(producto.getCodigoBarra(), producto);
+                Producto actualizado = productoService.update(producto.getCodigoBarra(), producto);
 
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/detail/DetailProducto.fxml"));
                 Parent root = fxmlLoader.load();

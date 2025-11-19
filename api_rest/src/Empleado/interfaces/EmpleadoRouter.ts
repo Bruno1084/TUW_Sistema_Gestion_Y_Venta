@@ -22,7 +22,7 @@ export function empleadoRouter(pool: Pool): Router {
     const router = Router();
 
     router.post('/empleados', controller.create.bind(controller));
-    router.get('/empleados/getAll', controller.getAll.bind(controller));
+    router.get('/empleados', controller.getAll.bind(controller));
     router.get('/empleados/:id', controller.getOneById.bind(controller));
     router.put('/empleados/:id', controller.update.bind(controller));
     router.delete('/empleados/:id', controller.delete.bind(controller));
