@@ -14,13 +14,16 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
-import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class ComprasController implements ParentAware {
     private SidebarController parentController;
     private final CompraService compraService = new CompraService();
     private final ObservableList<Compra> compras = FXCollections.observableArrayList();
+
+    private String filtroActual = "id";
+    private final ObservableList<Compra> comprasOriginal = FXCollections.observableArrayList();
 
     // Table View Compras
     @FXML private TableView<Compra> tableCompras;
@@ -31,9 +34,12 @@ public class ComprasController implements ParentAware {
     @FXML private TableColumn<Compra, Date> columnFechaCreacionCompra;
 
     // Buttons
-    @FXML private MenuButton btnConfigCompra;
     @FXML private MenuButton btnFiltrarCompra;
     @FXML private Button btnAniadirCompra;
+    @FXML private MenuItem menuItemId;
+    @FXML private MenuItem menuItemProveedor;
+    @FXML private MenuItem menuItemUsuario;
+    @FXML private MenuItem menuItemPrecioTotal;
 
     // Search Bar Compra
     @FXML private TextField inputBuscarCompra;
@@ -50,8 +56,11 @@ public class ComprasController implements ParentAware {
     private void cargarCompras() {
         try {
             Compra[] lista = compraService.getAll();
+            comprasOriginal.clear();
+            comprasOriginal.setAll(lista);
+
             compras.clear();
-            compras.addAll(Arrays.asList(lista));
+            compras.addAll(lista);
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error al cargar compras");
@@ -76,8 +85,33 @@ public class ComprasController implements ParentAware {
         }
     }
 
+    private void aplicarFiltro() {
+        String input = inputBuscarCompra.getText().toLowerCase().trim();
+
+        if (input.isEmpty()) {
+            compras.setAll(comprasOriginal);
+        } else {
+            List<Compra> filtrados = comprasOriginal.stream()
+                    .filter(p -> coincideFiltro(p, input))
+                    .toList();
+
+            compras.setAll(filtrados);
+        }
+    }
+
+    private boolean coincideFiltro(Compra c, String input) {
+        return switch (filtroActual) {
+            case "id" -> String.valueOf(c.getId()).contains(input);
+            case "proveedor" -> c.getProveedor().getNombre() != null && c.getProveedor().getNombre().toLowerCase().contains(input);
+            case "usuario" -> c.getUsuario().getNombre() != null && c.getUsuario().getNombre().toLowerCase().contains(input);
+            case "precio total" -> String.valueOf(c.getPrecioTotal()).contains(input);
+            default -> false;
+        };
+    }
+
     // FXML Methods
     @FXML public void initialize() {
+        // Configurar TableView
         tableCompras.setItems(compras);
         columnIdCompra.setCellValueFactory(new PropertyValueFactory<>("id"));
         columnUsuarioCompra.setCellValueFactory(new PropertyValueFactory<>("usuario"));
@@ -94,6 +128,33 @@ public class ComprasController implements ParentAware {
                         cargarDetalleCompra(newSelection);
                 }
         );
+
+        // Configurar MenuItem
+        menuItemId.setOnAction(e -> {
+            filtroActual = "id";
+            btnFiltrarCompra.setText("ID");
+            aplicarFiltro();
+        });
+
+        menuItemProveedor.setOnAction(e -> {
+            filtroActual = "proveedor";
+            btnFiltrarCompra.setText("Proveedor");
+            aplicarFiltro();
+        });
+
+        menuItemUsuario.setOnAction(e -> {
+            filtroActual = "usuario";
+            btnFiltrarCompra.setText("Usuario");
+            aplicarFiltro();
+        });
+
+        menuItemPrecioTotal.setOnAction(e -> {
+            filtroActual = "precio total";
+            btnFiltrarCompra.setText("Precio Total");
+            aplicarFiltro();
+        });
+
+        inputBuscarCompra.textProperty().addListener((obs, oldText, newText) -> aplicarFiltro());
 
         cargarCompras();
     }
@@ -113,9 +174,5 @@ public class ComprasController implements ParentAware {
             alert.setContentText(exception.getMessage());
             alert.showAndWait();
         }
-    }
-
-    @FXML private void handleBtnFiltrar() {
-
     }
 }

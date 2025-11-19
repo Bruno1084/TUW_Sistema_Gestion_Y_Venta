@@ -14,16 +14,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import java.util.Arrays;
+import java.util.List;
 
 public class ProductosController implements ParentAware {
     private SidebarController parentController;
     private final ProductoService productoService = new ProductoService();
     private final ObservableList<Producto> productos = FXCollections.observableArrayList();
 
-    // Root AnchorPane
-    @FXML private AnchorPane rootPane;
+    private String filtroActual = "descripcion";
+    private final ObservableList<Producto> productosOriginal = FXCollections.observableArrayList();
 
     // Table View Productos
     @FXML private TableView<Producto> tableProductos;
@@ -36,12 +35,13 @@ public class ProductosController implements ParentAware {
 
     // Buttons
     @FXML private MenuButton btnFiltrarProducto;
-    @FXML private MenuButton btnConfigProducto;
     @FXML private Button btnAniadirProducto;
-
-    // Menu Items
-    @FXML private MenuItem menuItemImportarProducto;
-    @FXML private MenuItem menuItemExportarProducto;
+    @FXML private MenuItem menuItemCodigoBarra;
+    @FXML private MenuItem menuItemDescripcion;
+    @FXML private MenuItem menuItemMarca;
+    @FXML private MenuItem menuItemRubro;
+    @FXML private MenuItem menuItemPrecioVenta;
+    @FXML private MenuItem menuItemStock;
 
     // Search Bar Producto
     @FXML private TextField inputBuscarProducto;
@@ -54,8 +54,11 @@ public class ProductosController implements ParentAware {
     public void cargarProductos() {
         try {
             Producto[] lista = productoService.getAllWithDetail();
+            productosOriginal.clear();
+            productosOriginal.setAll(lista);
+
             productos.clear();
-            productos.addAll(Arrays.asList(lista));
+            productos.addAll(lista);
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error al cargar productos");
@@ -80,8 +83,35 @@ public class ProductosController implements ParentAware {
         }
     }
 
+    private void aplicarFiltro() {
+        String input = inputBuscarProducto.getText().toLowerCase().trim();
+
+        if (input.isEmpty()) {
+            productos.setAll(productosOriginal);
+        } else {
+            List<Producto> filtrados = productosOriginal.stream()
+                    .filter(p -> coincideFiltro(p, input))
+                    .toList();
+
+            productos.setAll(filtrados);
+        }
+    }
+
+    private boolean coincideFiltro(Producto p, String input) {
+        return switch (filtroActual) {
+            case "codigo barra" -> String.valueOf(p.getCodigoBarra()).contains(input);
+            case "descripcion" -> p.getDescripcion() != null && p.getDescripcion().toLowerCase().contains(input);
+            case "marca" -> p.getMarca().getNombre() != null && p.getMarca().getNombre().toLowerCase().contains(input);
+            case "rubro" -> p.getRubro().getNombre() != null && p.getRubro().getNombre().toLowerCase().contains(input);
+            case "precio venta" -> String.valueOf(p.getPrecioVenta()).contains(input);
+            case "stock" -> String.valueOf(p.getStock()).contains(input);
+            default -> false;
+        };
+    }
+
     // FXML Methods
     @FXML public void initialize() {
+        // Configurar TableView
         tableProductos.setItems(productos);
         columnCodigoBarraProducto.setCellValueFactory(new PropertyValueFactory<>("codigoBarra"));
         columnDescripcionProducto.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
@@ -101,6 +131,46 @@ public class ProductosController implements ParentAware {
                     }
                 }
         );
+
+        // Configurar MenuItem
+        menuItemCodigoBarra.setOnAction(e -> {
+            filtroActual = "codigo barra";
+            btnFiltrarProducto.setText("Código Barra");
+            aplicarFiltro();
+        });
+
+        menuItemDescripcion.setOnAction(e -> {
+            filtroActual = "descripcion";
+            btnFiltrarProducto.setText("Descripcion");
+            aplicarFiltro();
+        });
+
+        menuItemMarca.setOnAction(e -> {
+            filtroActual = "marca";
+            btnFiltrarProducto.setText("Marca");
+            aplicarFiltro();
+        });
+
+        menuItemRubro.setOnAction(e -> {
+            filtroActual = "rubro";
+            btnFiltrarProducto.setText("Rubro");
+            aplicarFiltro();
+        });
+
+        menuItemPrecioVenta.setOnAction(e -> {
+            filtroActual = "precio venta";
+            btnFiltrarProducto.setText("Precio de Venta");
+            aplicarFiltro();
+        });
+
+        menuItemStock.setOnAction(e -> {
+            filtroActual = "stock";
+            btnFiltrarProducto.setText("Stock");
+            aplicarFiltro();
+        });
+
+        inputBuscarProducto.textProperty().addListener((obs, oldText, newText) -> aplicarFiltro());
+
         cargarProductos();
     }
 

@@ -26,7 +26,7 @@
                         <Font name="System Bold" size="20.0" />
                     </font>
                 </Text>
-                <Button fx:id="btnAniadirVenta" layoutX="713.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleBtnAniadir" text="Añadir Venta" AnchorPane.rightAnchor="20.0">
+                <Button fx:id="btnAniadirVenta" layoutX="713.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleBtnAniadir" AnchorPane.rightAnchor="20.0">
                     <graphic>
                         <FontAwesomeIconView glyphName="PLUS" size="15.0" />
                     </graphic>
@@ -97,11 +97,12 @@
                             </TextField>
                         </AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="100.0">
-                            <MenuButton fx:id="btnFiltrarVenta" mnemonicParsing="false" onAction="#handleBtnFiltrar" prefHeight="35.0" prefWidth="100.0" text="Filtrar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <MenuButton fx:id="btnFiltrarVenta" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" text="Filtrar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <items>
-                                    <MenuItem mnemonicParsing="false" text="Código de Barra" />
-                                    <MenuItem mnemonicParsing="false" text="Descripción" />
-                                    <MenuItem mnemonicParsing="false" text="Precio de Venta" />
+                                    <MenuItem fx:id="menuItemId" mnemonicParsing="false" text="ID" />
+                                    <MenuItem fx:id="menuItemCliente" mnemonicParsing="false" text="Cliente" />
+                                    <MenuItem fx:id="menuItemUsuario" mnemonicParsing="false" text="Usuario" />
+                           <MenuItem fx:id="menuItemPrecioTotal" mnemonicParsing="false" text="Precio Total" />
                                 </items>
                                 <graphic>
                                     <FontAwesomeIconView glyphName="FILTER" size="15.0" />

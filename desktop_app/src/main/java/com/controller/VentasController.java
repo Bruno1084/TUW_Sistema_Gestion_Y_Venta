@@ -14,13 +14,16 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
-import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class VentasController implements ParentAware {
     private SidebarController parentController;
     private final VentaService ventasService = new VentaService();
     private final ObservableList<Venta> ventas = FXCollections.observableArrayList();
+
+    private String filtroActual = "id";
+    private final ObservableList<Venta> ventasOriginal = FXCollections.observableArrayList();
 
     // Table View Ventas
     @FXML private TableView<Venta> tableVentas;
@@ -31,9 +34,12 @@ public class VentasController implements ParentAware {
     @FXML private TableColumn<Venta, Date> columnFechaCreacionVenta;
 
     // Buttons
-    @FXML private MenuButton btnConfigVenta;
     @FXML private MenuButton btnFiltrarVenta;
     @FXML private Button btnAniadirVenta;
+    @FXML private MenuItem menuItemId;
+    @FXML private MenuItem menuItemCliente;
+    @FXML private MenuItem menuItemUsuario;
+    @FXML private MenuItem menuItemPrecioTotal;
 
     // Search Bar Venta
     @FXML private TextField inputBuscarVenta;
@@ -50,8 +56,11 @@ public class VentasController implements ParentAware {
     private void cargarVentas() {
         try {
             Venta[] lista = ventasService.getAll();
+            ventasOriginal.clear();
+            ventasOriginal.setAll(lista);
+
             ventas.clear();
-            ventas.addAll(Arrays.asList(lista));
+            ventas.addAll(lista);
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error al cargar ventas");
@@ -76,8 +85,33 @@ public class VentasController implements ParentAware {
         }
     }
 
+    private void aplicarFiltro() {
+        String input = inputBuscarVenta.getText().toLowerCase().trim();
+
+        if (input.isEmpty()) {
+            ventas.setAll(ventasOriginal);
+        } else {
+            List<Venta> filtrados = ventasOriginal.stream()
+                    .filter(v -> coincideFiltro(v, input))
+                    .toList();
+
+            ventas.setAll(filtrados);
+        }
+    }
+
+    private boolean coincideFiltro(Venta v, String input) {
+        return switch (filtroActual) {
+            case "id" -> String.valueOf(v.getId()).contains(input);
+            case "cliente" -> v.getCliente().getNombre() != null && v.getCliente().getNombre().toLowerCase().contains(input);
+            case "usuario" -> v.getUsuario().getNombre() != null && v.getUsuario().getNombre().toLowerCase().contains(input);
+            case "precio total" -> String.valueOf(v.getPrecioTotal()).contains(input);
+            default -> false;
+        };
+    }
+
     // FXML Methods
     @FXML public void initialize() {
+        // Configurar TableView
         tableVentas.setItems(ventas);
         columnIdVenta.setCellValueFactory(new PropertyValueFactory<>("id"));
         columnUsuarioVenta.setCellValueFactory(new PropertyValueFactory<>("usuario"));
@@ -94,6 +128,33 @@ public class VentasController implements ParentAware {
                         cargarDetalleCliente(newSelection);
                 }
         );
+
+        // Configurar MenuItem
+        menuItemId.setOnAction(e -> {
+            filtroActual = "id";
+            btnFiltrarVenta.setText("ID");
+            aplicarFiltro();
+        });
+
+        menuItemCliente.setOnAction(e -> {
+            filtroActual = "cliente";
+            btnFiltrarVenta.setText("Cliente");
+            aplicarFiltro();
+        });
+
+        menuItemUsuario.setOnAction(e -> {
+            filtroActual = "usuario";
+            btnFiltrarVenta.setText("Usuario");
+            aplicarFiltro();
+        });
+
+        menuItemPrecioTotal.setOnAction(e -> {
+            filtroActual = "precio total";
+            btnFiltrarVenta.setText("Precio Total");
+            aplicarFiltro();
+        });
+
+        inputBuscarVenta.textProperty().addListener((obs, oldText, newText) -> aplicarFiltro());
 
         cargarVentas();
     }
@@ -113,9 +174,5 @@ public class VentasController implements ParentAware {
             alert.setContentText(exception.getMessage());
             alert.showAndWait();
         }
-    }
-
-    @FXML private void handleBtnFiltrar() {
-
     }
 }

@@ -26,7 +26,7 @@
                         <Font name="System Bold" size="20.0" />
                     </font>
                 </Text>
-                <Button fx:id="btnAniadirCompra" layoutX="713.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleBtnAniadir" AnchorPane.rightAnchor="70.0">
+                <Button fx:id="btnAniadirCompra" layoutX="713.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleBtnAniadir" AnchorPane.rightAnchor="20.0">
                     <graphic>
                         <FontAwesomeIconView glyphName="PLUS" size="15.0" />
                     </graphic>
@@ -34,15 +34,6 @@
                         <Font name="System Bold" size="15.0" />
                     </font>
                 </Button>
-            <MenuButton fx:id="btnConfigCompra" layoutX="809.0" layoutY="8.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="39.0" AnchorPane.rightAnchor="20.0">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="Action 1" />
-                  <MenuItem mnemonicParsing="false" text="Action 2" />
-               </items>
-               <graphic>
-                  <FontAwesomeIconView glyphName="ELLIPSIS_V" size="18.0" />
-               </graphic>
-            </MenuButton>
             </AnchorPane>
             <AnchorPane prefHeight="150.0" prefWidth="200.0">
                 <GridPane hgap="15.0" layoutX="24.0" layoutY="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
@@ -99,18 +90,19 @@
                 <AnchorPane layoutX="20.0" layoutY="20.0" styleClass="anchorPaneStat" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
                     <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
                         <AnchorPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                            <TextField id="inputBuscarCompra" fx:id="inputBuscarCompra" layoutX="133.0" layoutY="18.0" prefHeight="60.0" prefWidth="456.0" promptText="Buscar Ventas" stylesheets="@../css/ventas.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <TextField id="inputBuscarCompra" fx:id="inputBuscarCompra" layoutX="133.0" layoutY="18.0" prefHeight="60.0" prefWidth="456.0" promptText="Buscar Compras" stylesheets="@../css/ventas.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <font>
                                     <Font size="15.0" />
                                 </font>
                             </TextField>
                         </AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="100.0">
-                            <MenuButton fx:id="btnFiltrarCompra" mnemonicParsing="false" onAction="#handleBtnFiltrar" prefHeight="35.0" prefWidth="100.0" text="Filtrar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <MenuButton fx:id="btnFiltrarCompra" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" text="Filtrar" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <items>
-                                    <MenuItem mnemonicParsing="false" text="Código de Barra" />
-                                    <MenuItem mnemonicParsing="false" text="Descripción" />
-                                    <MenuItem mnemonicParsing="false" text="Precio de Venta" />
+                                    <MenuItem fx:id="menuItemId" mnemonicParsing="false" text="ID" />
+                                    <MenuItem fx:id="menuItemProveedor" mnemonicParsing="false" text="Proveedor" />
+                                    <MenuItem fx:id="menuItemUsuario" mnemonicParsing="false" text="Usuario" />
+                           <MenuItem fx:id="menuItemPrecioTotal" mnemonicParsing="false" text="Precio Total" />
                                 </items>
                                 <graphic>
                                     <FontAwesomeIconView glyphName="FILTER" size="15.0" />

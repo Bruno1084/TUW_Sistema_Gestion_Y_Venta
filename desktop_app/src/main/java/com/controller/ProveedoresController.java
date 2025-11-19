@@ -12,15 +12,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.text.Text;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class ProveedoresController implements ParentAware {
     private SidebarController parentController;
     private final ProveedorService proveedorService = new ProveedorService();
     private final ObservableList<Proveedor> proveedores = FXCollections.observableArrayList();
+
+    private String filtroActual = "nombre";
+    private final ObservableList<Proveedor> proveedoresOriginal = FXCollections.observableArrayList();
 
     // Table View Proveedores
     @FXML private TableView<Proveedor> tableProveedores;
@@ -34,17 +36,13 @@ public class ProveedoresController implements ParentAware {
     // Buttons
     @FXML private MenuButton btnFiltrarProveedor;
     @FXML private Button btnAniadirProveedor;
+    @FXML private MenuItem menuItemId;
+    @FXML private MenuItem menuItemNombre;
+    @FXML private MenuItem menuItemDireccion;
+    @FXML private MenuItem menuItemTelefono;
 
     // Search Bar Proveedores
     @FXML TextField inputBuscarProveedor;
-
-    // Text
-    @FXML private Text txtIdProveedor;
-    @FXML private Text txtNombreProveedor;
-    @FXML private Text txtDireccionProveedor;
-    @FXML private Text txtTelefonoProveedor;
-    @FXML private Text txtFechaCreacionProveedor;
-    @FXML private Text txtFechaModificacionProveedor;
 
     // Helper Methods
     public void setParentController(SidebarController parentController) {
@@ -54,8 +52,11 @@ public class ProveedoresController implements ParentAware {
     private void cargarProveedor() {
         try {
             Proveedor[] lista = proveedorService.getAll();
+            proveedoresOriginal.clear();
+            proveedoresOriginal.setAll(lista);
+
             proveedores.clear();
-            proveedores.addAll(Arrays.asList(lista));
+            proveedores.setAll(lista);
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error al cargar proveedores");
@@ -80,8 +81,33 @@ public class ProveedoresController implements ParentAware {
         }
     }
 
+    private void aplicarFiltro() {
+        String input = inputBuscarProveedor.getText().toLowerCase().trim();
+
+        if (input.isEmpty()) {
+            proveedores.setAll(proveedoresOriginal);
+        } else {
+            List<Proveedor> filtrados = proveedoresOriginal.stream()
+                    .filter(p -> coincideFiltro(p, input))
+                    .toList();
+
+            proveedores.setAll(filtrados);
+        }
+    }
+
+    private boolean coincideFiltro(Proveedor p, String input) {
+        return switch (filtroActual) {
+            case "id" -> String.valueOf(p.getId()).contains(input);
+            case "nombre" -> p.getNombre() != null && p.getNombre().toLowerCase().contains(input);
+            case "direccion" -> p.getDireccion() != null && p.getDireccion().toLowerCase().contains(input);
+            case "telefono" -> p.getTelefono() != null && p.getTelefono().toLowerCase().contains(input);
+            default -> false;
+        };
+    }
+
     // FXML Methods
     @FXML public void initialize() {
+        // Configurar TableView
         tableProveedores.setItems(proveedores);
         columnIdProveedor.setCellValueFactory(new PropertyValueFactory<>("id"));
         columnNombreProveedor.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -96,6 +122,34 @@ public class ProveedoresController implements ParentAware {
                         cargarDetalleProveedor(newSelection);
                 }
         );
+
+        // Configurar MenuButton
+        menuItemId.setOnAction(e -> {
+            filtroActual = "id";
+            btnFiltrarProveedor.setText("ID");
+            aplicarFiltro();
+        });
+
+        menuItemNombre.setOnAction(e -> {
+            filtroActual = "nombre";
+            btnFiltrarProveedor.setText("Nombre");
+            aplicarFiltro();
+        });
+
+        menuItemDireccion.setOnAction(e -> {
+            filtroActual = "direccion";
+            btnFiltrarProveedor.setText("Dirección");
+            aplicarFiltro();
+        });
+
+        menuItemTelefono.setOnAction(e -> {
+            filtroActual = "telefono";
+            btnFiltrarProveedor.setText("Teléfono");
+            aplicarFiltro();
+        });
+
+        inputBuscarProveedor.textProperty().addListener((obs, oldText, newText) -> aplicarFiltro());
+
         cargarProveedor();
     }
 

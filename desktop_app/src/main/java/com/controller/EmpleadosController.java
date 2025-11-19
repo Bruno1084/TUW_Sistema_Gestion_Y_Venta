@@ -13,13 +13,16 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class EmpleadosController implements ParentAware {
     private SidebarController parentController;
     private final EmpleadoService empleadoService = new EmpleadoService();
     private final ObservableList<Empleado> empleados = FXCollections.observableArrayList();
+
+    private String filtroActual = "nombre";
+    private final ObservableList<Empleado> empleadosOriginal = FXCollections.observableArrayList();
 
     // Table View Empleados
     @FXML private TableView<Empleado> tableEmpleados;
@@ -33,6 +36,10 @@ public class EmpleadosController implements ParentAware {
     // Buttons
     @FXML private MenuButton btnFiltrarEmpleado;
     @FXML private Button btnAniadirEmpleado;
+    @FXML private MenuItem menuItemId;
+    @FXML private MenuItem menuItemNombre;
+    @FXML private MenuItem menuItemDireccion;
+    @FXML private MenuItem menuItemTelefono;
 
     // Search Bar Empleados
     @FXML private TextField inputBuscarEmpleado;
@@ -45,9 +52,11 @@ public class EmpleadosController implements ParentAware {
     private void cargarEmpleados() {
         try {
             Empleado[] lista = empleadoService.getAll();
+            empleadosOriginal.clear();
+            empleadosOriginal.setAll(lista);
 
             empleados.clear();
-            empleados.addAll(Arrays.asList(lista));
+            empleados.setAll(lista);
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error al cargar empleados");
@@ -72,8 +81,33 @@ public class EmpleadosController implements ParentAware {
         }
     }
 
+    private void aplicarFiltro() {
+        String input = inputBuscarEmpleado.getText().toLowerCase().trim();
+
+        if (input.isEmpty()) {
+            empleados.setAll(empleadosOriginal);
+        } else {
+            List<Empleado> filtrados = empleadosOriginal.stream()
+                    .filter(p -> coincideFiltro(p, input))
+                    .toList();
+
+            empleados.setAll(filtrados);
+        }
+    }
+
+    private boolean coincideFiltro(Empleado e, String input) {
+        return switch (filtroActual) {
+            case "id" -> String.valueOf(e.getId()).contains(input);
+            case "nombre" -> e.getNombre() != null && e.getNombre().toLowerCase().contains(input);
+            case "direccion" -> e.getDireccion() != null && e.getDireccion().toLowerCase().contains(input);
+            case "telefono" -> e.getTelefono() != null && e.getTelefono().toLowerCase().contains(input);
+            default -> false;
+        };
+    }
+
     // FXML Methods
     @FXML public void initialize() {
+        // Configurar TableView
         tableEmpleados.setItems(empleados);
         columnIdEmpleado.setCellValueFactory(new PropertyValueFactory<>("id"));
         columnNombreEmpleado.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -88,6 +122,34 @@ public class EmpleadosController implements ParentAware {
                         cargarDetalleEmpleado(newSelection);
                 }
         );
+
+        // Configurar MenuItem
+        menuItemId.setOnAction(e -> {
+            filtroActual = "id";
+            btnFiltrarEmpleado.setText("ID");
+            aplicarFiltro();
+        });
+
+        menuItemNombre.setOnAction(e -> {
+            filtroActual = "nombre";
+            btnFiltrarEmpleado.setText("Nombre");
+            aplicarFiltro();
+        });
+
+        menuItemDireccion.setOnAction(e -> {
+            filtroActual = "direccion";
+            btnFiltrarEmpleado.setText("Dirección");
+            aplicarFiltro();
+        });
+
+        menuItemTelefono.setOnAction(e -> {
+            filtroActual = "telefono";
+            btnFiltrarEmpleado.setText("Teléfono");
+            aplicarFiltro();
+        });
+
+        inputBuscarEmpleado.textProperty().addListener((obs, oldText, newText) -> aplicarFiltro());
+
         cargarEmpleados();
     }
 
