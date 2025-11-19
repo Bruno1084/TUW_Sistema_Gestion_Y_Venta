@@ -106,10 +106,8 @@ public class MarcasController implements ParentAware {
         tableMarcas.setItems(marcas);
         columnIdMarca.setCellValueFactory(new PropertyValueFactory<>("id"));
         columnNombreMarca.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-//        columnCantidadProductosMarca.setCellValueFactory(new PropertyValueFactory<>("direccion"));
         columnFechaCreacionMarca.setCellValueFactory(new PropertyValueFactory<>("fechaCreacion"));
         columnFechaModificacionMarca.setCellValueFactory(new PropertyValueFactory<>("fechaModificacion"));
-
 
         tableMarcas.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
@@ -154,4 +152,3 @@ public class MarcasController implements ParentAware {
     }
 
 }
-

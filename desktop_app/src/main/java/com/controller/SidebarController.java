@@ -71,7 +71,9 @@ public class SidebarController {
         loadCenterView("/com/fxml/Reportes.fxml");
     }
 
-    @FXML private void handleBtnSidebarCategorias () { }
+    @FXML private void handleBtnSidebarCategorias () {
+        loadCenterView("/com/fxml/Rubros.fxml");
+    }
 
     @FXML private void handleBtnSidebarMarcas () {
         loadCenterView("/com/fxml/Marcas.fxml");

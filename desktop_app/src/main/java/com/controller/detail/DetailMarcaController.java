@@ -2,7 +2,6 @@ package com.controller.detail;
 
 import com.controller.MarcasController;
 import com.controller.SidebarController;
-import com.controller.add.AddMarcaController;
 import com.controller.edit.EditMarcaController;
 import com.model.Marca;
 import com.util.ParentAware;
@@ -26,7 +25,6 @@ public class DetailMarcaController implements ParentAware {
     @FXML Text txtNombreMarca;
     @FXML Text txtFechaCreacionMarca;
     @FXML Text txtFechaModificacionMarca;
-    @FXML Text txtCantidadProductosMarca;
 
     // Helper Methods
     public void setParentController(SidebarController parentController) {
