@@ -35,7 +35,7 @@ export function productoRouter(
     const router = Router();
 
     router.post('/productos', controller.create.bind(controller));
-    router.get('/productos/getAll', controller.getAll.bind(controller));
+    router.get('/productos', controller.getAll.bind(controller));
     router.get('/productos/detail', controller.getAllProductoWithDetail.bind(controller));
     router.get('/productos/:codigo', controller.getOneById.bind(controller));
     router.get('/productos/detail/:codigo', controller.getOneByIdWithDetail.bind(controller));

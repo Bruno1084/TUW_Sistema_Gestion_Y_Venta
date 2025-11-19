@@ -22,7 +22,7 @@ export function marcaRouter(pool: Pool): Router {
     const router = Router();
 
     router.post('/marcas', controller.create.bind(controller));
-    router.get('/marcas/getAll', controller.getAll.bind(controller));
+    router.get('/marcas', controller.getAll.bind(controller));
     router.get('/marcas/:id', controller.getOneById.bind(controller));
     router.put('/marcas/:id', controller.update.bind(controller));
     router.delete('/marcas/:id', controller.delete.bind(controller));
