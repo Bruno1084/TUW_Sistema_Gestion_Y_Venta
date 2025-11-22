@@ -52,3 +52,10 @@ export interface CompraDetalleDTO {
         imgUri: string;
     };
 }
+
+export interface CompraReporteByProveedoresDTO {
+    id: number;
+    proveedor: string;
+    comprasTotales: number;
+    precioTotal: number;
+}
