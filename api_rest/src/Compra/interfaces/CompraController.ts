@@ -3,12 +3,14 @@ import type { CompraCreate } from "../application/CompraCreate"
 import type { CompraGetAll } from "../application/CompraGetAll";
 import type { CompraGetOneByIdWithDetail } from "../application/CompraGetOneByIdWithDetail";
 import type { CompraGetAllByProveedores } from "../application/CompraGetAllByProveedores";
+import type { CompraGetAllByProductos } from "../application/CompraGetAllByProductos";
 
 type CompraUseCases = {
     create: CompraCreate;
     getAll: CompraGetAll;
     getOneByIdWithDetail: CompraGetOneByIdWithDetail;
     getAllByProveedores: CompraGetAllByProveedores;
+    getAllByProductos: CompraGetAllByProductos;
 }
 
 export class CompraController {
@@ -50,6 +52,16 @@ export class CompraController {
         try {
             const { intervaloFecha } = req.params;
             const compras = await this.useCases.getAllByProveedores.run(new Date(intervaloFecha!));
+            res.status(200).json(compras);
+        } catch (err:any) {
+            res.status(500).json({ error: err.message});
+        }
+    }
+
+    async getAllByProductos(req: Request, res: Response): Promise<void> {
+        try {
+            const { intervaloFecha } = req.params;
+            const compras = await this.useCases.getAllByProductos.run(new Date(intervaloFecha!));
             res.status(200).json(compras);
         } catch (err:any) {
             res.status(500).json({ error: err.message});

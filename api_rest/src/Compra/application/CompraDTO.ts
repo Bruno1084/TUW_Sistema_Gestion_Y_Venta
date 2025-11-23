@@ -59,3 +59,10 @@ export interface CompraReporteByProveedoresDTO {
     comprasTotales: number;
     precioTotal: number;
 }
+
+export interface CompraReporteByProductosDTO {
+    codigoBarra: string;
+    descripcion: string;
+    cantidadComprada: number;
+    precioTotal: number;
+}

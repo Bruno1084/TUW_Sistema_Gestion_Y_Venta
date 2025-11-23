@@ -6,6 +6,7 @@ import { CompraCreate } from "../application/CompraCreate";
 import { CompraGetAll } from "../application/CompraGetAll";
 import { CompraGetOneByIdWithDetail } from "../application/CompraGetOneByIdWithDetail";
 import { CompraGetAllByProveedores } from "../application/CompraGetAllByProveedores";
+import { CompraGetAllByProductos } from "../application/CompraGetAllByProductos";
 
 export function compraRouter(pool: Pool): Router {
     const repo = new MySQLCompraRepository(pool);
@@ -13,6 +14,7 @@ export function compraRouter(pool: Pool): Router {
         create: new CompraCreate(repo),
         getAll: new CompraGetAll(repo),
         getAllByProveedores: new CompraGetAllByProveedores(repo),
+        getAllByProductos: new CompraGetAllByProductos(repo),
         getOneByIdWithDetail: new CompraGetOneByIdWithDetail(repo),
     };
 
@@ -25,6 +27,7 @@ export function compraRouter(pool: Pool): Router {
 
     // Reportes endpoints
     router.get('/compras/reportes/proveedores/:intervaloFecha', controller.getAllByProveedores.bind(controller));
+    router.get('/compras/reportes/productos/:intervaloFecha', controller.getAllByProductos.bind(controller));
 
     return router;
 }

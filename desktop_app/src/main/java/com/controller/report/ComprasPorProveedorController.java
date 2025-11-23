@@ -29,7 +29,7 @@ public class ComprasPorProveedorController {
     @FXML private TableView<CompraPorProveedorDTO> tableCompras;
     @FXML private TableColumn<CompraPorProveedorDTO, Integer> columnIdCompra;
     @FXML private TableColumn<CompraPorProveedorDTO, String> columnProveedorCompra;
-    @FXML private TableColumn<CompraPorProveedorDTO, String> columnComprasTotalesCompra;
+    @FXML private TableColumn<CompraPorProveedorDTO, Integer> columnComprasTotalesCompra;
     @FXML private TableColumn<CompraPorProveedorDTO, Float> columnPrecioTotalCompra;
 
     // Helper Methods

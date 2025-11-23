@@ -1,6 +1,6 @@
 import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise"
 import type { CompraRepository } from "../domain/CompraRepository"
-import type { CompraDetailDTO, CompraDTO, CompraReporteByProveedoresDTO } from "../application/CompraDTO";
+import type { CompraDetailDTO, CompraDTO, CompraReporteByProductosDTO, CompraReporteByProveedoresDTO } from "../application/CompraDTO";
 import type { DetalleCompra } from "../../DetalleCompra/domain/DetalleCompra";
 import { Compra } from "../domain/Compra";
 import { CompraId } from "../domain/CompraId";
@@ -118,6 +118,30 @@ export class MySQLCompraRepository implements CompraRepository {
             proveedorNombre: row.proveedor_nombre,
             comprasTotales: row.comprasTotales,
             precioTotal: row.precioTotal,
+        }));
+    }
+
+    async getAllByProductos(intervaloFecha: Date): Promise<CompraReporteByProductosDTO[]> {
+        const query = `
+            SELECT
+            p.codigo_barra AS producto_codigo_barra,
+            p.descripcion AS producto_descripcion,
+            SUM(cd.cantidad) AS cantidad_comprada,
+            SUM(cd.precio_total) AS precio_total
+            FROM compras_detalles cd
+            JOIN productos p ON p.codigo_barra = cd.codigo_producto
+            JOIN compras c ON c.id = cd.id_compra
+            WHERE c.fecha_creacion >= ?
+            GROUP BY p.codigo_barra, p.descripcion;
+        `;
+
+        const [rows] = await this.pool.query<(CompraReporteByProductosDTO & RowDataPacket)[]>(query, [intervaloFecha]);
+
+        return rows.map(row => ({
+            codigoBarra: row.producto_codigo_barra,
+            descripcion: row.producto_descripcion,
+            cantidadComprada: row.cantidad_comprada,
+            precioTotal: row.precio_total,
         }));
     }
 

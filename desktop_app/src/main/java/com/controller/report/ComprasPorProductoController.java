@@ -1,95 +1,110 @@
 package com.controller.report;
 
 import com.controller.SidebarController;
-import com.controller.detail.DetailCompraController;
-import com.model.Compra;
+import com.model.dto.CompraPorProductoDTO;
 import com.service.CompraService;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import java.util.Calendar;
 import java.util.Date;
 
 public class ComprasPorProductoController {
     private SidebarController parentController;
     private final CompraService compraService = new CompraService();
-    private final ObservableList<Compra> compras = FXCollections.observableArrayList();
+    private final ObservableList<CompraPorProductoDTO> compras = FXCollections.observableArrayList();
 
     // Filtros
-    @FXML
-    private MenuButton menuButtonFechas;
-    @FXML private TextField inputCliente;
+    @FXML private MenuButton menuButtonFechas;
+    @FXML private MenuItem menuItemHoy;
+    @FXML private MenuItem menuItemEstaSemana;
+    @FXML private MenuItem menuItemEsteMes;
 
     // Buttons
-    @FXML private Button btnEjecutarReporte;
     @FXML private Button btnExportar;
 
     // TableView
-    @FXML private TableView<Compra> tableCompras;
-    @FXML private TableColumn<Compra, Integer> columnIdCompra;
-    @FXML private TableColumn<Compra, String> columnProveedorCompra;
-    @FXML private TableColumn<Compra, String> columnUsuarioCompra;
-    @FXML private TableColumn<Compra, Float> columnPrecioTotalCompra;
-    @FXML private TableColumn<Compra, Date> columnFechaCreacionCompra;
+    @FXML private TableView<CompraPorProductoDTO> tableCompras;
+    @FXML private TableColumn<CompraPorProductoDTO, String> columnCodigoBarraCompra;
+    @FXML private TableColumn<CompraPorProductoDTO, String> columnDescripcionCompra;
+    @FXML private TableColumn<CompraPorProductoDTO, Integer> columnCantidadCompradaCompra;
+    @FXML private TableColumn<CompraPorProductoDTO, Float> columnPrecioTotalCompra;
 
     // Helper Methods
     public void setParentController(SidebarController parentController) {
         this.parentController = parentController;
     }
 
-    private void cargarCompras() {
+    private void cargarCompras(Date intervaloFecha) {
         try {
-            Compra[] lista = compraService.getAll();
+            CompraPorProductoDTO[] lista = compraService.getAllByProductos(intervaloFecha);
             compras.clear();
             compras.addAll(lista);
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error al cargar compras");
+            alert.setTitle("Error al cargar compras por productos");
             alert.setHeaderText(null);
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
     }
 
-    private void cargarDetalleCompra(Compra compra) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/detail/DetailCompra.fxml"));
-            Parent root = fxmlLoader.load();
+    private Date getIntervaloFecha() {
+        String opcion = menuButtonFechas.getText();
 
-            DetailCompraController detailCompraController = fxmlLoader.getController();
-            detailCompraController.setParentController(parentController);
-            detailCompraController.setCompra(compra);
+        Calendar cal = Calendar.getInstance();
 
-            parentController.getMainBorderPane().setCenter(root);
-        } catch (Exception exception) {
-            exception.printStackTrace();
+        switch (opcion) {
+            case "Hoy":
+                break;
+
+            case "Esta Semana":
+                cal.add(Calendar.DAY_OF_MONTH, -7);
+                break;
+
+            case "Este Mes":
+                cal.add(Calendar.MONTH, -1);
+                break;
+
+            default:
+                break;
         }
+
+        return cal.getTime();
     }
 
     // FXML Methods
     @FXML private void initialize() {
         // Configurar TableView
         tableCompras.setItems(compras);
-        columnIdCompra.setCellValueFactory(new PropertyValueFactory<>("id"));
-        columnProveedorCompra.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getProveedor().getNombre()));
-        columnUsuarioCompra.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getUsuario().getNombre()));
+        columnCodigoBarraCompra.setCellValueFactory(new PropertyValueFactory<>("codigoBarra"));
+        columnDescripcionCompra.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+        columnCantidadCompradaCompra.setCellValueFactory(new PropertyValueFactory<>("cantidadComprada"));
         columnPrecioTotalCompra.setCellValueFactory(new PropertyValueFactory<>("precioTotal"));
-        columnFechaCreacionCompra.setCellValueFactory(new PropertyValueFactory<>("fechaCreacion"));
 
-        tableCompras.getSelectionModel().selectedItemProperty().addListener(
-                (obs, oldSelection, newSelection) -> {
-                    if (newSelection != null)
-                        cargarDetalleCompra(newSelection);
-                }
-        );
+        // Configurar MenuItem
+        menuItemHoy.setOnAction(e -> {
+            menuButtonFechas.setText("Hoy");
+            Date intervalo = getIntervaloFecha();
+            cargarCompras(intervalo);
+        });
 
-        cargarCompras();
+        menuItemEstaSemana.setOnAction(e -> {
+            menuButtonFechas.setText("Esta Semana");
+            Date intervalo = getIntervaloFecha();
+            cargarCompras(intervalo);
+        });
+
+        menuItemEsteMes.setOnAction(e -> {
+            menuButtonFechas.setText("Este Mes");
+            Date intervalo = getIntervaloFecha();
+            cargarCompras(intervalo);
+        });
+
+        menuButtonFechas.setText("Hoy");
+        cargarCompras(new Date());
     }
 
 }

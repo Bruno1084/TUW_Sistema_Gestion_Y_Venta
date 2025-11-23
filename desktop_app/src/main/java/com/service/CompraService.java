@@ -3,10 +3,7 @@ package com.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.model.*;
-import com.model.dto.CompraDetailResponseDTO;
-import com.model.dto.CompraDetalleDTO;
-import com.model.dto.CompraDetalleResponseDTO;
-import com.model.dto.CompraPorProveedorDTO;
+import com.model.dto.*;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -85,6 +82,25 @@ public class CompraService {
             return mapper.readValue(response.body(), CompraPorProveedorDTO[].class);
         } else {
             throw new RuntimeException("Error al obtener compras por proveedor: " + response.body());
+        }
+    }
+
+    public CompraPorProductoDTO[] getAllByProductos(Date intervaloFechas) throws Exception {
+        String fecha = new SimpleDateFormat("yyyy-MM-dd").format(intervaloFechas);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/reportes/productos/" + fecha))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() == 200) {
+            return mapper.readValue(response.body(), CompraPorProductoDTO[].class);
+        } else {
+            throw new RuntimeException("Error al obtener compras por producto: " + response.body());
         }
     }
 
