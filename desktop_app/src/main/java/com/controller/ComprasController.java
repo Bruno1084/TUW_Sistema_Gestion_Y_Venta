@@ -3,7 +3,6 @@ package com.controller;
 import com.controller.add.AddCompraController;
 import com.controller.detail.DetailCompraController;
 import com.model.Compra;
-import com.model.Venta;
 import com.service.CompraService;
 import com.util.ParentAware;
 import javafx.beans.property.SimpleStringProperty;
@@ -15,7 +14,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
-
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;

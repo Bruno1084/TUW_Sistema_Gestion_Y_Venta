@@ -114,8 +114,8 @@ export class MySQLCompraRepository implements CompraRepository {
         const [rows] = await this.pool.query<(CompraReporteByProveedoresDTO & RowDataPacket)[]>(query, [intervaloFecha]);
 
         return rows.map(row => ({
-            id: row.proveedor_id,
-            proveedor: row.proveedor_nombre,
+            proveedorId: row.proveedor_id,
+            proveedorNombre: row.proveedor_nombre,
             comprasTotales: row.comprasTotales,
             precioTotal: row.precioTotal,
         }));

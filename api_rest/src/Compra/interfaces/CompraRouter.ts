@@ -24,7 +24,7 @@ export function compraRouter(pool: Pool): Router {
     router.get('/compras/:id', controller.getOneByIdWithDetail.bind(controller));
 
     // Reportes endpoints
-    router.get('/compras/reportes/proveedores', controller.getAllByProveedores.bind(controller));
+    router.get('/compras/reportes/proveedores/:intervaloFecha', controller.getAllByProveedores.bind(controller));
 
     return router;
 }

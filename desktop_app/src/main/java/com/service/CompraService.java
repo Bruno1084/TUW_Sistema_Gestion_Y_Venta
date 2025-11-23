@@ -6,14 +6,13 @@ import com.model.*;
 import com.model.dto.CompraDetailResponseDTO;
 import com.model.dto.CompraDetalleDTO;
 import com.model.dto.CompraDetalleResponseDTO;
+import com.model.dto.CompraPorProveedorDTO;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class CompraService {
     private static final String BASE_URL = "http://localhost:8080/api/compras";
@@ -67,6 +66,25 @@ public class CompraService {
             return mapper.readValue(response.body(), Compra[].class);
         } else {
             throw new RuntimeException("Error al obtener compras: " + response.body());
+        }
+    }
+
+    public CompraPorProveedorDTO[] getAllByProveedores(Date intervaloFechas) throws Exception {
+        String fecha = new SimpleDateFormat("yyyy-MM-dd").format(intervaloFechas);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/reportes/proveedores/" + fecha))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + SessionManager.getInstance().getToken())
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() == 200) {
+            return mapper.readValue(response.body(), CompraPorProveedorDTO[].class);
+        } else {
+            throw new RuntimeException("Error al obtener compras por proveedor: " + response.body());
         }
     }
 

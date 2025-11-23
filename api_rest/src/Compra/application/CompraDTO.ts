@@ -54,8 +54,8 @@ export interface CompraDetalleDTO {
 }
 
 export interface CompraReporteByProveedoresDTO {
-    id: number;
-    proveedor: string;
+    proveedorId: number;
+    proveedorNombre: string;
     comprasTotales: number;
     precioTotal: number;
 }

@@ -14,7 +14,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
-
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;

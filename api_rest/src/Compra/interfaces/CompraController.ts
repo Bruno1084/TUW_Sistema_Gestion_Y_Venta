@@ -46,6 +46,16 @@ export class CompraController {
         }
     }
 
+    async getAllByProveedores(req: Request, res: Response): Promise<void> {
+        try {
+            const { intervaloFecha } = req.params;
+            const compras = await this.useCases.getAllByProveedores.run(new Date(intervaloFecha!));
+            res.status(200).json(compras);
+        } catch (err:any) {
+            res.status(500).json({ error: err.message});
+        }
+    }
+
     async getOneByIdWithDetail(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
@@ -62,13 +72,5 @@ export class CompraController {
         }
     }
 
-    async getAllByProveedores(req: Request, res: Response): Promise<void> {
-        try {
-            const { intervaloFecha } = req.body;
-            const compras = await this.useCases.getAllByProveedores.run(intervaloFecha);
-            res.status(200).json(compras);
-        } catch (err:any) {
-            res.status(500).json({ error: err.message});
-        }
-    }
+
 }
