@@ -12,7 +12,8 @@ import { ProductoGetOneById } from "../application/ProductoGetOneById";
 import { ProductoGetOneByIdWithDetail } from "../application/ProductoGetOneByIdWithDetail";
 import { ProductoUpdate } from "../application/ProductoUpdate";
 import { ProductoDelete } from "../application/ProductoDelete";
-
+import { ProductoImportXlsx } from "../application/ProductoImportXlsx";
+import multer from "multer";
 
 export function productoRouter(
     pool: Pool,
@@ -21,6 +22,8 @@ export function productoRouter(
     rubroRepo: MySQLRubroRepository
 ): Router {
     const repo = new MySQLProductoRepository(pool);
+    const upload = multer({ storage: multer.memoryStorage() });
+
     const useCases = {
         create: new ProductoCreate(repo),
         getAll: new ProductoGetAll(repo),
@@ -28,7 +31,8 @@ export function productoRouter(
         getOneById: new ProductoGetOneById(repo),
         getOneByIdWithDetail: new ProductoGetOneByIdWithDetail(repo),
         update: new ProductoUpdate(repo, proveedorRepo, marcaRepo, rubroRepo),
-        delete: new ProductoDelete(repo)
+        delete: new ProductoDelete(repo),
+        importXlsx: new ProductoImportXlsx(repo)
     };
 
     const controller = new ProductoController(useCases);
@@ -41,6 +45,7 @@ export function productoRouter(
     router.get('/productos/detail/:codigo', controller.getOneByIdWithDetail.bind(controller));
     router.put('/productos/:codigo', controller.update.bind(controller));
     router.delete('/productos/:codigo', controller.delete.bind(controller));
+    router.post('/productos/importXlsx', upload.single('Lista_Productos') , controller.importXlsx.bind(controller));
 
     return router;
 }

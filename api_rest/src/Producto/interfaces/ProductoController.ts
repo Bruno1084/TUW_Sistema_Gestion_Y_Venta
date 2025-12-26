@@ -6,6 +6,8 @@ import { ProductoGetOneById } from "../application/ProductoGetOneById";
 import { ProductoGetOneByIdWithDetail } from "../application/ProductoGetOneByIdWithDetail";
 import { ProductoUpdate } from "../application/ProductoUpdate";
 import { ProductoDelete } from "../application/ProductoDelete";
+import { ProductoImportXlsx } from "../application/ProductoImportXlsx";
+import { read, utils, type WorkSheet } from "xlsx";
 
 type ProductoUseCases = {
     create: ProductoCreate;
@@ -15,6 +17,7 @@ type ProductoUseCases = {
     getOneByIdWithDetail: ProductoGetOneByIdWithDetail;
     update: ProductoUpdate;
     delete: ProductoDelete;
+    importXlsx: ProductoImportXlsx;
 }
 
 export class ProductoController {
@@ -145,6 +148,35 @@ export class ProductoController {
             await this.useCases.delete.run(codigo!);
 
             res.status(204).json({ message: 'Producto eliminado correctamente' });
+        } catch (err: any) {
+            res.status(400).json({ error: err.message });
+        }
+    }
+
+    async importXlsx(req: Request, res: Response): Promise<void> {
+        try {
+            const file = req.file;
+
+            if(!file || file.mimetype !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+                res.status(400).send('Please upload an XLSX file.');
+            }
+
+            try {
+                const workbook = read(file?.buffer, { type: 'buffer' });
+                const sheetName = workbook.SheetNames[0];
+                const worksheet: WorkSheet = workbook.Sheets[sheetName!]!;
+
+                const jsonData = utils.sheet_to_json(worksheet);
+
+                res.status(201).json({
+                    message: "Archivo excel recibido correctamente",
+                    data: jsonData
+                });
+                console.log(jsonData);
+
+            } catch (err: any) {
+                res.status(500).send('Error al procesar el archivo excel');
+            }
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

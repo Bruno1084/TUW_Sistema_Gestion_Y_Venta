@@ -1,8 +1,8 @@
 package com.controller;
 
-import com.controller.report.ComprasPorFechaController;
 import com.controller.report.ComprasPorProductoController;
 import com.controller.report.ComprasPorProveedorController;
+import com.controller.report.VentasPorClienteController;
 import com.util.ParentAware;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -45,29 +45,29 @@ public class ReportesController implements ParentAware {
         }
     }
 
-    @FXML private void handleComprasPorFecha() {
+    @FXML private void handleVentasPorCliente() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/report/ComprasPorProducto.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/report/VentasPorCliente.fxml"));
             Parent root = fxmlLoader.load();
 
-            ComprasPorFechaController comprasPorFechaController = fxmlLoader.getController();
-            comprasPorFechaController.setParentController(parentController);
+            VentasPorClienteController ventasPorClienteController = fxmlLoader.getController();
+            ventasPorClienteController.setParentController(parentController);
             parentController.getMainBorderPane().setCenter(root);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
     }
 
-    @FXML private void handleVentasPorCliente() {
-
-    }
-
     @FXML private void handleVentasPorProducto() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/report/ComprasPorProducto.fxml"));
+            Parent root = fxmlLoader.load();
 
+            ComprasPorProductoController comprasPorProductoController = fxmlLoader.getController();
+            comprasPorProductoController.setParentController(parentController);
+            parentController.getMainBorderPane().setCenter(root);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
-
-    @FXML private void handleVentasPorFecha() {
-
-    }
-
 }

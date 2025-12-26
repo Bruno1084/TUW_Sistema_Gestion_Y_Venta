@@ -2,10 +2,14 @@ import type { Request, Response } from "express"
 import type { VentaCreate } from "../application/VentaCreate"
 import type { VentaGetAll } from "../application/VentaGetAll"
 import type { VentaGetOneByIdWithDetail } from "../application/VentaGetOneByIdWithDetail";
+import type { VentaGetAllByClientes } from "../application/VentaGetAllByClientes";
+import type { VentaGetAllByProductos } from "../application/VentaGetAllByProductos";
 
 type VentaUseCases = {
     create: VentaCreate;
     getAll: VentaGetAll;
+    getAllByClientes: VentaGetAllByClientes;
+    getAllByProductos: VentaGetAllByProductos;
     getOneByIdWithDetail: VentaGetOneByIdWithDetail;
 }
 
@@ -39,6 +43,26 @@ export class VentaController {
         try {
             const ventas = await this.useCases.getAll.run();
             res.status(200).json(ventas);
+        } catch (err: any) {
+            res.status(500).json({ error: err.message });
+        }
+    }
+
+    async getAllByClientes(req: Request, res: Response): Promise<void> {
+        try {
+            const { intervaloFecha } = req.params;
+            const compras = await this.useCases.getAllByClientes.run(new Date(intervaloFecha!));
+            res.status(200).json(compras);
+        } catch (err: any) {
+            res.status(500).json({ error: err.message });
+        }
+    }
+
+    async getAllByProductos(req: Request, res: Response): Promise<void> {
+        try {
+            const { intervaloFecha } = req.params;
+            const compras = await this.useCases.getAllByProductos.run(new Date(intervaloFecha!));
+            res.status(200).json(compras);
         } catch (err: any) {
             res.status(500).json({ error: err.message });
         }

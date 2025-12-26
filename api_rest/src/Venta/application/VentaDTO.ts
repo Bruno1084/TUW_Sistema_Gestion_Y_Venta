@@ -52,3 +52,17 @@ export interface VentaDetalleDTO {
         imgUri: string;
     };
 }
+
+export interface VentaReporteByClientesDTO {
+    clienteId: number;
+    clienteNombre: string;
+    ventasTotales: number;
+    precioTotal: number;
+}
+
+export interface VentaReporteByProductosDTO {
+    codigoBarra: string;
+    descripcion: string;
+    cantidadVendida: number;
+    precioTotal: number;
+}

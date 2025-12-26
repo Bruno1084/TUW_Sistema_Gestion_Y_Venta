@@ -1,8 +1,8 @@
 package com.controller.report;
 
 import com.controller.SidebarController;
-import com.model.dto.CompraPorProveedorDTO;
-import com.service.CompraService;
+import com.model.dto.VentaPorClienteDTO;
+import com.service.VentaService;
 import com.util.ParentAware;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,10 +12,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ComprasPorProveedorController implements ParentAware {
+public class VentasPorClienteController implements ParentAware {
     private SidebarController parentController;
-    private final CompraService compraService = new CompraService();
-    private final ObservableList<CompraPorProveedorDTO> compras = FXCollections.observableArrayList();
+    private final VentaService ventaService = new VentaService();
+    private final ObservableList<VentaPorClienteDTO> ventas = FXCollections.observableArrayList();
 
     // Filtros
     @FXML private MenuButton menuButtonFechas;
@@ -27,25 +27,25 @@ public class ComprasPorProveedorController implements ParentAware {
     @FXML private Button btnExportar;
 
     // TableView
-    @FXML private TableView<CompraPorProveedorDTO> tableCompras;
-    @FXML private TableColumn<CompraPorProveedorDTO, Integer> columnIdCompra;
-    @FXML private TableColumn<CompraPorProveedorDTO, String> columnProveedorCompra;
-    @FXML private TableColumn<CompraPorProveedorDTO, Integer> columnComprasTotalesCompra;
-    @FXML private TableColumn<CompraPorProveedorDTO, Float> columnPrecioTotalCompra;
+    @FXML private TableView<VentaPorClienteDTO> tableVentas;
+    @FXML private TableColumn<VentaPorClienteDTO, Integer> columnIdVenta;
+    @FXML private TableColumn<VentaPorClienteDTO, String> columnClienteVenta;
+    @FXML private TableColumn<VentaPorClienteDTO, Integer> columnVentasTotalesVenta;
+    @FXML private TableColumn<VentaPorClienteDTO, Float> columnPrecioTotalVenta;
 
     // Helper Methods
     public void setParentController(SidebarController parentController) {
         this.parentController = parentController;
     }
 
-    private void cargarCompras(Date intervaloFecha) {
+    private void cargarVentas(Date intervaloFecha) {
         try {
-            CompraPorProveedorDTO[] lista = compraService.getAllByProveedores(intervaloFecha);
-            compras.clear();
-            compras.addAll(lista);
+            VentaPorClienteDTO[] lista = ventaService.getAllByClientes(intervaloFecha);
+            ventas.clear();
+            ventas.addAll(lista);
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error al cargar compras");
+            alert.setTitle("Error al cargar ventas");
             alert.setHeaderText(null);
             alert.setContentText(e.getMessage());
             alert.showAndWait();
@@ -76,36 +76,35 @@ public class ComprasPorProveedorController implements ParentAware {
         return cal.getTime();
     }
 
-
     // FXML Methods
     @FXML private void initialize() {
         // Configurar TableView
-        tableCompras.setItems(compras);
-        columnIdCompra.setCellValueFactory(new PropertyValueFactory<>("proveedorId"));
-        columnProveedorCompra.setCellValueFactory(new PropertyValueFactory<>("proveedorNombre"));
-        columnComprasTotalesCompra.setCellValueFactory(new PropertyValueFactory<>("comprasTotales"));
-        columnPrecioTotalCompra.setCellValueFactory(new PropertyValueFactory<>("precioTotal"));
+        tableVentas.setItems(ventas);
+        columnIdVenta.setCellValueFactory(new PropertyValueFactory<>("clienteId"));
+        columnClienteVenta.setCellValueFactory(new PropertyValueFactory<>("clienteNombre"));
+        columnVentasTotalesVenta.setCellValueFactory(new PropertyValueFactory<>("ventasTotales"));
+        columnPrecioTotalVenta.setCellValueFactory(new PropertyValueFactory<>("precioTotal"));
 
         // Configurar MenuItem
         menuItemHoy.setOnAction(e -> {
             menuButtonFechas.setText("Hoy");
             Date intervalo = getIntervaloFecha();
-            cargarCompras(intervalo);
+            cargarVentas(intervalo);
         });
 
         menuItemEstaSemana.setOnAction(e -> {
             menuButtonFechas.setText("Esta Semana");
             Date intervalo = getIntervaloFecha();
-            cargarCompras(intervalo);
+            cargarVentas(intervalo);
         });
 
         menuItemEsteMes.setOnAction(e -> {
             menuButtonFechas.setText("Este Mes");
             Date intervalo = getIntervaloFecha();
-            cargarCompras(intervalo);
+            cargarVentas(intervalo);
         });
 
         menuButtonFechas.setText("Hoy");
-        cargarCompras(new Date());
+        cargarVentas(new Date());
     }
 }

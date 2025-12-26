@@ -1,10 +1,9 @@
 import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import type { VentaRepository } from "../domain/VentaRepository";
-import type { VentaDetailDTO, VentaDTO } from "../application/VentaDTO";
+import type { VentaDetailDTO, VentaDTO, VentaReporteByClientesDTO, VentaReporteByProductosDTO } from "../application/VentaDTO";
 import type { DetalleVenta } from "../../DetalleVenta/domain/DetalleVenta";
 import { Venta } from "../domain/Venta";
 import { VentaId } from "../domain/VentaId";
-import type { DetalleCompra } from "../../DetalleCompra/domain/DetalleCompra";
 
 type MySQLVenta = {
     id: number;
@@ -96,6 +95,53 @@ export class MySQLVentaRepository implements VentaRepository {
                 }
             })
         );
+    }
+
+    async getAllByClientes(intervaloFecha: Date): Promise<VentaReporteByClientesDTO[]> {
+        const query = `
+            SELECT
+            cli.id AS cliente_id,
+            cli.nombre AS cliente_nombre,
+            COUNT(v.id) AS ventas_totales,
+            SUM(v.precio_total) AS precio_total
+            FROM ventas v
+            JOIN clientes cli ON cli.id = v.id_cliente
+            WHERE v.fecha_creacion >= ?
+            GROUP BY cli.id, cli.nombre;
+        `;
+
+        const [rows] = await this.pool.query<(VentaReporteByClientesDTO & RowDataPacket)[]>(query, [intervaloFecha]);
+
+        return rows.map(row => ({
+            clienteId: row!.cliente_id,
+            clienteNombre: row!.cliente_nombre,
+            ventasTotales: row!.ventas_totales,
+            precioTotal: row!.precio_total
+        }));
+    }
+
+    async getAllByProductos(intervaloFecha: Date): Promise<VentaReporteByProductosDTO[]> {
+        const query = `
+            SELECT
+            p.codigo_barra AS producto_codigo_barra,
+            p.descripcion AS producto_descripcion,
+            SUM(vd.cantidad) AS cantidad_vendida,
+            SUM(vd.precio_total) AS precio_total
+            FROM ventas_detalles vd
+            JOIN productos p ON p.codigo_barra = vd.codigo_producto
+            JOIN ventas v ON v.id = vd.id_venta
+            WHERE v.fecha_creacion >= ?
+            GROUP BY p.codigo_barra, p.descripcion;
+        `;
+
+        const [rows] = await this.pool.query<(VentaReporteByProductosDTO & RowDataPacket)[]>(query, [intervaloFecha]);
+
+        return rows.map(row => ({
+            codigoBarra: row.producto_codigo_barra,
+            descripcion: row.producto_descripcion,
+            cantidadVendida: row.cantidad_vendida,
+            precioTotal: row.precio_total,
+        }));
     }
 
     async getOneByIdWithDetail(ventaId: VentaId): Promise<VentaDetailDTO | null> {

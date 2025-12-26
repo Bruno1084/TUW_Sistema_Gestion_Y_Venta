@@ -3,6 +3,7 @@ package com.controller.report;
 import com.controller.SidebarController;
 import com.model.dto.CompraPorProductoDTO;
 import com.service.CompraService;
+import com.util.ParentAware;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,7 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ComprasPorProductoController {
+public class ComprasPorProductoController implements ParentAware {
     private SidebarController parentController;
     private final CompraService compraService = new CompraService();
     private final ObservableList<CompraPorProductoDTO> compras = FXCollections.observableArrayList();
