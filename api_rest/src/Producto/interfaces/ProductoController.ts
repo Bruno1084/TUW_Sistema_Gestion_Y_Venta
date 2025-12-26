@@ -7,7 +7,6 @@ import { ProductoGetOneByIdWithDetail } from "../application/ProductoGetOneByIdW
 import { ProductoUpdate } from "../application/ProductoUpdate";
 import { ProductoDelete } from "../application/ProductoDelete";
 import { ProductoImportXlsx } from "../application/ProductoImportXlsx";
-import { read, utils, type WorkSheet } from "xlsx";
 
 type ProductoUseCases = {
     create: ProductoCreate;
@@ -157,26 +156,22 @@ export class ProductoController {
         try {
             const file = req.file;
 
-            if(!file || file.mimetype !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-                res.status(400).send('Please upload an XLSX file.');
+            if(!file) {
+                res.status(400).send('No file uploaded');
+                return;
             }
 
-            try {
-                const workbook = read(file?.buffer, { type: 'buffer' });
-                const sheetName = workbook.SheetNames[0];
-                const worksheet: WorkSheet = workbook.Sheets[sheetName!]!;
-
-                const jsonData = utils.sheet_to_json(worksheet);
-
-                res.status(201).json({
-                    message: "Archivo excel recibido correctamente",
-                    data: jsonData
-                });
-                console.log(jsonData);
-
-            } catch (err: any) {
-                res.status(500).send('Error al procesar el archivo excel');
+            if(!file.originalname.endsWith('.xlsx')) {
+                res.status(400).send('Only xlsx files are allowed');
+                return;
             }
+
+            const jsonData = await this.useCases.importXlsx.run(file.buffer);
+
+            res.status(201).json({
+                message: "Archivo excel recibido correctamente",
+                data: jsonData
+            });
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
