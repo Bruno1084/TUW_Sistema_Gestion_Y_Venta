@@ -1,6 +1,6 @@
 import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import type { RubroRepository } from "../domain/RubroRepository";
-import type { RubroDTO } from "../application/RubroDTO";
+import type { RubroDTO, RubroSimpleDTO } from "../application/RubroDTO";
 import { RubroId } from "../domain/RubroId";
 import { Rubro } from "../domain/Rubro";
 
@@ -91,5 +91,25 @@ export class MySQLRubroRepository implements RubroRepository {
         const query = `UPDATE rubros SET es_activo = false WHERE id = ?`;
 
         await this.pool.query(query, [rubroId.value]);
+    }
+
+    async findByNames(nombres: string[]): Promise<RubroSimpleDTO[]> {
+        if (nombres.length === 0) {
+            return [];
+        }
+
+        const query = `
+        SELECT id, nombre
+        FROM rubros
+        WHERE es_activo = true
+        AND nombre IN (?)
+        `;
+
+        const [rows] = await this.pool.query<(RowDataPacket & { id: number; nombre: string })[]>(query, [nombres]);
+
+        return rows.map(row => ({
+            id: row.id,
+            nombre: row.nombre
+        }));
     }
 }

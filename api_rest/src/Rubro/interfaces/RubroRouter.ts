@@ -7,6 +7,7 @@ import { RubroGetOneById } from "../application/RubroGetOneById";
 import { RubroUpdate } from "../application/RubroUpdate";
 import { RubroDelete } from "../application/RubroDelete";
 import { RubroController } from "./RubroController";
+import { RubroFindByNames } from "../application/RubroFindByNames";
 
 export function rubroRouter(pool: Pool): Router {
     const repo = new MySQLRubroRepository(pool);
@@ -15,7 +16,8 @@ export function rubroRouter(pool: Pool): Router {
         getAll: new RubroGetAll(repo),
         getOneById: new RubroGetOneById(repo),
         update: new RubroUpdate(repo),
-        delete: new RubroDelete(repo)
+        delete: new RubroDelete(repo),
+        findByNames: new RubroFindByNames(repo)
     };
 
     const controller = new RubroController(useCases);
@@ -26,6 +28,7 @@ export function rubroRouter(pool: Pool): Router {
     router.get('/rubros/:id', controller.getOneById.bind(controller));
     router.put('/rubros/:id', controller.update.bind(controller));
     router.delete('/rubros/:id', controller.delete.bind(controller));
+    router.post('/rubros/names');
 
     return router;
 }

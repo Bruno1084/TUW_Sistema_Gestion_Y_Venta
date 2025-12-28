@@ -10,4 +10,5 @@ export interface ProductoRepository {
     getOneByIdWithDetail(productoCodigoBarra: ProductoCodigoBarra): Promise<ProductoDetailDTO | null>;
     update(producto: Producto): Promise<ProductoDetailDTO>;
     delete(productocodigoBarra: ProductoCodigoBarra): Promise<void>;
+    importXlsx(productos: Producto[]): Promise<void>;
 }

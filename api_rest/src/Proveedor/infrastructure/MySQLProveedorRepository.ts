@@ -1,6 +1,6 @@
 import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import type { ProveedorRepository } from "../domain/ProveedorRepository";
-import type { ProveedorDTO } from "../application/ProveedorDTO";
+import type { ProveedorDTO, ProveedorSimpleDTO } from "../application/ProveedorDTO";
 import { Proveedor } from "../domain/Proveedor";
 import { ProveedorId } from "../domain/ProveedorId";
 
@@ -110,4 +110,25 @@ export class MySQLProveedorRepository implements ProveedorRepository {
 
         await this.pool.query(query, [proveedorId.value]);
     }
+
+    async findByNames(nombres: string[]): Promise<ProveedorSimpleDTO[]> {
+        if (nombres.length === 0) {
+            return [];
+        }
+
+        const query = `
+        SELECT id, nombre
+        FROM proveedores
+        WHERE es_activo = true
+        AND nombre IN (?)
+        `;
+
+        const [rows] = await this.pool.query<(RowDataPacket & { id: number; nombre: string })[]>(query, [nombres]);
+
+        return rows.map(row => ({
+            id: row.id,
+            nombre: row.nombre
+        }));
+    }
+
 }

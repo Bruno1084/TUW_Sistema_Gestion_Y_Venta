@@ -42,3 +42,15 @@ export interface ProductoSimpleDTO {
     marcaId: number;
     rubroId: number;
 }
+
+export interface ProductoExcelRowDTO {
+    "Código de Barras": string;
+    "Descripción": string;
+    "Precio de Compra": string;
+    "Precio de Venta": string;
+    "Stock": number;
+    "Imagen Uri": string;
+    "Proveedor": string;
+    "Marca": string;
+    "Rubro": string;    
+}

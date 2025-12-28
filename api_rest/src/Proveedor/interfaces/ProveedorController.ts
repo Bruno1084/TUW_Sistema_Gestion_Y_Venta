@@ -4,6 +4,7 @@ import { ProveedorDelete } from "../application/ProveedorDelete";
 import { ProveedorGetAll } from "../application/ProveedorGetAll";
 import { ProveedorGetOneById } from "../application/ProveedorGetOneById";
 import { ProveedorUpdate } from "../application/ProveedorUpdate";
+import type { ProveedorFindByNames } from "../application/ProveedorFindByNames";
 
 type ProveedorUseCases = {
     create: ProveedorCreate;
@@ -11,6 +12,7 @@ type ProveedorUseCases = {
     getOneById: ProveedorGetOneById;
     update: ProveedorUpdate;
     delete: ProveedorDelete;
+    findByNames: ProveedorFindByNames;
 }
 
 export class ProveedorController {
@@ -95,6 +97,18 @@ export class ProveedorController {
             await this.useCases.delete.run(Number(id));
 
             res.status(204).json({ message: 'Proveedor eliminado correctamente' });
+        } catch (err: any) {
+            res.status(400).json({ error: err.message });
+        }
+    }
+
+    async findByNames(req: Request, res: Response): Promise<void> {
+        try {
+            const { nombres } = req.body;
+
+            const proveedores = await this.useCases.findByNames.run(nombres);
+
+            res.status(204).json(proveedores);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

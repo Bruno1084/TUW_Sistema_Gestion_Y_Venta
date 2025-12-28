@@ -4,6 +4,7 @@ import type { RubroDelete } from "../application/RubroDelete";
 import type { RubroGetAll } from "../application/RubroGetAll";
 import type { RubroGetOneById } from "../application/RubroGetOneById";
 import type { RubroUpdate } from "../application/RubroUpdate";
+import type { RubroFindByNames } from "../application/RubroFindByNames";
 
 type RubroUseCases = {
     create: RubroCreate;
@@ -11,6 +12,7 @@ type RubroUseCases = {
     getOneById: RubroGetOneById;
     update: RubroUpdate;
     delete: RubroDelete;
+    findByNames: RubroFindByNames;
 }
 
 export class RubroController {
@@ -73,6 +75,18 @@ export class RubroController {
             await this.useCases.delete.run(Number(id));
 
             res.status(204).json({ message: 'Cliente eliminado correctamente' });
+        } catch (err: any) {
+            res.status(400).json({ error: err.message });
+        }
+    }
+
+    async findByName(req: Request, res: Response): Promise<void> {
+        try {
+            const { nombres } = req.body;
+
+            const rubros = await this.useCases.findByNames.run(nombres);
+
+            res.status(204).send(rubros);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

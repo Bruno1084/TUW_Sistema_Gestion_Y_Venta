@@ -1,6 +1,6 @@
 import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise"
 import type { MarcaRepository } from "../domain/MarcaRepository"
-import type { MarcaDTO } from "../application/MarcaDTO";
+import type { MarcaDTO, MarcaSimpleDTO } from "../application/MarcaDTO";
 import { Marca } from "../domain/Marca";
 import { MarcaId } from "../domain/MarcaId";
 
@@ -98,5 +98,25 @@ export class MySQLMarcaRepository implements MarcaRepository {
         const query = `UPDATE marcas SET es_activo = false WHERE id = ?`;
 
         await this.pool.query(query, [marcaId.value]);
+    }
+
+    async findByNames(nombres: string[]): Promise<MarcaSimpleDTO[]> {
+        if (nombres.length === 0) {
+            return [];
+        }
+
+        const query = `
+            SELECT id, nombre
+            FROM marcas
+            WHERE es_activo = true
+            AND nombre IN (?)
+            `;
+
+        const [rows] = await this.pool.query<(RowDataPacket & { id: number; nombre: string })[]>(query, [nombres]);
+
+        return rows.map(row => ({
+            id: row.id,
+            nombre: row.nombre
+        }));
     }
 }

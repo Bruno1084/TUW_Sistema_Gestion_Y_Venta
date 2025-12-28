@@ -7,6 +7,7 @@ import { ProveedorGetAll } from "../application/ProveedorGetAll";
 import { ProveedorGetOneById } from "../application/ProveedorGetOneById";
 import { ProveedorUpdate } from "../application/ProveedorUpdate";
 import { ProveedorDelete } from "../application/ProveedorDelete";
+import { ProveedorFindByNames } from "../application/ProveedorFindByNames";
 
 export function proveedorRouter(pool: Pool): Router {
     const repo = new MySQLProveedorRepository(pool);
@@ -15,7 +16,8 @@ export function proveedorRouter(pool: Pool): Router {
         getAll: new ProveedorGetAll(repo),
         getOneById: new ProveedorGetOneById(repo),
         update: new ProveedorUpdate(repo),
-        delete: new ProveedorDelete(repo)
+        delete: new ProveedorDelete(repo),
+        findByNames: new ProveedorFindByNames(repo)
     };
 
     const controller = new ProveedorController(useCases);
@@ -26,6 +28,7 @@ export function proveedorRouter(pool: Pool): Router {
     router.get('/proveedores/:id', controller.getOneById.bind(controller));
     router.put('/proveedores/:id', controller.update.bind(controller));
     router.delete('/proveedores/:id', controller.delete.bind(controller));
+    router.post('/proveedores/names', controller.findByNames.bind(controller));
 
     return router;
 }

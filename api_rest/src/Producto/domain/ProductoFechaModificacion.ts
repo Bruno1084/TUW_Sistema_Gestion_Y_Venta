@@ -10,4 +10,8 @@ export class ProductoFechaModificacion {
     private checkValue() {
 
     }
+
+    static now(): ProductoFechaModificacion {
+        return new ProductoFechaModificacion(new Date());
+    }
 }

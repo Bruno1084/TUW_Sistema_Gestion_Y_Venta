@@ -4,13 +4,15 @@ import type { MarcaDelete } from "../application/MarcaDelete"
 import type { MarcaGetAll } from "../application/MarcaGetAll"
 import type { MarcaGetOneById } from "../application/MarcaGetOneById"
 import type { MarcaUpdate } from "../application/MarcaUpdate"
+import type { MarcaFindByNames } from "../application/MarcaFindByNames"
 
 type MarcaUseCases = {
     create: MarcaCreate,
     getAll: MarcaGetAll,
     getOneById: MarcaGetOneById,
     update: MarcaUpdate,
-    delete: MarcaDelete
+    delete: MarcaDelete,
+    findByNames: MarcaFindByNames
 }
 
 export class MarcaController {
@@ -75,6 +77,18 @@ export class MarcaController {
             await this.useCases.delete.run(Number(id));
 
             res.status(204).json({ message: 'Marca eliminada correctamente' });
+        } catch (err: any) {
+            res.status(400).json({ error: err.message });
+        }
+    }
+
+    async findByNames(req: Request, res: Response): Promise<void> {
+        try {
+            const { nombres } = req.body;
+
+            const marcas = await this.useCases.findByNames.run(nombres);
+
+            res.status(204).send(marcas);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

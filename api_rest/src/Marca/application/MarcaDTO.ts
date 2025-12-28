@@ -4,3 +4,8 @@ export interface MarcaDTO {
     fechaCreacion: Date;
     fechaModificacion: Date;
 }
+
+export interface MarcaSimpleDTO {
+    id: number;
+    nombre: string;
+}

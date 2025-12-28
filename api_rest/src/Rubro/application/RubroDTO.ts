@@ -4,3 +4,8 @@ export interface RubroDTO {
     fechaCreacion: Date;
     fechaModificacion: Date;
 }
+
+export interface RubroSimpleDTO {
+    id: number;
+    nombre: string;
+}

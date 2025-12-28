@@ -1,4 +1,4 @@
-import type { ProveedorDTO } from "../application/ProveedorDTO";
+import type { ProveedorDTO, ProveedorSimpleDTO } from "../application/ProveedorDTO";
 import type { Proveedor } from "./Proveedor";
 import type { ProveedorId } from "./ProveedorId";
 
@@ -8,4 +8,5 @@ export interface ProveedorRepository {
     getOneById(proveedorId: ProveedorId): Promise<ProveedorDTO | null>;
     update(proveedor: Proveedor): Promise<ProveedorDTO>
     delete(proveedorId: ProveedorId): Promise<void>;
+    findByNames(nombres: string[]): Promise<ProveedorSimpleDTO[]>;
 }

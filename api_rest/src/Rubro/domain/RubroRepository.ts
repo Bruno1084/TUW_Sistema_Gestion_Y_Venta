@@ -1,4 +1,4 @@
-import type { RubroDTO } from "../application/RubroDTO";
+import type { RubroDTO, RubroSimpleDTO } from "../application/RubroDTO";
 import type { Rubro } from "./Rubro";
 import type { RubroId } from "./RubroId";
 
@@ -8,4 +8,5 @@ export interface RubroRepository {
     getOneById(rubroId: RubroId): Promise<RubroDTO | null>;
     update(rubro: Rubro): Promise<RubroDTO>;
     delete(rubroId: RubroId): Promise<void>;
+    findByNames(nombres: string[]): Promise<RubroSimpleDTO[]>;
 }

@@ -6,3 +6,8 @@ export interface ProveedorDTO {
     fechaCreacion: Date,
     fechaModificacion: Date,
 }
+
+export interface ProveedorSimpleDTO {
+    id: number;
+    nombre: string;
+}

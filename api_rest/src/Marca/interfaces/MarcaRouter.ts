@@ -7,6 +7,7 @@ import { MarcaGetAll } from "../application/MarcaGetAll";
 import { MarcaGetOneById } from "../application/MarcaGetOneById";
 import { MarcaUpdate } from "../application/MarcaUpdate";
 import { MarcaDelete } from "../application/MarcaDelete";
+import { MarcaFindByNames } from "../application/MarcaFindByNames";
 
 export function marcaRouter(pool: Pool): Router {
     const repo = new MySQLMarcaRepository(pool);
@@ -15,7 +16,8 @@ export function marcaRouter(pool: Pool): Router {
         getAll: new MarcaGetAll(repo),
         getOneById: new MarcaGetOneById(repo),
         update: new MarcaUpdate(repo),
-        delete: new MarcaDelete(repo)
+        delete: new MarcaDelete(repo),
+        findByNames: new MarcaFindByNames(repo)
     };
 
     const controller = new MarcaController(useCases);
@@ -26,6 +28,7 @@ export function marcaRouter(pool: Pool): Router {
     router.get('/marcas/:id', controller.getOneById.bind(controller));
     router.put('/marcas/:id', controller.update.bind(controller));
     router.delete('/marcas/:id', controller.delete.bind(controller));
+    router.post('/marcas/names', controller.findByNames.bind(controller));
 
     return router;
 }
