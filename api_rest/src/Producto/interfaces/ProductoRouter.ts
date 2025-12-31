@@ -13,13 +13,14 @@ import { ProductoGetOneByIdWithDetail } from "../application/ProductoGetOneByIdW
 import { ProductoUpdate } from "../application/ProductoUpdate";
 import { ProductoDelete } from "../application/ProductoDelete";
 import { ProductoImportXlsx } from "../application/ProductoImportXlsx";
-import { ProveedorFindByNames } from "../../Proveedor/application/ProveedorFindByNames";
-import { MarcaFindByNames } from "../../Marca/application/MarcaFindByNames";
-import { RubroFindByNames } from "../../Rubro/application/RubroFindByNames";
+import { ProveedorFindOrCreate } from "../../Proveedor/application/ProveedorFindOrCreate";
+import { MarcaFindOrCreate } from "../../Marca/application/MarcaFindOrCreate";
+import { RubroFindOrCreate } from "../../Rubro/application/RubroFindOrCreate";
 import { ProveedorGetOneById } from "../../Proveedor/application/ProveedorGetOneById";
 import { MarcaGetOneById } from "../../Marca/application/MarcaGetOneById";
 import { RubroGetOneById } from "../../Rubro/application/RubroGetOneById";
 import multer from "multer";
+
 
 export function productoRouter(
     pool: Pool,
@@ -30,9 +31,9 @@ export function productoRouter(
     const repo = new MySQLProductoRepository(pool);
 
     // Casos de Uso externos
-    const proveedorFindByNames = new ProveedorFindByNames(proveedorRepo);
-    const marcaFindByNames = new MarcaFindByNames(marcaRepo);
-    const rubroFindByNames = new RubroFindByNames(rubroRepo);
+    const proveedorFindOrCreate = new ProveedorFindOrCreate(proveedorRepo);
+    const marcaFindOrCreate = new MarcaFindOrCreate(marcaRepo);
+    const rubroFindOrCreate = new RubroFindOrCreate(rubroRepo);
 
     const proveedorGetById = new ProveedorGetOneById(proveedorRepo);
     const marcaGetById = new MarcaGetOneById(marcaRepo);
@@ -48,7 +49,7 @@ export function productoRouter(
         getOneByIdWithDetail: new ProductoGetOneByIdWithDetail(repo),
         update: new ProductoUpdate(repo, proveedorGetById, marcaGetById, rubroGetById),
         delete: new ProductoDelete(repo),
-        importXlsx: new ProductoImportXlsx(repo, proveedorFindByNames, marcaFindByNames, rubroFindByNames)
+        importXlsx: new ProductoImportXlsx(repo, proveedorFindOrCreate, marcaFindOrCreate, rubroFindOrCreate)
     };
 
     const controller = new ProductoController(useCases);

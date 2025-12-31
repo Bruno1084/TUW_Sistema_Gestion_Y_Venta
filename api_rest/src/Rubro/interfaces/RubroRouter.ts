@@ -28,7 +28,7 @@ export function rubroRouter(pool: Pool): Router {
     router.get('/rubros/:id', controller.getOneById.bind(controller));
     router.put('/rubros/:id', controller.update.bind(controller));
     router.delete('/rubros/:id', controller.delete.bind(controller));
-    router.post('/rubros/names');
+    router.post('/rubros/names', controller.findByName.bind(controller));
 
     return router;
 }

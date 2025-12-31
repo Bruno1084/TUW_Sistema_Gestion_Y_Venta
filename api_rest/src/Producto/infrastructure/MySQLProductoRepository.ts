@@ -294,48 +294,49 @@ export class MySQLProductoRepository implements ProductoRepository {
 
     async importXlsx(productos: Producto[]): Promise<void> {
         if (productos.length === 0) return;
+        console.log(productos);
 
         const query = `
         INSERT INTO productos (
             codigo_barra,
             descripcion,
-            id_proveedor,
-            id_marca,
-            id_rubro,
             precio_compra,
             precio_venta,
             stock,
             img_uri,
             fecha_creacion,
             fecha_modificacion,
-            es_activo
+            id_proveedor,
+            id_marca,
+            id_rubro
         )
         VALUES ?
         ON DUPLICATE KEY UPDATE
             descripcion = VALUES(descripcion),
+            precio_compra = VALUES(precio_compra),
+            precio_venta = VALUES(precio_venta),  
+            stock = VALUES(stock),
+            img_uri = VALUES(img_uri),
+            fecha_creacion = VALUES(fecha_creacion),
+            fecha_modificacion = VALUES(fecha_modificacion),
             id_proveedor = VALUES(id_proveedor),
             id_marca = VALUES(id_marca),
             id_rubro = VALUES(id_rubro),
-            precio_compra = VALUES(precio_compra),
-            precio_venta = VALUES(precio_venta),
-            stock = VALUES(stock),
-            img_uri = VALUES(img_uri),
-            fecha_modificacion = VALUES(fecha_modificacion),
             es_activo = true
     `;
 
         const values = productos.map(p => [
             p.codigoBarra.value,
             p.descripcion.value,
+            p.precioCompra.value,
+            p.precioVenta.value,  
+            p.stock.value,
+            p.imgUri.value,  
+            p.fechaCreacion.value,
+            p.fechaModificacion.value, 
             p.proveedorId.value,
             p.marcaId.value,
-            p.rubroId.value,
-            p.precioCompra.value,
-            p.precioVenta.value,
-            p.stock.value,
-            p.imgUri.value,
-            p.fechaCreacion.value,
-            p.fechaModificacion.value
+            p.rubroId.value
         ]);
 
         await this.pool.query(query, [values]);
