@@ -156,12 +156,12 @@ export class ProductoController {
         try {
             const file = req.file;
 
-            if(!file) {
+            if (!file) {
                 res.status(400).send('No file uploaded');
                 return;
             }
 
-            if(!file.originalname.endsWith('.xlsx')) {
+            if (!file.originalname.endsWith('.xlsx')) {
                 res.status(400).send('Only xlsx files are allowed');
                 return;
             }

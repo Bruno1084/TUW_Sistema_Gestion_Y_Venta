@@ -1,8 +1,8 @@
-import type { ProveedorRepository } from "../../Proveedor/domain/ProveedorRepository";
 import type { ProductoDetailDTO } from "./ProductoDTO";
 import type { ProductoRepository } from "../domain/ProductoRepository";
-import type { MarcaRepository } from "../../Marca/domain/MarcaRepository";
-import type { RubroRepository } from "../../Rubro/domain/RubroRepository";
+import type { ProveedorGetOneById } from "../../Proveedor/application/ProveedorGetOneById";
+import type { MarcaGetOneById } from "../../Marca/application/MarcaGetOneById";
+import type { RubroGetOneById } from "../../Rubro/application/RubroGetOneById";
 import { Producto } from "../domain/Producto";
 import { ProductoCodigoBarra } from "../domain/ProductoCodigoBarra";
 import { ProductoDescripcion } from "../domain/ProductoDescripcion";
@@ -19,9 +19,9 @@ import { ProductoFechaCreacion } from "../domain/ProductoFechaCreacion";
 export class ProductoUpdate {
     constructor(
         private productoRepository: ProductoRepository,
-        private proveedorRepository: ProveedorRepository,
-        private marcaRepository: MarcaRepository,
-        private rubroRepository: RubroRepository
+        private proveedorGetOneById: ProveedorGetOneById,
+        private marcaGetOneById: MarcaGetOneById,
+        private rubroGetOneById: RubroGetOneById
     ) { }
 
     async run(
@@ -41,17 +41,17 @@ export class ProductoUpdate {
         if (!productoExistente) throw new Error("Producto no encontrado");
 
         if (updates.proveedorId) {
-            const proveedorExistente = await this.proveedorRepository.getOneById(new ProveedorId(updates.proveedorId));
+            const proveedorExistente = await this.proveedorGetOneById.run(updates.proveedorId);
             if (!proveedorExistente) throw new Error("Proveedor no encontrado");
         }
 
         if (updates.marcaId) {
-            const marcaExistente = await this.marcaRepository.getOneById(new MarcaId(updates.marcaId));
+            const marcaExistente = await this.marcaGetOneById.run(updates.marcaId);
             if (!marcaExistente) throw new Error("Marca no encontrada");
         }
 
         if (updates.rubroId) {
-            const rubroExistente = await this.rubroRepository.getOneById(new RubroId(updates.rubroId));
+            const rubroExistente = await this.rubroGetOneById.run(updates.rubroId);
             if (!rubroExistente) throw new Error("Rubro no encontrado");
         }
 

@@ -13,6 +13,12 @@ import { ProductoGetOneByIdWithDetail } from "../application/ProductoGetOneByIdW
 import { ProductoUpdate } from "../application/ProductoUpdate";
 import { ProductoDelete } from "../application/ProductoDelete";
 import { ProductoImportXlsx } from "../application/ProductoImportXlsx";
+import { ProveedorFindByNames } from "../../Proveedor/application/ProveedorFindByNames";
+import { MarcaFindByNames } from "../../Marca/application/MarcaFindByNames";
+import { RubroFindByNames } from "../../Rubro/application/RubroFindByNames";
+import { ProveedorGetOneById } from "../../Proveedor/application/ProveedorGetOneById";
+import { MarcaGetOneById } from "../../Marca/application/MarcaGetOneById";
+import { RubroGetOneById } from "../../Rubro/application/RubroGetOneById";
 import multer from "multer";
 
 export function productoRouter(
@@ -22,6 +28,16 @@ export function productoRouter(
     rubroRepo: MySQLRubroRepository
 ): Router {
     const repo = new MySQLProductoRepository(pool);
+
+    // Casos de Uso externos
+    const proveedorFindByNames = new ProveedorFindByNames(proveedorRepo);
+    const marcaFindByNames = new MarcaFindByNames(marcaRepo);
+    const rubroFindByNames = new RubroFindByNames(rubroRepo);
+
+    const proveedorGetById = new ProveedorGetOneById(proveedorRepo);
+    const marcaGetById = new MarcaGetOneById(marcaRepo);
+    const rubroGetById = new RubroGetOneById(rubroRepo);
+
     const upload = multer({ storage: multer.memoryStorage() });
 
     const useCases = {
@@ -30,9 +46,9 @@ export function productoRouter(
         getAllWithDetail: new ProductoGetAllWithDetail(repo),
         getOneById: new ProductoGetOneById(repo),
         getOneByIdWithDetail: new ProductoGetOneByIdWithDetail(repo),
-        update: new ProductoUpdate(repo, proveedorRepo, marcaRepo, rubroRepo),
+        update: new ProductoUpdate(repo, proveedorGetById, marcaGetById, rubroGetById),
         delete: new ProductoDelete(repo),
-        importXlsx: new ProductoImportXlsx(repo)
+        importXlsx: new ProductoImportXlsx(repo, proveedorFindByNames, marcaFindByNames, rubroFindByNames)
     };
 
     const controller = new ProductoController(useCases);
@@ -45,7 +61,7 @@ export function productoRouter(
     router.get('/productos/detail/:codigo', controller.getOneByIdWithDetail.bind(controller));
     router.put('/productos/:codigo', controller.update.bind(controller));
     router.delete('/productos/:codigo', controller.delete.bind(controller));
-    router.post('/productos/importXlsx', upload.single('Lista_Productos') , controller.importXlsx.bind(controller));
+    router.post('/productos/importXlsx', upload.single('Lista_Productos'), controller.importXlsx.bind(controller));
 
     return router;
 }

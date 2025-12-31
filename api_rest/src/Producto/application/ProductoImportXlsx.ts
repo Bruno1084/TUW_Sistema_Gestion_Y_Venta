@@ -1,5 +1,8 @@
 import type { ProductoRepository } from "../domain/ProductoRepository";
 import type { ProductoExcelRowDTO } from "./ProductoDTO";
+import type { ProveedorFindByNames } from "../../Proveedor/application/ProveedorFindByNames";
+import type { MarcaFindByNames } from "../../Marca/application/MarcaFindByNames";
+import type { RubroFindByNames } from "../../Rubro/application/RubroFindByNames";
 import { Producto } from "../domain/Producto";
 import { ProductoCodigoBarra } from "../domain/ProductoCodigoBarra";
 import { ProductoDescripcion } from "../domain/ProductoDescripcion";
@@ -15,7 +18,12 @@ import { RubroId } from "../../Rubro/domain/RubroId";
 import { read, utils, type WorkSheet } from "xlsx";
 
 export class ProductoImportXlsx {
-    constructor(private repository: ProductoRepository) { }
+    constructor(
+        private repository: ProductoRepository,
+        private proveedorFindByNames: ProveedorFindByNames,
+        private marcaFindByNames: MarcaFindByNames,
+        private rubroFindByNames: RubroFindByNames
+    ) { }
 
     async run(buffer: Buffer): Promise<void> {
 
@@ -28,16 +36,49 @@ export class ProductoImportXlsx {
             raw: false
         });
 
-        const proveedores = [...new Set(jsonData.map(r => r["Proveedor"]))];
-        const marcas = [...new Set(jsonData.map(r => r["Marca"]))];
-        const rubros = [...new Set(jsonData.map(r => r["Rubro"]))];
+        const proveedoresExcel = [...new Set(jsonData.map(r => r["Proveedor"]))];
+        const marcasExcel = [...new Set(jsonData.map(r => r["Marca"]))];
+        const rubrosExcel = [...new Set(jsonData.map(r => r["Rubro"]))];
 
-        // const proveedoresDB = 
-        // const marcasDB =
-        // const rubrosDB =
+        const proveedoresDB = await this.proveedorFindByNames.run(proveedoresExcel);
+        const marcasDB = await this.marcaFindByNames.run(marcasExcel);
+        const rubrosDB = await this.rubroFindByNames.run(rubrosExcel);
+
+        const proveedorMap = new Map(
+            proveedoresDB.map(p => [p.nombre, p.id])
+        );
+
+        const marcaMap = new Map(
+            marcasDB.map(m => [m.nombre, m.id])
+        );
+
+        const rubroMap = new Map(
+            rubrosDB.map(r => [r.nombre, r.id])
+        );
 
         const productos = jsonData.map((row, index) => {
             const normalizedRow = this.normalizeRow(row);
+
+            const proveedorId = proveedorMap.get(normalizedRow.Proveedor);
+            if (!proveedorId) {
+                throw new Error(
+                    `Fila ${index + 2}: proveedor inexistente (${normalizedRow.Proveedor})`
+                );
+            }
+
+            const marcaId = marcaMap.get(normalizedRow.Marca);
+            if (!marcaId) {
+                throw new Error(
+                    `Fila ${index + 2}: marca inexistente (${normalizedRow.Marca})`
+                );
+            }
+
+            const rubroId = rubroMap.get(normalizedRow.Rubro);
+            if (!rubroId) {
+                throw new Error(
+                    `Fila ${index + 2}: rubro inexistente (${normalizedRow.Rubro})`
+                );
+            }
 
             try {
 
@@ -50,12 +91,14 @@ export class ProductoImportXlsx {
                     new ProductoImgUri(normalizedRow["Imagen Uri"]),
                     ProductoFechaCreacion.now(),
                     ProductoFechaModificacion.now(),
-                    new ProveedorId(normalizedRow["ID de Proveedor"]),
-                    new MarcaId(normalizedRow["ID de Marca"]),
-                    new RubroId(normalizedRow["ID de Rubro"])
+                    new ProveedorId(proveedorId),
+                    new MarcaId(marcaId),
+                    new RubroId(rubroId)
                 );
             } catch (error) {
-                throw new Error(`Error en fila ${index + 2}: ${(error as Error).message}`);
+                throw new Error(
+                    `Fila ${index + 2}: ${(error as Error).message}`
+                );
             }
         });
 
