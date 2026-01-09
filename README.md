@@ -4,7 +4,7 @@ Sistema integral para la gestión de productos, compras y ventas, desarrollado c
 ## 🚀 Tecnologías
 ### Frontend
 * Java JDK 20.0.2
-* JavaFX 24.0.1
+* JavaFX 20.0.2
 * Scene Builder 24.0.1
 
 ### Backend
