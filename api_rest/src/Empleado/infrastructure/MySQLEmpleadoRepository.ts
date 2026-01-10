@@ -1,13 +1,8 @@
-import type { Pool, RowDataPacket } from "mysql2/promise";
+import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import type { EmpleadoRepository } from "../domain/EmpleadoRepository";
+import type { EmpleadoDTO } from "../application/EmpleadoDTO";
 import { Empleado } from "../domain/Empleado";
 import { EmpleadoId } from "../domain/EmpleadoId";
-import { EmpleadoNombre } from "../domain/EmpleadoNombre";
-import { EmpleadoDireccion } from "../domain/EmpleadoDireccion";
-import { EmpleadoTelefono } from "../domain/EmpleadoTelefono";
-import { EmpleadoFechaCreacion } from "../domain/EmpleadoFechaCreacion";
-import { EmpleadoFechaModificacion } from "../domain/EmpleadoFechaModificacion";
-import { EmpleadoEsActivo } from "../domain/EmpleadoEsActivo";
 
 type MySQLEmpleado = {
     id: number;
@@ -16,7 +11,7 @@ type MySQLEmpleado = {
     telefono: string;
     fecha_creacion: Date;
     fecha_modificacion: Date;
-    esActivo: boolean;
+    es_activo: boolean;
 };
 
 export class MySQLEmpleadoRepository implements EmpleadoRepository {
@@ -26,43 +21,49 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
         this.pool = pool;
     }
 
-    async create(empleado: Empleado): Promise<void> {
+    async create(empleado: Empleado): Promise<EmpleadoDTO> {
         const query = `
-            INSERT INTO empleados (nombre, direccion, telefono, fecha_creacion, fecha_modificacion, es_activo)
-            VALUES (?, ?, ?, ?, ?, ?)
-    `;
+            INSERT INTO empleados (nombre, direccion, telefono, fecha_creacion, fecha_modificacion)
+            VALUES (?, ?, ?, ?, ?)
+        `;
 
-        await this.pool.query(query, [
+        const [result] = await this.pool.query<ResultSetHeader>(query, [
             empleado.nombre.value,
             empleado.direccion.value,
             empleado.telefono.value,
             empleado.fechaCreacion.value,
             empleado.fechaModificacion.value,
-            empleado.esActivo.value
         ]);
+
+        const empleadoId = result.insertId;
+        return this.getOneById(new EmpleadoId(empleadoId)) as Promise<EmpleadoDTO>;
     }
 
-    async getAll(): Promise<Empleado[]> {
-        const query = 'SELECT * FROM empleados WHERE es_activo = true';
+    async getAll(): Promise<EmpleadoDTO[]> {
+        const query = `
+        SELECT
+        id, nombre, direccion, telefono, fecha_creacion, fecha_modificacion
+        FROM empleados WHERE es_activo = true`;
 
         const [rows] = await this.pool.query<(MySQLEmpleado & RowDataPacket)[]>(query);
 
         return rows.map(
-            (row) =>
-                new Empleado(
-                    new EmpleadoId(row.id),
-                    new EmpleadoNombre(row.nombre),
-                    new EmpleadoDireccion(row.direccion),
-                    new EmpleadoTelefono(row.telefono),
-                    new EmpleadoFechaCreacion(row.fecha_creacion),
-                    new EmpleadoFechaModificacion(row.fecha_modificacion),
-                    new EmpleadoEsActivo(row.esActivo)
-                )
+            (row) => ({
+                id: row!.id,
+                nombre: row!.nombre,
+                direccion: row!.direccion,
+                telefono: row!.telefono,
+                fechaCreacion: row!.fecha_creacion,
+                fechaModificacion: row!.fecha_modificacion,
+            })
         );
     }
 
-    async getOneById(empleadoId: EmpleadoId): Promise<Empleado | null> {
-        const query = 'SELECT * FROM empleados WHERE id = ?';
+    async getOneById(empleadoId: EmpleadoId): Promise<EmpleadoDTO | null> {
+        const query = `
+        SELECT
+        id, nombre, direccion, telefono, fecha_creacion, fecha_modificacion
+        FROM empleados WHERE id = ?`;
 
         const [rows] = await this.pool.query<(MySQLEmpleado & RowDataPacket)[]>(query, [empleadoId.value]);
 
@@ -71,24 +72,23 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
         }
 
         const row = rows[0];
-        return new Empleado(
-            new EmpleadoId(row!.id),
-            new EmpleadoNombre(row!.nombre),
-            new EmpleadoDireccion(row!.direccion),
-            new EmpleadoTelefono(row!.telefono),
-            new EmpleadoFechaCreacion(row!.fecha_creacion),
-            new EmpleadoFechaModificacion(row!.fecha_modificacion),
-            new EmpleadoEsActivo(row!.esActivo)
-        );
+        return {
+            id: row!.id,
+            nombre: row!.nombre,
+            direccion: row!.direccion,
+            telefono: row!.telefono,
+            fechaCreacion: row!.fecha_creacion,
+            fechaModificacion: row!.fecha_modificacion,
+        }
     }
 
-    async update(empleado: Empleado): Promise<void> {
+    async update(empleado: Empleado): Promise<EmpleadoDTO> {
         const query = `UPDATE empleados SET 
             nombre = ?,
             direccion = ?,
             telefono = ?,
             fecha_creacion = ?,
-            fecha_modificacion = ?,
+            fecha_modificacion = ?
             WHERE id = ?`;
 
         await this.pool.query(query, [
@@ -99,6 +99,8 @@ export class MySQLEmpleadoRepository implements EmpleadoRepository {
             empleado.fechaModificacion.value,
             empleado.id.value
         ]);
+
+        return this.getOneById(empleado.id) as Promise<EmpleadoDTO>;
     }
 
     async delete(empleadoId: EmpleadoId): Promise<void> {

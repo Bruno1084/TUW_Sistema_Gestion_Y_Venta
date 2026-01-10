@@ -1,10 +1,12 @@
+import type { RubroDTO, RubroSimpleDTO } from "../application/RubroDTO";
 import type { Rubro } from "./Rubro";
 import type { RubroId } from "./RubroId";
 
 export interface RubroRepository {
-    create(rubro: Rubro): Promise<void>;
-    getAll(): Promise<Rubro[]>;
-    getOneById(rubroId: RubroId): Promise<Rubro | null>;
-    update(rubro: Rubro): Promise<void>;
+    create(rubro: Rubro): Promise<RubroDTO>;
+    getAll(): Promise<RubroDTO[]>;
+    getOneById(rubroId: RubroId): Promise<RubroDTO | null>;
+    update(rubro: Rubro): Promise<RubroDTO>;
     delete(rubroId: RubroId): Promise<void>;
+    findByNames(nombres: string[]): Promise<RubroSimpleDTO[]>;
 }

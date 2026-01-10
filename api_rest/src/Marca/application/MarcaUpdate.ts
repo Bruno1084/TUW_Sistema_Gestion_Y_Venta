@@ -1,8 +1,10 @@
 import type { MarcaRepository } from "../domain/MarcaRepository";
+import type { MarcaDTO } from "./MarcaDTO";
 import { Marca } from "../domain/Marca";
 import { MarcaId } from "../domain/MarcaId";
 import { MarcaNombre } from "../domain/MarcaNombre";
 import { MarcaFechaModificacion } from "../domain/MarcaFechaModificacion";
+import { MarcaFechaCreacion } from "../domain/MarcaFechaCreacion";
 
 export class MarcaUpdate {
     constructor(private repository: MarcaRepository) {}
@@ -12,18 +14,17 @@ export class MarcaUpdate {
         updates: {
             nombre?: string
         }
-    ): Promise<void> {
+    ): Promise<MarcaDTO> {
         const marcaExistente = await this.repository.getOneById(new MarcaId(id));
         if (!marcaExistente) throw new Error("Marca no encontrada");
 
         const marcaActualizada = new Marca(
-            marcaExistente.id,
-            updates.nombre? new MarcaNombre(updates.nombre) : marcaExistente.nombre,
-            marcaExistente.fechaCreacion,
+            new MarcaId(marcaExistente.id),
+            updates.nombre? new MarcaNombre(updates.nombre) : new MarcaNombre(marcaExistente.nombre),
+            new MarcaFechaCreacion(marcaExistente.fechaCreacion),
             new MarcaFechaModificacion(new Date()),
-            marcaExistente.esActivo
         );
 
-        await this.repository.update(marcaActualizada);
+        return await this.repository.update(marcaActualizada);
     }
 }

@@ -1,17 +1,14 @@
-import type { Pool, RowDataPacket } from "mysql2/promise"
+import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise"
 import type { CompraRepository } from "../domain/CompraRepository"
+import type { CompraDetailDTO, CompraDTO, CompraReporteByProductosDTO, CompraReporteByProveedoresDTO } from "../application/CompraDTO";
+import type { DetalleCompra } from "../../DetalleCompra/domain/DetalleCompra";
 import { Compra } from "../domain/Compra";
 import { CompraId } from "../domain/CompraId";
-import { ProveedorId } from "../../Proveedor/domain/ProveedorId";
-import { CompraPrecioTotal } from "../domain/CompraPrecioTotal";
-import { CompraFechaCreacion } from "../domain/CompraFechaCreacion";
-import { EmpleadoId } from "../../Empleado/domain/EmpleadoId";
-import { ClienteId } from "../../Cliente/domain/ClienteId";
 
 type MySQLCompra = {
     id: number,
     id_proveedor: number,
-    id_empleado: number,
+    id_usuario: number,
     precio_total: number,
     fecha_creacion: Date
 }
@@ -23,55 +20,221 @@ export class MySQLCompraRepository implements CompraRepository {
         this.pool = pool;
     }
 
-    async create(compra: Compra): Promise<void> {
-        const query = `
-            INSERT INTO compras(id_proveedor, id_empleado, precio_total, fecha_creacion)
-            VALUES (?, ?, ?, ?)
-        `;
+    async create(compra: Compra, detalles: DetalleCompra[]): Promise<CompraDetailDTO> {
+        const connection = await this.pool.getConnection();
+        let compraId = 0;
+        try {
 
-        await this.pool.query(query, [
-            compra.proveedorId.value,
-            compra.empleadoId.value,
-            compra.precioTotal.value,
-            compra.fechaCreacion.value
-        ]);
+            const queryCompra = `
+            INSERT INTO compras(id_proveedor, id_usuario, precio_total, fecha_creacion)
+            VALUES (?, ?, ?, ?)
+            `;
+
+            const queryDetalle = `
+            INSERT INTO compras_detalles (id_compra, codigo_producto, cantidad, precio_total, precio_unitario)
+            VALUES ?
+            `;
+
+            await connection.beginTransaction();
+            const [result] = await connection.query<ResultSetHeader>(queryCompra, [
+                compra.proveedorId.value,
+                compra.usuarioId.value,
+                compra.precioTotal.value,
+                compra.fechaCreacion.value
+            ]);
+
+            compraId = result.insertId;
+            const values = detalles.map(d => [
+                compraId,
+                d.productoCodigoBarra.value,
+                d.cantidad.value,
+                d.precioTotal.value,
+                d.precioUnitario.value,
+            ]);
+
+            await connection.query<ResultSetHeader>(queryDetalle, [values]);
+            await connection.commit();
+        } catch (err: any) {
+            await connection.rollback();
+            throw err;
+        } finally {
+            connection.release();
+        }
+
+        return this.getOneByIdWithDetail(new CompraId(compraId)) as Promise<CompraDetailDTO>;
     }
 
-    async getAll(): Promise<Compra[]> {
+    async getAll(): Promise<CompraDTO[]> {
         const query = `
-            SELECT * FROM compras
+            SELECT
+            c.id,
+            c.precio_total,
+            c.fecha_creacion,
+            c.id_proveedor,
+            c.id_usuario,
+            p.nombre AS proveedor_nombre,
+            u.nombre AS usuario_nombre
+            FROM compras c
+            JOIN proveedores p ON p.id = c.id_proveedor
+            JOIN usuarios u ON u.id = c.id_usuario
         `;
 
         const [rows] = await this.pool.query<(MySQLCompra & RowDataPacket)[]>(query);
 
         return rows.map(
-            (row) =>
-                new Compra(
-                    new CompraId(row.id),
-                    new CompraPrecioTotal(row.precio_total),
-                    new CompraFechaCreacion(row.fecha_creacion),
-                    new ProveedorId(row.id_proveedor),
-                    new EmpleadoId(row.id_empleado)
-                )
+            (row) => ({
+                id: row!.id,
+                precioTotal: row!.precio_total,
+                fechaCreacion: row!.fecha_creacion,
+                proveedor: {
+                    id: row!.id_proveedor,
+                    nombre: row!.proveedor_nombre
+                },
+                usuario: {
+                    id: row!.id_usuario,
+                    nombre: row!.usuario_nombre
+                }
+            })
         );
     }
 
-    async getOneById(compraId: CompraId): Promise<Compra | null> {
-        const query = `SELECT * FROM compras WHERE id = ?`;
+    async getAllByProveedores(intervaloFecha: Date): Promise<CompraReporteByProveedoresDTO[]> {
+        const query = `
+            SELECT
+            p.id AS proveedor_id,
+            p.nombre AS proveedor_nombre,
+            COUNT(c.id) AS comprasTotales,
+            SUM(c.precio_total) AS precioTotal
+            FROM compras c
+            JOIN proveedores p ON p.id = c.id_proveedor
+            WHERE c.fecha_creacion >= ?
+            GROUP BY p.id, p.nombre;
+        `;
 
-        const [rows] = await this.pool.query<(MySQLCompra & RowDataPacket)[]>(query, [compraId.value]);
+        const [rows] = await this.pool.query<(CompraReporteByProveedoresDTO & RowDataPacket)[]>(query, [intervaloFecha]);
 
-        if (rows.length === 0) {
-            return null;
-        }
-
-        const row = rows[0];
-        return new Compra(
-            new CompraId(row!.id),
-            new CompraPrecioTotal(row!.precio_total),
-            new CompraFechaCreacion(row!.fecha_creacion),
-            new ProveedorId(row!.id_proveedor),
-            new EmpleadoId(row!.id_empleado)
-        );
+        return rows.map(row => ({
+            proveedorId: row.proveedor_id,
+            proveedorNombre: row.proveedor_nombre,
+            comprasTotales: row.comprasTotales,
+            precioTotal: row.precioTotal,
+        }));
     }
+
+    async getAllByProductos(intervaloFecha: Date): Promise<CompraReporteByProductosDTO[]> {
+        const query = `
+            SELECT
+            p.codigo_barra AS producto_codigo_barra,
+            p.descripcion AS producto_descripcion,
+            SUM(cd.cantidad) AS cantidad_comprada,
+            SUM(cd.precio_total) AS precio_total
+            FROM compras_detalles cd
+            JOIN productos p ON p.codigo_barra = cd.codigo_producto
+            JOIN compras c ON c.id = cd.id_compra
+            WHERE c.fecha_creacion >= ?
+            GROUP BY p.codigo_barra, p.descripcion;
+        `;
+
+        const [rows] = await this.pool.query<(CompraReporteByProductosDTO & RowDataPacket)[]>(query, [intervaloFecha]);
+
+        return rows.map(row => ({
+            codigoBarra: row.producto_codigo_barra,
+            descripcion: row.producto_descripcion,
+            cantidadComprada: row.cantidad_comprada,
+            precioTotal: row.precio_total,
+        }));
+    }
+
+    async getOneByIdWithDetail(compraId: CompraId): Promise<CompraDetailDTO | null> {
+        const query = `
+        SELECT
+            c.id AS compra_id,
+            c.precio_total AS compra_precio_total,
+            c.fecha_creacion AS compra_fecha_creacion,
+            
+            p.id AS proveedor_id,
+            p.nombre AS proveedor_nombre,
+            
+            u.id AS usuario_id,
+            u.nombre AS usuario_nombre,
+
+            d.cantidad AS detalle_cantidad,
+            d.precio_unitario AS detalle_precio_unitario,
+            d.precio_total AS detalle_precio_total,
+
+            pr.codigo_barra AS producto_codigo_barra,
+            pr.descripcion AS producto_descripcion,
+            pr.precio_compra AS producto_precio_compra,
+            pr.precio_venta AS producto_precio_venta,
+            pr.stock AS producto_stock,
+            pr.img_uri AS producto_img_uri,
+
+            r.id AS rubro_id,
+            r.nombre AS rubro_nombre,
+            r.fecha_creacion AS rubro_fecha_creacion,
+            r.fecha_modificacion AS rubro_fecha_modificacion,
+
+            m.id AS marca_id,
+            m.nombre AS marca_nombre,
+            m.fecha_creacion AS marca_fecha_creacion,
+            m.fecha_modificacion AS marca_fecha_modificacion
+
+        FROM compras c
+        JOIN proveedores p ON c.id_proveedor = p.id
+        JOIN usuarios u ON c.id_usuario = u.id
+        JOIN compras_detalles d ON c.id = d.id_compra
+        JOIN productos pr ON d.codigo_producto = pr.codigo_barra
+        JOIN rubros r ON r.id = pr.id_rubro
+        JOIN marcas m ON m.id = pr.id_marca 
+        WHERE c.id = ?
+    `;
+
+        const [rows] = await this.pool.query<RowDataPacket[]>(query, [compraId.value]);
+
+        if (rows.length === 0) return null;
+
+        const first = rows[0];
+        const compra: CompraDetailDTO = {
+            id: first!.compra_id,
+            precioTotal: first!.compra_precio_total,
+            fechaCreacion: first!.compra_fecha_creacion,
+            proveedor: {
+                id: first!.proveedor_id,
+                nombre: first!.proveedor_nombre,
+            },
+            usuario: {
+                id: first!.usuario_id,
+                nombre: first!.usuario_nombre,
+            },
+            detalles: rows.map((r) => ({
+                cantidad: r.detalle_cantidad,
+                precioUnitario: r.detalle_precio_unitario,
+                precioTotal: r.detalle_precio_total,
+                producto: {
+                    codigoBarra: r.producto_codigo_barra,
+                    descripcion: r.producto_descripcion,
+                    precioCompra: r.producto_precio_compra,
+                    precioVenta: r.producto_precio_venta,
+                    stock: r.producto_stock,
+                    rubro: {
+                        id: r.rubro_id,
+                        nombre: r.rubro_nombre,
+                        fechaCreacion: r.rubro_fecha_creacion,
+                        fechaModificacion: r.rubro_fecha_modificacion
+                    },
+                    marca: {
+                        id: r.marca_id,
+                        nombre: r.marca_nombre,
+                        fechaCreacion: r.fecha_creacion,
+                        fechaModificacion: r.fecha_modificacion
+                    },
+                    imgUri: r.producto_img_uri,
+                },
+            })),
+        };
+
+        return compra;
+    }
+
+
 }

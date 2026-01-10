@@ -16,7 +16,7 @@ type ClienteUseCases = {
 export class ClienteController {
     constructor(private useCases: ClienteUseCases) { }
 
-    async createCliente(req: Request, res: Response): Promise<void> {
+    async create(req: Request, res: Response): Promise<void> {
         try {
             const {
                 nombre,
@@ -24,7 +24,7 @@ export class ClienteController {
                 telefono
             } = req.body;
 
-            await this.useCases.create.run(
+            const clienteCreado = await this.useCases.create.run(
                 nombre,
                 direccion,
                 telefono,
@@ -32,13 +32,13 @@ export class ClienteController {
                 new Date(),
             );
 
-            res.status(201).json({ message: "Cliente creado correctamente" });
+            res.status(201).json(clienteCreado);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
     }
 
-    async getAllCliente(req: Request, res: Response): Promise<void> {
+    async getAll(req: Request, res: Response): Promise<void> {
         try {
             const clientes = await this.useCases.getAll.run();
             res.status(200).json(clientes);
@@ -47,7 +47,7 @@ export class ClienteController {
         }
     }
 
-    async getOneByIdCliente(req: Request, res: Response): Promise<void> {
+    async getOneById(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
             const cliente = await this.useCases.getOneById.run(Number(id));
@@ -57,40 +57,40 @@ export class ClienteController {
                 return;
             }
 
-            res.status(201).json(cliente);
+            res.status(200).json(cliente);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
     }
 
-    async updateCliente(req: Request, res: Response): Promise<void> {
+    async update(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
             const {
                 nombre,
                 direccion,
-                telefono
+                telefono,
             } = req.body;
 
-            await this.useCases.update.run(Number(id), {
+            const clienteActualizado = await this.useCases.update.run(Number(id), {
                 nombre,
                 direccion,
                 telefono
             });
 
-            res.status(201).json({ message: "Cliente actualizado correctamente" });
+            res.status(200).json(clienteActualizado);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
     }
 
-    async deleteCliente(req: Request, res: Response): Promise<void> {
+    async delete(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
 
             await this.useCases.delete.run(Number(id));
 
-            res.status(200).json({ message: 'Cliente eliminado correctamente' });
+            res.status(204).json({ message: 'Cliente eliminado correctamente' });
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

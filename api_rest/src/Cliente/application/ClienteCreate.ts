@@ -1,12 +1,12 @@
-import { Cliente } from "../domain/Cliente";
 import type { ClienteRepository } from "../domain/ClienteRepository";
+import type { ClienteDTO } from "./ClienteDTO";
+import { Cliente } from "../domain/Cliente";
 import { ClienteId } from "../domain/ClienteId";
 import { ClienteNombre } from "../domain/ClienteNombre";
 import { ClienteDireccion } from "../domain/ClienteDireccion";
 import { ClienteTelefono } from "../domain/ClienteTelefono";
 import { ClienteFechaCreacion } from "../domain/ClienteFechaCreacion";
 import { ClienteFechaModificacion } from "../domain/ClienteFechaModificacion";
-import { ClienteEsActivo } from "../domain/ClienteEsActivo";
 
 export class ClienteCreate {
     constructor(private repository: ClienteRepository) {}
@@ -17,7 +17,7 @@ export class ClienteCreate {
         telefono: string,
         fechaCreacion: Date,
         fechaModificacion: Date,
-    ): Promise<void> {
+    ): Promise<ClienteDTO> {
         const cliente = new Cliente(
             new ClienteId(0),
             new ClienteNombre(nombre),
@@ -25,9 +25,8 @@ export class ClienteCreate {
             new ClienteTelefono(telefono),
             new ClienteFechaCreacion(fechaCreacion),
             new ClienteFechaModificacion(fechaModificacion),
-            new ClienteEsActivo(true)
         );
 
-        await this.repository.create(cliente);
+        return await this.repository.create(cliente);
     }
 }

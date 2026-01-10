@@ -8,8 +8,10 @@ export class ProductoFechaModificacion {
     }
 
     private checkValue() {
-        if(this.value.getTime() > new Date().getTime()) {
-            throw new Error('Producto fechaModificación no puede ser mayor a la fecha actual.');
-        }
+
+    }
+
+    static now(): ProductoFechaModificacion {
+        return new ProductoFechaModificacion(new Date());
     }
 }

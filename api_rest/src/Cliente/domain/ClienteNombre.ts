@@ -4,7 +4,7 @@ export class ClienteNombre {
     constructor(value: string) {
         this.value = value;
 
-        this.chechValue();
+        this.checkValue();
     }
 
     private checkValue() {

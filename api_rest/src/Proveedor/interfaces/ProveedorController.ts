@@ -4,6 +4,7 @@ import { ProveedorDelete } from "../application/ProveedorDelete";
 import { ProveedorGetAll } from "../application/ProveedorGetAll";
 import { ProveedorGetOneById } from "../application/ProveedorGetOneById";
 import { ProveedorUpdate } from "../application/ProveedorUpdate";
+import type { ProveedorFindByNames } from "../application/ProveedorFindByNames";
 
 type ProveedorUseCases = {
     create: ProveedorCreate;
@@ -11,12 +12,13 @@ type ProveedorUseCases = {
     getOneById: ProveedorGetOneById;
     update: ProveedorUpdate;
     delete: ProveedorDelete;
+    findByNames: ProveedorFindByNames;
 }
 
 export class ProveedorController {
     constructor(private useCases: ProveedorUseCases) { }
 
-    async createProveedor(req: Request, res: Response): Promise<void> {
+    async create(req: Request, res: Response): Promise<void> {
         try {
             const {
                 nombre,
@@ -24,7 +26,7 @@ export class ProveedorController {
                 telefono,
             } = req.body;
 
-            await this.useCases.create.run(
+            const proveedorCreado = await this.useCases.create.run(
                 nombre,
                 direccion,
                 telefono,
@@ -32,13 +34,13 @@ export class ProveedorController {
                 new Date()
             );
 
-            res.status(201).json({ message: "Proveedor creado correctamente" });
+            res.status(201).json(proveedorCreado);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
     }
 
-    async getAllProveedor(req: Request, res: Response): Promise<void> {
+    async getAll(req: Request, res: Response): Promise<void> {
         try {
             const proveedores = await this.useCases.getAll.run();
             res.status(200).json(proveedores);
@@ -47,23 +49,23 @@ export class ProveedorController {
         }
     }
 
-    async getOneByIdProveedor(req: Request, res: Response): Promise<void> {
+    async getOneById(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
             const proveedor = await this.useCases.getOneById.run(Number(id));
 
             if (!proveedor) {
-                res.status(404).json({ error: "Producto no encontrado" });
+                res.status(404).json({ error: "Proveedor no encontrado" });
                 return;
             }
 
-            res.status(201).json(proveedor);
+            res.status(200).json(proveedor);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
     }
 
-    async updateProveedor(req: Request, res: Response): Promise<void> {
+    async update(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
 
@@ -73,7 +75,7 @@ export class ProveedorController {
                 telefono,
             } = req.body;
 
-            this.useCases.update.run(
+            const proveedorActualizado = await this.useCases.update.run(
                 Number(id),
                 {
                     nombre,
@@ -82,19 +84,31 @@ export class ProveedorController {
                 }
             );
 
-            res.status(200).json({ message: "Proveedor actualizado correctamente" });
+            res.status(200).json(proveedorActualizado);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
     }
 
-    async deleteProveedor(req: Request, res: Response): Promise<void> {
+    async delete(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
 
             await this.useCases.delete.run(Number(id));
 
-            res.status(200).json({ message: 'Proveedor eliminado correctamente' });
+            res.status(204).json({ message: 'Proveedor eliminado correctamente' });
+        } catch (err: any) {
+            res.status(400).json({ error: err.message });
+        }
+    }
+
+    async findByNames(req: Request, res: Response): Promise<void> {
+        try {
+            const { nombres } = req.body;
+
+            const proveedores = await this.useCases.findByNames.run(nombres);
+
+            res.status(204).json(proveedores);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

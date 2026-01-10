@@ -1,10 +1,10 @@
 # SISTEMA GESTIÓN Y VENTA
-Sistema integral para la gestión de productos, compras y ventas, desarrollado como proyecto académico/profesional.
+Sistema integral para la gestión de productos, compras y ventas, desarrollado como proyecto académico.
 
 ## 🚀 Tecnologías
 ### Frontend
 * Java JDK 20.0.2
-* JavaFX 24.0.1
+* JavaFX 20.0.2
 * Scene Builder 24.0.1
 
 ### Backend
@@ -15,7 +15,7 @@ Sistema integral para la gestión de productos, compras y ventas, desarrollado c
 
 ## 📌 Requisitos previos
 
-Antes de instalar el proyecto, asegurate de tener:
+Antes de instalar el proyecto, es necesario tener:
 
 * Node.js 18+
 * MySQL Server

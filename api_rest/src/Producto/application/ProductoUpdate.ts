@@ -1,7 +1,8 @@
-import type { ProveedorRepository } from "../../Proveedor/domain/ProveedorRepository";
+import type { ProductoDetailDTO } from "./ProductoDTO";
 import type { ProductoRepository } from "../domain/ProductoRepository";
-import type { MarcaRepository } from "../../Marca/domain/MarcaRepository";
-import type { RubroRepository } from "../../Rubro/domain/RubroRepository";
+import type { ProveedorGetOneById } from "../../Proveedor/application/ProveedorGetOneById";
+import type { MarcaGetOneById } from "../../Marca/application/MarcaGetOneById";
+import type { RubroGetOneById } from "../../Rubro/application/RubroGetOneById";
 import { Producto } from "../domain/Producto";
 import { ProductoCodigoBarra } from "../domain/ProductoCodigoBarra";
 import { ProductoDescripcion } from "../domain/ProductoDescripcion";
@@ -13,14 +14,14 @@ import { ProductoImgUri } from "../domain/ProductoImgUri";
 import { ProveedorId } from "../../Proveedor/domain/ProveedorId";
 import { MarcaId } from "../../Marca/domain/MarcaId";
 import { RubroId } from "../../Rubro/domain/RubroId";
-import { ProductoEsActivo } from "../domain/ProductoEsActivo";
+import { ProductoFechaCreacion } from "../domain/ProductoFechaCreacion";
 
 export class ProductoUpdate {
     constructor(
         private productoRepository: ProductoRepository,
-        private proveedorRepository: ProveedorRepository,
-        private marcaRepository: MarcaRepository,
-        private rubroRepository: RubroRepository
+        private proveedorGetOneById: ProveedorGetOneById,
+        private marcaGetOneById: MarcaGetOneById,
+        private rubroGetOneById: RubroGetOneById
     ) { }
 
     async run(
@@ -34,47 +35,40 @@ export class ProductoUpdate {
             proveedorId?: number,
             marcaId?: number,
             rubroId?: number,
-            esActivo?: boolean
         }
-    ): Promise<void> {
+    ): Promise<ProductoDetailDTO> {
         const productoExistente = await this.productoRepository.getOneById(new ProductoCodigoBarra(codigoBarra));
         if (!productoExistente) throw new Error("Producto no encontrado");
 
-        let proveedor = productoExistente.proveedorId;
-        let marca = productoExistente.marcaId;
-        let rubro = productoExistente.rubroId;
-
         if (updates.proveedorId) {
-            const proveedorExistente = await this.proveedorRepository.getOneById(new ProveedorId(updates.proveedorId));
+            const proveedorExistente = await this.proveedorGetOneById.run(updates.proveedorId);
             if (!proveedorExistente) throw new Error("Proveedor no encontrado");
-            proveedor = new ProveedorId(updates.proveedorId);
         }
 
         if (updates.marcaId) {
-            const marcaExistente = await this.marcaRepository.getOneById(new MarcaId(updates.marcaId));
+            const marcaExistente = await this.marcaGetOneById.run(updates.marcaId);
             if (!marcaExistente) throw new Error("Marca no encontrada");
         }
 
         if (updates.rubroId) {
-            const rubroExistente = await this.rubroRepository.getOneById(new RubroId(updates.rubroId));
+            const rubroExistente = await this.rubroGetOneById.run(updates.rubroId);
             if (!rubroExistente) throw new Error("Rubro no encontrado");
         }
 
         const productoActualizado = new Producto(
-            productoExistente.codigoBarra,
-            updates.descripcion ? new ProductoDescripcion(updates.descripcion) : productoExistente.descripcion,
-            updates.precioCompra !== undefined ? new ProductoPrecioCompra(updates.precioCompra) : productoExistente.precioCompra,
-            updates.precioVenta !== undefined ? new ProductoPrecioVenta(updates.precioVenta) : productoExistente.precioVenta,
-            updates.stock !== undefined ? new ProductoStock(updates.stock) : productoExistente.stock,
-            updates.imgUri ? new ProductoImgUri(updates.imgUri) : productoExistente.imgUri,
-            productoExistente.fechaCreacion,
+            new ProductoCodigoBarra(productoExistente.codigoBarra),
+            updates.descripcion ? new ProductoDescripcion(updates.descripcion) : new ProductoDescripcion(productoExistente.descripcion),
+            updates.precioCompra !== undefined ? new ProductoPrecioCompra(updates.precioCompra) : new ProductoPrecioCompra(productoExistente.precioCompra),
+            updates.precioVenta !== undefined ? new ProductoPrecioVenta(updates.precioVenta) : new ProductoPrecioVenta(productoExistente.precioVenta),
+            updates.stock !== undefined ? new ProductoStock(updates.stock) : new ProductoStock(productoExistente.stock),
+            updates.imgUri ? new ProductoImgUri(updates.imgUri) : new ProductoImgUri(productoExistente.imgUri),
+            new ProductoFechaCreacion(productoExistente.fechaCreacion),
             new ProductoFechaModificacion(new Date()),
-            proveedor,
-            marca,
-            rubro,
-            updates.esActivo ? new ProductoEsActivo(updates.esActivo) : productoExistente.esActivo
+            new ProveedorId(updates.proveedorId!),
+            new MarcaId(updates.marcaId!),
+            new RubroId(updates.rubroId!),
         );
 
-        await this.productoRepository.update(productoActualizado);
+        return await this.productoRepository.update(productoActualizado);
     }
 }

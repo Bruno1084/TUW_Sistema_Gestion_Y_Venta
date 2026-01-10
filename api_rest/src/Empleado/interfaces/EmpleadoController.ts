@@ -16,7 +16,7 @@ type EmpleadoUseCases = {
 export class EmpleadoController {
     constructor(private useCases: EmpleadoUseCases) { }
 
-    async createEmpleado(req: Request, res: Response): Promise<void> {
+    async create(req: Request, res: Response): Promise<void> {
         try {
             const {
                 nombre,
@@ -24,7 +24,7 @@ export class EmpleadoController {
                 telefono
             } = req.body;
 
-            await this.useCases.create.run(
+            const empleadoCreado = await this.useCases.create.run(
                 nombre,
                 direccion,
                 telefono,
@@ -32,13 +32,13 @@ export class EmpleadoController {
                 new Date(),
             );
 
-            res.status(201).json({ message: "Empleado creado correctamente" });
+            res.status(201).json(empleadoCreado);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
     }
 
-    async getAllEmpleado(req: Request, res: Response): Promise<void> {
+    async getAll(req: Request, res: Response): Promise<void> {
         try {
             const empleados = await this.useCases.getAll.run();
             res.status(200).json(empleados);
@@ -47,7 +47,7 @@ export class EmpleadoController {
         }
     }
 
-    async getOneByIdEmpleado(req: Request, res: Response): Promise<void> {
+    async getOneById(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
             const empleado = await this.useCases.getOneById.run(Number(id));
@@ -57,13 +57,13 @@ export class EmpleadoController {
                 return;
             }
 
-            res.status(201).json(empleado);
+            res.status(200).json(empleado);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
     }
 
-    async updateEmpleado(req: Request, res: Response): Promise<void> {
+    async update(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
             const {
@@ -72,25 +72,25 @@ export class EmpleadoController {
                 telefono,
             } = req.body;
 
-            await this.useCases.update.run(Number(id), {
+            const empleadoActualizado = await this.useCases.update.run(Number(id), {
                 nombre,
                 direccion,
                 telefono
             });
 
-            res.status(201).json({ message: "Empleado actualizado correctamente" });
+            res.status(200).json(empleadoActualizado);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
     }
 
-    async deleteEmpleado(req: Request, res: Response): Promise<void> {
+    async delete(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
 
             await this.useCases.delete.run(Number(id));
 
-            res.status(200).json({ message: 'Empleado eliminado correctamente' });
+            res.status(204).json({ message: 'Empleado eliminado correctamente' });
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

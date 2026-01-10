@@ -5,6 +5,6 @@ export class EmpleadoDelete {
     constructor(private repository: EmpleadoRepository) {}
 
     async run(id: number): Promise <void> {
-        await this.repository.delete(new EmpleadoId(id));
+        return await this.repository.delete(new EmpleadoId(id));
     }
 }

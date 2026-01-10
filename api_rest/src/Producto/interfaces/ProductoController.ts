@@ -1,20 +1,28 @@
 import type { Request, Response } from "express";
+import { ProductoGetAllWithDetail } from "../application/ProductoGetAllWithDetail";
 import { ProductoCreate } from "../application/ProductoCreate";
 import { ProductoGetAll } from "../application/ProductoGetAll";
 import { ProductoGetOneById } from "../application/ProductoGetOneById";
+import { ProductoGetOneByIdWithDetail } from "../application/ProductoGetOneByIdWithDetail";
 import { ProductoUpdate } from "../application/ProductoUpdate";
+import { ProductoDelete } from "../application/ProductoDelete";
+import { ProductoImportXlsx } from "../application/ProductoImportXlsx";
 
 type ProductoUseCases = {
     create: ProductoCreate;
     getAll: ProductoGetAll;
+    getAllWithDetail: ProductoGetAllWithDetail;
     getOneById: ProductoGetOneById;
+    getOneByIdWithDetail: ProductoGetOneByIdWithDetail;
     update: ProductoUpdate;
+    delete: ProductoDelete;
+    importXlsx: ProductoImportXlsx;
 }
 
 export class ProductoController {
     constructor(private useCases: ProductoUseCases) { }
 
-    async createProducto(req: Request, res: Response): Promise<void> {
+    async create(req: Request, res: Response): Promise<void> {
         try {
             const {
                 codigoBarra,
@@ -28,7 +36,7 @@ export class ProductoController {
                 rubroId
             } = req.body;
 
-            await this.useCases.create.run(
+            const productoCreado = await this.useCases.create.run(
                 codigoBarra,
                 descripcion,
                 precioCompra,
@@ -42,13 +50,13 @@ export class ProductoController {
                 rubroId
             );
 
-            res.status(201).json({ message: "Producto creado correctamente" });
+            res.status(201).json(productoCreado);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
     }
 
-    async getAllProducto(req: Request, res: Response): Promise<void> {
+    async getAll(req: Request, res: Response): Promise<void> {
         try {
             const productos = await this.useCases.getAll.run();
             res.status(200).json(productos);
@@ -57,25 +65,50 @@ export class ProductoController {
         }
     }
 
-    async getOneByIdProducto(req: Request, res: Response): Promise<void> {
+    async getAllProductoWithDetail(req: Request, res: Response): Promise<void> {
         try {
-            const { codigoBarra } = req.params;
-            const producto = await this.useCases.getOneById.run(codigoBarra!);
+            const productos = await this.useCases.getAllWithDetail.run();
+            res.status(200).json(productos);
+        } catch (err: any) {
+            res.status(500).json({ error: err.message });
+        }
+    }
+
+    async getOneById(req: Request, res: Response): Promise<void> {
+        try {
+            const { codigo } = req.params;
+            const producto = await this.useCases.getOneById.run(codigo!);
 
             if (!producto) {
                 res.status(404).json({ error: "Producto no encontrado" });
                 return;
             }
 
-            res.status(201).json(producto);
+            res.status(200).json(producto);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
     }
 
-    async updateProducto(req: Request, res: Response): Promise<void> {
+    async getOneByIdWithDetail(req: Request, res: Response): Promise<void> {
         try {
-            const { codigoBarra } = req.params;
+            const { codigo } = req.params;
+            const producto = await this.useCases.getOneByIdWithDetail.run(codigo!);
+
+            if (!producto) {
+                res.status(404).json({ error: "Producto no encontrado" });
+                return;
+            }
+
+            res.status(200).json(producto);
+        } catch (err: any) {
+            res.status(400).json({ error: err.message });
+        }
+    }
+
+    async update(req: Request, res: Response): Promise<void> {
+        try {
+            const { codigo } = req.params;
             const {
                 descripcion,
                 precioCompra,
@@ -87,8 +120,8 @@ export class ProductoController {
                 rubroId
             } = req.body;
 
-            await this.useCases.update.run(
-                codigoBarra!,
+            const productoActualizado = await this.useCases.update.run(
+                codigo!,
                 {
                     descripcion,
                     precioCompra,
@@ -101,7 +134,44 @@ export class ProductoController {
                 }
             );
 
-            res.status(200).json({ message: 'Producto actualizado correctamente' });
+            res.status(200).json(productoActualizado);
+        } catch (err: any) {
+            res.status(400).json({ error: err.message });
+        }
+    }
+
+    async delete(req: Request, res: Response): Promise<void> {
+        try {
+            const { codigo } = req.params;
+
+            await this.useCases.delete.run(codigo!);
+
+            res.status(204).json({ message: 'Producto eliminado correctamente' });
+        } catch (err: any) {
+            res.status(400).json({ error: err.message });
+        }
+    }
+
+    async importXlsx(req: Request, res: Response): Promise<void> {
+        try {
+            const file = req.file;
+
+            if (!file) {
+                res.status(400).send('No file uploaded');
+                return;
+            }
+
+            if (!file.originalname.endsWith('.xlsx')) {
+                res.status(400).send('Only xlsx files are allowed');
+                return;
+            }
+
+            const jsonData = await this.useCases.importXlsx.run(file.buffer);
+
+            res.status(201).json({
+                message: "Archivo excel recibido correctamente",
+                data: jsonData
+            });
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }

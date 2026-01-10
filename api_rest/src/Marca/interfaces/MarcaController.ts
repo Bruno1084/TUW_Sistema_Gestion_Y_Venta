@@ -4,32 +4,34 @@ import type { MarcaDelete } from "../application/MarcaDelete"
 import type { MarcaGetAll } from "../application/MarcaGetAll"
 import type { MarcaGetOneById } from "../application/MarcaGetOneById"
 import type { MarcaUpdate } from "../application/MarcaUpdate"
+import type { MarcaFindByNames } from "../application/MarcaFindByNames"
 
 type MarcaUseCases = {
     create: MarcaCreate,
     getAll: MarcaGetAll,
     getOneById: MarcaGetOneById,
     update: MarcaUpdate,
-    delete: MarcaDelete
+    delete: MarcaDelete,
+    findByNames: MarcaFindByNames
 }
 
 export class MarcaController {
     constructor(private useCases: MarcaUseCases) { }
 
-    async createMarca(req: Request, res: Response): Promise<void> {
+    async create(req: Request, res: Response): Promise<void> {
         try {
             const { nombre } = req.body;
 
-            await this.useCases.create.run(nombre);
+            const marcaCreada = await this.useCases.create.run(nombre);
 
-            res.status(201).json({ message: "Cliente creado correctamente" });
+            res.status(201).json(marcaCreada);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
 
         }
     }
 
-    async getAllMarca(req: Request, res: Response): Promise<void> {
+    async getAll(req: Request, res: Response): Promise<void> {
         try {
             const marcas = await this.useCases.getAll.run();
 
@@ -39,7 +41,7 @@ export class MarcaController {
         }
     }
 
-    async getOneByIdMarca(req: Request, res: Response): Promise<void> {
+    async getOneById(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
             const marca = await this.useCases.getOneById.run(Number(id));
@@ -49,35 +51,46 @@ export class MarcaController {
                 return;
             }
 
-            res.status(201).json(marca);
+            res.status(200).json(marca);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
     }
 
-    async updateMarca(req: Request, res: Response): Promise<void> {
+    async update(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
             const { nombre } = req.body;
 
-            this.useCases.update.run(Number(id), { nombre });
+            const marcaActualizada = await this.useCases.update.run(Number(id), { nombre });
 
-            res.status(201).json({ message: "Marca actualizada correctamente" });
+            res.status(200).json(marcaActualizada);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
     }
 
-    async deleteMarca(req: Request, res: Response): Promise<void> {
+    async delete(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
 
             await this.useCases.delete.run(Number(id));
 
-            res.status(200).json({ message: 'Marca eliminada correctamente' });
+            res.status(204).json({ message: 'Marca eliminada correctamente' });
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
     }
 
+    async findByNames(req: Request, res: Response): Promise<void> {
+        try {
+            const { nombres } = req.body;
+
+            const marcas = await this.useCases.findByNames.run(nombres);
+
+            res.status(204).send(marcas);
+        } catch (err: any) {
+            res.status(400).json({ error: err.message });
+        }
+    }
 }

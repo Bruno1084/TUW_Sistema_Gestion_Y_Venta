@@ -1,10 +1,12 @@
+import type { MarcaDTO, MarcaSimpleDTO } from "../application/MarcaDTO";
 import type { Marca } from "./Marca";
 import type { MarcaId } from "./MarcaId";
 
 export interface MarcaRepository {
-    create(marca: Marca): Promise<void>;
-    getAll(): Promise<Marca []>;
-    getOneById(marcaId: MarcaId): Promise<Marca | null>;
-    update(marca: Marca): Promise<void>;
+    create(marca: Marca): Promise<MarcaDTO>;
+    getAll(): Promise<MarcaDTO []>;
+    getOneById(marcaId: MarcaId): Promise<MarcaDTO | null>;
+    update(marca: Marca): Promise<MarcaDTO>;
     delete(marcaId: MarcaId): Promise<void>;
+    findByNames(nombres: string[]): Promise<MarcaSimpleDTO[]>;
 }

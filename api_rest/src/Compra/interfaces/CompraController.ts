@@ -1,39 +1,45 @@
 import type { Request, Response } from "express";
 import type { CompraCreate } from "../application/CompraCreate"
 import type { CompraGetAll } from "../application/CompraGetAll";
-import type { CompraGetOneById } from "../application/CompraGetOneById";
+import type { CompraGetOneByIdWithDetail } from "../application/CompraGetOneByIdWithDetail";
+import type { CompraGetAllByProveedores } from "../application/CompraGetAllByProveedores";
+import type { CompraGetAllByProductos } from "../application/CompraGetAllByProductos";
 
 type CompraUseCases = {
     create: CompraCreate;
     getAll: CompraGetAll;
-    getOneById: CompraGetOneById;
+    getOneByIdWithDetail: CompraGetOneByIdWithDetail;
+    getAllByProveedores: CompraGetAllByProveedores;
+    getAllByProductos: CompraGetAllByProductos;
 }
 
 export class CompraController {
     constructor(private useCases: CompraUseCases) { }
 
-    async createCompra(req: Request, res: Response): Promise<void> {
+    async create(req: Request, res: Response): Promise<void> {
         try {
             const {
                 precioTotal,
                 proveedorId,
-                empleadoId
+                usuarioId,
+                detalles
             } = req.body;
 
-            await this.useCases.create.run(
+            const compraCreada = await this.useCases.create.run(
                 precioTotal,
                 new Date(),
                 proveedorId,
-                empleadoId
+                usuarioId,
+                detalles
             );
 
-            res.status(201).json({ message: "Compra creada correctamente" });
+            res.status(201).json(compraCreada);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
     }
 
-    async getAllCompra(req: Request, res: Response): Promise<void> {
+    async getAll(req: Request, res: Response): Promise<void> {
         try {
             const compras = await this.useCases.getAll.run();
             res.status(200).json(compras);
@@ -42,19 +48,41 @@ export class CompraController {
         }
     }
 
-    async getOneByIdCompra(req: Request, res: Response): Promise<void> {
+    async getAllByProveedores(req: Request, res: Response): Promise<void> {
+        try {
+            const { intervaloFecha } = req.params;
+            const compras = await this.useCases.getAllByProveedores.run(new Date(intervaloFecha!));
+            res.status(200).json(compras);
+        } catch (err:any) {
+            res.status(500).json({ error: err.message});
+        }
+    }
+
+    async getAllByProductos(req: Request, res: Response): Promise<void> {
+        try {
+            const { intervaloFecha } = req.params;
+            const compras = await this.useCases.getAllByProductos.run(new Date(intervaloFecha!));
+            res.status(200).json(compras);
+        } catch (err:any) {
+            res.status(500).json({ error: err.message});
+        }
+    }
+
+    async getOneByIdWithDetail(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
-            const compra = await this.useCases.getOneById.run(Number(id));
+            const compra = await this.useCases.getOneByIdWithDetail.run(Number(id));
 
             if (!compra) {
                 res.status(404).json({ error: "Compra no encontrada" });
                 return;
             }
 
-            res.status(201).json(compra);
+            res.status(200).json(compra);
         } catch (err: any) {
             res.status(400).json({ error: err.message });
         }
     }
+
+
 }

@@ -1,10 +1,17 @@
 import type { CompraRepository } from "../domain/CompraRepository";
-import type { EmpleadoId } from "../../Empleado/domain/EmpleadoId";
-import type { ProveedorId } from "../../Proveedor/domain/ProveedorId";
+import type { CompraDetailDTO } from "./CompraDTO";
+import type { DetalleCompraDTO } from "../../DetalleCompra/application/DetalleCompraDTO";
+import { ProveedorId } from "../../Proveedor/domain/ProveedorId";
+import { UsuarioId } from "../../Usuario/domain/UsuarioId";
 import { Compra } from "../domain/Compra";
 import { CompraFechaCreacion } from "../domain/CompraFechaCreacion";
 import { CompraId } from "../domain/CompraId";
 import { CompraPrecioTotal } from "../domain/CompraPrecioTotal";
+import { DetalleCompra } from "../../DetalleCompra/domain/DetalleCompra";
+import { ProductoCodigoBarra } from "../../Producto/domain/ProductoCodigoBarra";
+import { DetalleCompraCantidad } from "../../DetalleCompra/domain/DetalleCompraCantidad";
+import { DetalleCompraPrecioTotal } from "../../DetalleCompra/domain/DetalleCompraPrecioTotal";
+import { DetalleCompraPrecioUnitario } from "../../DetalleCompra/domain/DetalleCompraPrecioUnitario";
 
 export class CompraCreate {
     constructor(private repository: CompraRepository) { }
@@ -12,17 +19,28 @@ export class CompraCreate {
     async run(
         precioTotal: number,
         fechaCreacion: Date,
-        proveedorId: ProveedorId,
-        empleadoId: EmpleadoId
-    ): Promise<void> {
+        proveedorId: number,
+        usuarioId: number,
+        detalles: DetalleCompraDTO[]
+    ): Promise<CompraDetailDTO> {
         const compra = new Compra(
             new CompraId(0),
             new CompraPrecioTotal(precioTotal),
             new CompraFechaCreacion(fechaCreacion),
-            proveedorId,
-            empleadoId
+            new ProveedorId(proveedorId),
+            new UsuarioId(usuarioId)
         );
 
-        await this.repository.create(compra);
+        const detallesCompra = detalles.map(detalle =>
+            new DetalleCompra(
+                new CompraId(detalle.compraId),
+                new ProductoCodigoBarra(detalle.productoCodigoBarra),
+                new DetalleCompraCantidad(detalle.cantidad),
+                new DetalleCompraPrecioTotal(detalle.precioTotal),
+                new DetalleCompraPrecioUnitario(detalle.precioUnitario)
+            )
+        );
+
+        return await this.repository.create(compra, detallesCompra);
     }
 }

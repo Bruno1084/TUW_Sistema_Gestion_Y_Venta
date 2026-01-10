@@ -1,10 +1,10 @@
 import type { CompraRepository } from "../domain/CompraRepository";
-import type { Compra } from "../domain/Compra";
+import type { CompraDTO } from "./CompraDTO";
 
 export class CompraGetAll {
     constructor(private repository: CompraRepository) { }
 
-    async run(): Promise<Compra[]> {
-        return this.repository.getAll();
+    async run(): Promise<CompraDTO[]> {
+        return await this.repository.getAll();
     }
 }

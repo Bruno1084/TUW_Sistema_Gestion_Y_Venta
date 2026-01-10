@@ -1,11 +1,8 @@
-import type { Pool, RowDataPacket } from "mysql2/promise";
+import type { Pool, ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import type { RubroRepository } from "../domain/RubroRepository";
+import type { RubroDTO, RubroSimpleDTO } from "../application/RubroDTO";
 import { RubroId } from "../domain/RubroId";
 import { Rubro } from "../domain/Rubro";
-import { RubroNombre } from "../domain/RubroNombre";
-import { RubroFechaCracion } from "../domain/RubroFechaCreacion";
-import { RubroFechaModificacion } from "../domain/RubroFechaModificacion";
-import { RubroEsActivo } from "../domain/RubroEsActivo";
 
 type MySQLRubro = {
     id: number;
@@ -22,38 +19,38 @@ export class MySQLRubroRepository implements RubroRepository {
         this.pool = pool;
     }
 
-    async create(rubro: Rubro): Promise<void> {
+    async create(rubro: Rubro): Promise<RubroDTO> {
         const query = `
-            INSERT INTO rubros(nombre, fecha_creacion, fecha_modificacion, es_activo)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO rubros(nombre, fecha_creacion, fecha_modificacion)
+            VALUES (?, ?, ?)
         `;
 
-        await this.pool.query(query, [
+        const [result] = await this.pool.query<ResultSetHeader>(query, [
             rubro.nombre.value,
             rubro.fechaCreación.value,
             rubro.fechaModificacion.value,
-            rubro.esActivo.value
         ]);
+
+        const rubroId = result.insertId;
+        return this.getOneById(new RubroId(rubroId)) as Promise<RubroDTO>;
     }
 
-    async getAll(): Promise<Rubro[]> {
+    async getAll(): Promise<RubroDTO[]> {
         const query = `SELECT * FROM rubros WHERE es_activo = true`;
 
         const [rows] = await this.pool.query<(MySQLRubro & RowDataPacket)[]>(query);
 
         return rows.map(
-            (row) =>
-                new Rubro(
-                    new RubroId(row.id),
-                    new RubroNombre(row.nombre),
-                    new RubroFechaCracion(row.fecha_creacion),
-                    new RubroFechaModificacion(row.fecha_modificacion),
-                    new RubroEsActivo(row.es_activo)
-                )
+            (row) => ({
+                id: row!.id,
+                nombre: row!.nombre,
+                fechaCreacion: row!.fecha_creacion,
+                fechaModificacion: row!.fecha_modificacion,
+            })
         );
     }
 
-    async getOneById(rubroId: RubroId): Promise<Rubro | null> {
+    async getOneById(rubroId: RubroId): Promise<RubroDTO | null> {
         const query = `SELECT * FROM rubros WHERE id = ?`;
 
         const [rows] = await this.pool.query<(MySQLRubro & RowDataPacket)[]>(query, [rubroId.value]);
@@ -63,16 +60,15 @@ export class MySQLRubroRepository implements RubroRepository {
         }
 
         const row = rows[0];
-        return new Rubro(
-            new RubroId(row!.id),
-            new RubroNombre(row!.nombre),
-            new RubroFechaCracion(row!.fecha_creacion),
-            new RubroFechaModificacion(row!.fecha_modificacion),
-            new RubroEsActivo(row!.es_activo)
-        );
+        return {
+            id: row!.id,
+            nombre: row!.nombre,
+            fechaCreacion: row!.fecha_creacion,
+            fechaModificacion: row!.fecha_modificacion,
+        }
     }
 
-    async update(rubro: Rubro): Promise<void> {
+    async update(rubro: Rubro): Promise<RubroDTO> {
         const query = `
             UPDATE rubros SET
             nombre = ?,
@@ -87,11 +83,33 @@ export class MySQLRubroRepository implements RubroRepository {
             rubro.fechaModificacion.value,
             rubro.id.value
         ]);
+
+        return this.getOneById(rubro.id) as Promise<RubroDTO>;
     }
 
     async delete(rubroId: RubroId): Promise<void> {
         const query = `UPDATE rubros SET es_activo = false WHERE id = ?`;
 
-        await this.pool.query(query, [rubroId]);
+        await this.pool.query(query, [rubroId.value]);
+    }
+
+    async findByNames(nombres: string[]): Promise<RubroSimpleDTO[]> {
+        if (nombres.length === 0) {
+            return [];
+        }
+
+        const query = `
+        SELECT id, nombre
+        FROM rubros
+        WHERE es_activo = true
+        AND nombre IN (?)
+        `;
+
+        const [rows] = await this.pool.query<(RowDataPacket & { id: number; nombre: string })[]>(query, [nombres]);
+
+        return rows.map(row => ({
+            id: row.id,
+            nombre: row.nombre
+        }));
     }
 }
