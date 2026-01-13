@@ -114,7 +114,7 @@ public class AddProductoController implements ParentAware {
     }
 
     // FXML Methods
-    @FXML private void initialize() {
+    @FXML public void initialize() {
         setAutocompleteField(
                 inputProveedorProducto,
                 () -> {

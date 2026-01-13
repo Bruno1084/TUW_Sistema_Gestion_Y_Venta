@@ -31,6 +31,7 @@ public class ProductoService {
     }
 
     public Producto create(Producto producto) throws Exception {
+        System.out.println("This should print create endpoint");
         Map<String, Object> requestMap = writePlaneMap(producto);
         String requestBody = mapper.writeValueAsString(requestMap);
 

@@ -8,7 +8,6 @@ import com.util.ParentAware;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -174,7 +173,7 @@ public class ProductosController implements ParentAware {
         cargarProductos();
     }
 
-    @FXML private void handleAniadirProducto(ActionEvent event) {
+    @FXML private void handleAniadirProducto() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/fxml/add/AddProducto.fxml"));
             Parent root = fxmlLoader.load();
@@ -183,11 +182,11 @@ public class ProductosController implements ParentAware {
             addProductoController.setParentController(parentController);
             parentController.getMainBorderPane().setCenter(root);
         } catch (Exception exception) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("No se pudo crear el producto");
-            alert.setContentText(exception.getMessage());
-            alert.showAndWait();        }
+            exception.printStackTrace();
+            if (exception.getCause() != null) {
+                System.err.println("CAUSA REAL:");
+                exception.getCause().printStackTrace();
+            }
+        }
     }
-
 }
