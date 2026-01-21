@@ -1,19 +1,112 @@
-// Sidebar VBox
-#vboxSidebar {
-    -fx-background-color: #fbfbfa;
-    -fx-border-color: #e5e4e4;
+/* =========================
+   ROOT SIDEBAR
+========================= */
+.sidebar {
+    -fx-background-color: linear-gradient(
+            from 0% 0% to 0% 100%,
+            #1c2235,
+            #1a2032
+    );
+    -fx-font-family: "Segoe UI", "Inter", sans-serif;
 }
 
-// Sidebar Buttons
-.btnSidebar {
+/* =========================
+   HEADER
+========================= */
+.sidebar .sidebar-header {
+    -fx-background-color: #141a2b;
+}
+
+.sidebar .sidebar-title {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 24 0 0 32;
+}
+
+/* =========================
+   BOTONES
+========================= */
+.sidebar .sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #cfd6ff;
+    -fx-padding: 10 16;
+    -fx-font-weight: bold;
+    -fx-graphic-text-gap: 12;
+    -fx-cursor: hand;
+}
+
+.sidebar .sidebar-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.06);
+}
+
+.sidebar .sidebar-button:pressed {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Activo */
+.sidebar .sidebar-button.active {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+}
+
+/* =========================
+   ICONOS
+========================= */
+.sidebar .font-awesome-icon {
+    -fx-fill: #9aa4ff;
+}
+
+.sidebar .sidebar-button.active .font-awesome-icon {
+    -fx-fill: white;
+}
+
+/* =========================
+   ACCORDION
+========================= */
+.sidebar .accordion {
     -fx-background-color: transparent;
 }
 
-.btnSidebar:hover {
-    -fx-background-color: #f4f4f4;
+.sidebar .titled-pane {
+    -fx-background-color: transparent;
 }
 
-// Main Pane
-#anchorPaneMain {
-    -fx-background-color: #ffffff;
+.sidebar .titled-pane > .title {
+    -fx-background-color: transparent;
+    -fx-padding: 10 14;
+}
+
+.sidebar .titled-pane > .title:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar .titled-pane > .title > .text {
+    -fx-fill: #cfd6ff;
+    -fx-font-weight: bold;
+}
+
+.sidebar .titled-pane:expanded > .title {
+    -fx-background-color: rgba(255, 255, 255, 0.06);
+}
+
+/* =========================
+   SUBMENÚ
+========================= */
+.sidebar .submenu {
+    -fx-padding: 4 0 8 30;
+    -fx-background-color: #1a2032;
+}
+
+.sidebar .submenu .button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #aeb6ff;
+    -fx-font-size: 13px;
+    -fx-padding: 8 12;
+}
+
+.sidebar .submenu .button:hover {
+    -fx-background-color: rgba(59, 130, 246, 0.15);
+    -fx-background-radius: 6;
 }
